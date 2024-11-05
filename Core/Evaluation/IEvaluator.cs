@@ -3,20 +3,20 @@ using Core.Questions;
 
 namespace Core.Evaluation; 
 
-public interface IEvaluator<TQuestion, TFile> where TQuestion : IQuestion<TFile> where TFile : IFile {
+public interface IEvaluator<TFile> where TFile : IFile {
 
-    public List<TQuestion> Questions { get; }
+    public List<IQuestion<TFile>> Questions { get; }
     public List<IEnumerable<TFile>> Files { get; }
 
     IEnumerable<Result> Evaluate(int index = 0) {
         if (Questions.Count < index + 1)
-            throw new ArgumentException();
+            throw new ArgumentOutOfRangeException();
         if (!Files.Any())
             throw new ArgumentException();
 
         var q = Questions[index];
 
-        if (!q.GetType().IsAssignableTo(typeof(TQuestion)))
+        if (!q.GetType().IsAssignableTo(typeof(IQuestion<TFile>)))
             throw new ArgumentException();
         return q.Evaluate(Files[index]);
     }

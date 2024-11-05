@@ -4,12 +4,13 @@ using DocumentFormat.OpenXml.Wordprocessing;
 namespace Core.FileHandling; 
 
 public class WordFile : IFile {
+
     public string FileFormat { get; } = "docx";
 
     private readonly WordprocessingDocument _doc;
+
     public MainDocumentPart MainDoc { get; }
     public CoreFilePropertiesPart CoreProps { get; }
-
 
     public IEnumerable<Style> Styles {
         get {
@@ -28,4 +29,5 @@ public class WordFile : IFile {
     public void Dispose() {
         _doc.Dispose();
     }
+
 }
