@@ -1,5 +1,5 @@
 ﻿namespace Core.FileHandling; 
 
-public interface IFile {
+public interface IFile : IDisposable {
     protected string FileFormat { get; }
 }

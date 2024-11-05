@@ -3,15 +3,15 @@ using Core.Questions;
 
 namespace Core.Evaluation; 
 
-public class Evaluator {
+public interface IEvaluator<TQuestion, TFile> where TQuestion : IQuestion<TFile> where TFile : IFile {
 
-    public List<IQuestion<IFile>> Questions { get; } = new();
-    public List<IEnumerable<IFile>> Files { get; } = new();
+    public List<TQuestion> Questions { get; }
+    public List<IEnumerable<TFile>> Files { get; }
 
-    public IEnumerable<Result> Evaluate<TQuestion>(int index = 0) where TQuestion : IQuestion<IFile> {
+    IEnumerable<Result> Evaluate(int index = 0) {
         if (Questions.Count < index + 1)
             throw new ArgumentException();
-        if(!Files.Any())
+        if (!Files.Any())
             throw new ArgumentException();
 
         var q = Questions[index];
@@ -21,7 +21,7 @@ public class Evaluator {
         return q.Evaluate(Files[index]);
     }
 
-    public void SetFiles(int index = 0, params IFile[] files) {
+    void SetFiles(int index = 0, params TFile[] files) {
         Files[index] = files.AsEnumerable();
     }
 
