@@ -10,7 +10,6 @@ public class WordFile : IFile {
     private readonly WordprocessingDocument _doc;
 
     public MainDocumentPart MainDoc { get; }
-    public CoreFilePropertiesPart CoreProps { get; }
 
     public IEnumerable<Style> Styles {
         get {
@@ -23,7 +22,6 @@ public class WordFile : IFile {
     public WordFile(Stream file) {
         _doc = WordprocessingDocument.Open(file, false);
         MainDoc = _doc.MainDocumentPart ?? throw new ArgumentException();
-        CoreProps = _doc.CoreFilePropertiesPart ?? throw new ArgumentException();
     }
 
     public void Dispose() {
