@@ -14,7 +14,7 @@ public class Result {
     }
 
     public (T?, T?) GetParamComparison<T>(string name) where T : notnull {
-        return !IsSuccessful ? (default(T), default(T)) : (_params.Get<T>(name), _paramsFromFile.Get<T>(name));
+        return _paramsFromFile is null ? (default, default) : (_params.Get<T>(name), _paramsFromFile.Get<T>(name));
     }
 
 }
