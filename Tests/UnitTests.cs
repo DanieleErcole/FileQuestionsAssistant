@@ -8,6 +8,7 @@ using Color = System.Drawing.Color;
 
 namespace Tests;
 
+[TestFixture]
 public class UtilsTests {
          
     [TestCase("FFFFFF", 255, 255, 255)]
@@ -19,6 +20,7 @@ public class UtilsTests {
 
 }
 
+[TestFixture]
 public class EvaluatorTests {
 
     internal class MyFile : IFile {
@@ -26,6 +28,8 @@ public class EvaluatorTests {
     }
 
     internal class MyQuestion : IQuestion<MyFile> {
+        public string Description => "";
+
         public IEnumerable<Result> Evaluate(IEnumerable<MyFile> files) {
             var d = new Dictionary<string, object>();
             return files.Select(_ => new Result(d, d));
@@ -47,6 +51,7 @@ public class EvaluatorTests {
 
 }
 
+[TestFixture]
 public class WordTests {
     
     private const string WordFileDirectory = @"C:\Users\User\Documents\Documenti e lavori\Lavori\C#\FileQuestionsAssistant\Tests\Files\";

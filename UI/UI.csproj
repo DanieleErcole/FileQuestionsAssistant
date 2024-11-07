@@ -9,30 +9,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Models\" />
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.1.0" />
     <PackageReference Include="Avalonia.Desktop" Version="11.1.0" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Lang\Localization.Designer.cs">
+    <Compile Update="Assets\Localization.Designer.cs">
+      <DependentUpon>Localization.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Localization.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Lang\Localization.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+    <EmbeddedResource Update="Assets\Localization.resx">
       <LastGenOutput>Localization.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 </Project>
