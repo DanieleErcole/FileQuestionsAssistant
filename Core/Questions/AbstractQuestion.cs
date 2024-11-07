@@ -15,6 +15,8 @@ public abstract class AbstractQuestion<TFile> : IQuestion<TFile> where TFile : I
 
     protected readonly Dictionary<string, object> _params = new();
 
+    public abstract string Description { get; }
+
     public abstract IEnumerable<Result> Evaluate(IEnumerable<TFile> files);
 
 }
