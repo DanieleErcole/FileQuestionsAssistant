@@ -1,11 +1,11 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using Core.Utils.Errors;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using ApplicationException = Core.Utils.Errors.ApplicationException;
 
 namespace Core.FileHandling; 
 
 public class WordFile : IFile {
-
-    public string FileFormat { get; } = "docx";
 
     private readonly WordprocessingDocument _doc;
 
@@ -13,19 +13,28 @@ public class WordFile : IFile {
 
     public IEnumerable<Style> Styles {
         get {
-            if (MainDoc.StylesWithEffectsPart is { } s)
-                return s.Styles?.Elements<Style>() ?? throw new ArgumentException();
-            return MainDoc.StyleDefinitionsPart?.Styles?.Elements<Style>() ?? throw new ArgumentException();
+            try {
+                if (MainDoc.StylesWithEffectsPart is { } s)
+                    return s.Styles?.Elements<Style>() ?? throw new InvalidFileFormat();
+                return MainDoc.StyleDefinitionsPart?.Styles?.Elements<Style>() ?? throw new InvalidFileFormat();
+            } catch (Exception e) when (e is not ApplicationException) {
+                throw new FileError(e);
+            }
         }
     }
 
     public WordFile(Stream file) {
-        _doc = WordprocessingDocument.Open(file, false);
-        MainDoc = _doc.MainDocumentPart ?? throw new ArgumentException();
+        try {
+            _doc = WordprocessingDocument.Open(file, false);
+            MainDoc = _doc.MainDocumentPart ?? throw new InvalidFileFormat();
+        } catch (Exception e) when (e is not ApplicationException) {
+            throw new FileError(e);
+        }
     }
 
     public void Dispose() {
         _doc.Dispose();
+        GC.SuppressFinalize(this);
     }
 
 }

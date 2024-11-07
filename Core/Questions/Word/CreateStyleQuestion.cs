@@ -1,8 +1,6 @@
 ﻿using Core.Evaluation;
 using Core.FileHandling;
 using Core.Utils;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Color = System.Drawing.Color;
 
 namespace Core.Questions.Word;
