@@ -1,8 +1,23 @@
-﻿namespace UI.ViewModels;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using ReactiveUI;
+using UI.Services;
 
-public partial class MainWindowViewModel : ViewModelBase
-{
-#pragma warning disable CA1822 // Mark members as static
-    public string Greeting => "Welcome to Avalonia!";
-#pragma warning restore CA1822 // Mark members as static
+namespace UI.ViewModels;
+
+public partial class MainWindowViewModel : ViewModelBase {
+
+    private readonly IServiceProvider _services;
+
+    private ViewModelBase _currentPage;
+    public ViewModelBase CurrentPage { 
+        get => _currentPage; 
+        set => this.RaiseAndSetIfChanged(ref _currentPage, value); 
+    }
+
+    public MainWindowViewModel(IServiceProvider services) {
+        _services = services;
+        _services.GetRequiredService<NavigatorService>().Init(this);
+    }
+
 }

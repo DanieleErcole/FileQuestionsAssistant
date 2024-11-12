@@ -15,6 +15,10 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <TransitioningContentControl Content="{Binding CurrentPage}" >
+        <TransitioningContentControl.PageTransition>
+            <PageSlide Orientation="Horizontal" Duration="0:00:00.500" />
+        </TransitioningContentControl.PageTransition>
+    </TransitioningContentControl>
 
 </Window>
