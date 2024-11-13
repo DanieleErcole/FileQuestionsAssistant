@@ -5,8 +5,8 @@ namespace Core.Evaluation;
 
 public class Evaluator<TFile> where TFile : IFile {
 
-    public List<IQuestion<TFile>> Questions { get; } = new();
-    public List<IEnumerable<TFile>> Files { get; } = new();
+    public List<IQuestion<TFile>> Questions { get; } = [];
+    public List<IEnumerable<TFile>> Files { get; } = [];
 
     public IEnumerable<Result> Evaluate(int index = 0) {
         if (index >= Questions.Count) 
@@ -20,7 +20,7 @@ public class Evaluator<TFile> where TFile : IFile {
 
     public void AddQuestion(IQuestion<TFile> question, params TFile[] files) {
         Questions.Add(question);
-        Files.Add(files.Any() ? files : new List<TFile>());
+        Files.Add(files.Length != 0 ? files : new List<TFile>());
     }
 
     public void RemoveQuestion(int index) {
