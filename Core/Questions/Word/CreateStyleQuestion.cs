@@ -7,8 +7,6 @@ namespace Core.Questions.Word;
 
 public class CreateStyleQuestion : AbstractQuestion<WordFile> {
 
-    public override string Description => "Checks if a style with the specified properties exists in the document";
-
     public CreateStyleQuestion(string styleName, string baseStyleName, string fontName, int fontSize, Color color, string alignment) {
         _params.Add("styleName", styleName);
         _params.Add("baseStyleName", baseStyleName);

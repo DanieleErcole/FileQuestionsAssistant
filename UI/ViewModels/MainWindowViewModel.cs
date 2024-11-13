@@ -17,7 +17,7 @@ public partial class MainWindowViewModel : ViewModelBase {
 
     public MainWindowViewModel(IServiceProvider services) {
         _services = services;
-        _services.GetRequiredService<NavigatorService>().Init(this);
+        _services.GetRequiredService<NavigatorService>().Init(this, _services);
     }
 
 }

@@ -1,19 +1,21 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UI.ViewModels;
 
 namespace UI.Services;
 
 public class NavigatorService {
-
+    
     private MainWindowViewModel _mainWindow;
 
-    private readonly ViewModelBase[] _pages = [
-        new QuestionsPageViewModel(),
-        new ResultsPageViewModel()
-    ];
+    private ViewModelBase[] _pages;
 
-    public void Init(MainWindowViewModel mw) {
+    public void Init(MainWindowViewModel mw, IServiceProvider services) {
         _mainWindow = mw;
+        _pages = new ViewModelBase[] {
+            new QuestionsPageViewModel(services),
+            new ResultsPageViewModel()
+        };
         _mainWindow.CurrentPage = _pages[0];
     }
 

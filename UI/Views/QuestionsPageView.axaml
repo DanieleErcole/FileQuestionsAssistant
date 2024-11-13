@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:UI.ViewModels"
+             xmlns:questions="clr-namespace:UI.ViewModels.Questions"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="UI.Views.QuestionsPageView"
              x:DataType="viewModels:QuestionsPageViewModel">
@@ -13,9 +14,17 @@
         <viewModels:QuestionsPageViewModel/>
     </Design.DataContext>
     
-    <StackPanel VerticalAlignment="Center" Spacing="5">
-        <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button Command="{Binding HandleClick}">Press me</Button>
-    </StackPanel>
+    <ListBox x:Name="Questions" Margin="50" ItemsSource="{Binding Questions}">
+        <ListBox.ItemTemplate>
+            <DataTemplate DataType="{x:Type questions:SingleQuestionViewModel}">
+                <Grid ColumnDefinitions="Auto, Auto, Auto, Auto" RowDefinitions="Auto">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Id}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Description}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding FileCount}"/>
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
     
 </UserControl>
