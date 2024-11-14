@@ -13,8 +13,10 @@ public class QuestionsPageViewModel : ViewModelBase {
     private IServiceProvider _services;
     
     private List<SingleQuestionViewModel> _questions = [];
-    
-    public List<SingleQuestionViewModel> Questions { get => _questions; set => this.RaiseAndSetIfChanged(ref _questions, value); }
+    public List<SingleQuestionViewModel> Questions {
+        get => _questions; 
+        set => this.RaiseAndSetIfChanged(ref _questions, value);
+    }
 
     public QuestionsPageViewModel(IServiceProvider services) {
         _services = services;

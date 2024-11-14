@@ -28,8 +28,6 @@ public class EvaluatorTests {
     }
 
     internal class MyQuestion : IQuestion<MyFile> {
-        public string Description => "";
-
         public IEnumerable<Result> Evaluate(IEnumerable<MyFile> files) {
             var d = new Dictionary<string, object>();
             return files.Select(_ => new Result(d, d));
