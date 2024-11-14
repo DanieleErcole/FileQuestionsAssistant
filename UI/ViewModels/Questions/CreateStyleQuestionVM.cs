@@ -12,12 +12,14 @@ public class CreateStyleQuestionVM : SingleQuestionViewModel {
     public override string Description => Lang.Localization.CreateStyleQuestionDesc;
 
     public CreateStyleQuestionVM(CreateStyleQuestion question, IServiceProvider services) : base(services) {
-        _services.GetRequiredService<Evaluator<WordFile>>().AddQuestion(question);
+        var e = _services.GetRequiredService<Evaluator<WordFile>>();
+        e.AddQuestion(question);
+        Index = e.Questions.IndexOf(question);
     }
     
     public override void UploadFiles() {
         var e = _services.GetRequiredService<Evaluator<WordFile>>();
-        // e.SetFiles(Id, );
+        // e.SetFiles(Index, );
     }
     
 }

@@ -8,7 +8,7 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
     
     protected IServiceProvider _services;
     
-    public int Id { get; set; }
+    public int Index { get; set; }
     public abstract string Name { get; }
     public abstract string Description { get; }
     

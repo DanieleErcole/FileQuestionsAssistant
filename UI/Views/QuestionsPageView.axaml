@@ -14,17 +14,40 @@
         <viewModels:QuestionsPageViewModel/>
     </Design.DataContext>
     
-    <ListBox x:Name="Questions" Margin="50" ItemsSource="{Binding Questions}">
-        <ListBox.ItemTemplate>
-            <DataTemplate DataType="{x:Type questions:SingleQuestionViewModel}">
-                <Grid ColumnDefinitions="Auto, Auto, Auto, Auto" RowDefinitions="Auto">
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Id}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Description}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding FileCount}"/>
-                </Grid>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+    <StackPanel>
+        <StackPanel.Styles>
+            <Style Selector="StackPanel.toolbar">
+                <Setter Property="Background" Value="Red"/>
+            </Style>
+            <Style Selector="StackPanel.toolbar-btn-group">
+                
+            </Style>
+            <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                <Setter Property="Background" Value="#ECECEC"></Setter>
+            </Style>
+        </StackPanel.Styles>
+        
+        <StackPanel Classes="toolbar" Orientation="Horizontal">
+            <StackPanel Classes="toolbar-btn-group" Orientation="Horizontal">
+            
+            </StackPanel>
+        </StackPanel>
+        
+        <ListBox x:Name="Questions" Margin="50" ItemsSource="{Binding Questions}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type questions:SingleQuestionViewModel}">
+                    <Grid ColumnDefinitions=".3*, .5*, 1.6*, .5*" RowDefinitions="Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{Binding Name}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Description}"/>
+                        <StackPanel Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Margin="0, 0, 10, 0" Text="Files uploaded" />
+                            <Button Margin="5, 5, 5, 5" Padding="5, 5, 5, 5">Upload</Button>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
     
 </UserControl>
