@@ -15,7 +15,7 @@
     </Design.DataContext>
     
     <StackPanel>
-        <StackPanel Margin="10, 0, 10, 10" x:Name="Toolbar" Orientation="Horizontal" Height="30">
+        <StackPanel Margin="10, 0, 10, 0" x:Name="Toolbar" Orientation="Horizontal">
             <StackPanel.Styles>
                 <Style Selector="#Toolbar > StackPanel > Button">
                     <Setter Property="Background" Value="{DynamicResource ThemeBackgroundColor}"/>
@@ -24,40 +24,63 @@
             
             <StackPanel Orientation="Horizontal">
                 <Button>
-                    <PathIcon Data="{StaticResource add_regular}"/>
+                    <PathIcon Foreground="#353535" Width="18" Height="18" Data="{StaticResource add_regular}"/>
                 </Button>
                 <Button>
-                    <PathIcon Data="{StaticResource remove_regular}"/>
+                    <PathIcon Foreground="#353535" Width="18" Height="18" Data="{StaticResource remove_regular}"/>
                 </Button>
             </StackPanel>
         </StackPanel>
         
-        <ListBox x:Name="QuestionsList" Margin="20 , 0, 20, 20" ItemsSource="{Binding Questions}" SelectionMode="Multiple, Toggle" SelectionChanged="OnSelectionChanged">
-            <ListBox.Styles>
-                <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-                    <Setter Property="Background" Value="Transparent"></Setter>
-                </Style>
-                <Style Selector="ListBoxItem:pressed /template/ ContentPresenter">
-                    <Setter Property="Background" Value="Transparent"></Setter>
-                </Style>
-            </ListBox.Styles>
-            
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type questions:SingleQuestionViewModel}">
-                    <Grid Name="{Binding}" ColumnDefinitions=".3*, .5*, 1.6*, .5*" RowDefinitions="Auto">
-                        <CheckBox Grid.Column="0" Margin="20, 0, 0, 0" Background="Transparent" IsChecked="{Binding $parent[ListBoxItem].IsSelected}"/>
-                        <TextBlock Grid.Column="1" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}"/>
-                        <TextBlock Grid.Column="2" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Description}"/>
-                        <StackPanel Grid.Column="3" VerticalAlignment="Center" Orientation="Horizontal">
-                            <Button Margin="5, 5, 5, 5" Padding="5, 5, 5, 5">
-                                <PathIcon Data="{StaticResource upload_regular}"/>
-                            </Button>
-                            <TextBlock VerticalAlignment="Center" Margin="0, 0, 10, 0" Text="{Binding FileCount}" />
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Separator/>
+        
+        <Border Margin="20, 10, 20, 20" BorderBrush="Gray"
+                BorderThickness="1">
+            <ListBox x:Name="QuestionsList" ItemsSource="{Binding Questions}" SelectionMode="Multiple, Toggle" SelectionChanged="OnSelectionChanged">
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Transparent"></Setter>
+                    </Style>
+                    <Style Selector="ListBoxItem:pressed /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Transparent"></Setter>
+                    </Style>
+                    <Style Selector="Button.upload-btn">
+                        <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}"/>
+                    </Style>
+                    <Style Selector="Button.upload-btn:pressed">
+                        <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPressed}"/>
+                    </Style>
+                    <Style Selector="Button.upload-btn:pointerover">
+                        <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}"/>
+                    </Style>
+                    <Style Selector="Button.upload-btn > PathIcon">
+                        <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
+                    </Style>
+                    <Style Selector="Button.upload-btn:pressed > PathIcon">
+                        <Setter Property="Foreground" Value="{DynamicResource AccentButtonForegroundPressed}"/>
+                    </Style>
+                    <Style Selector="Button.upload-btn:pointerover > PathIcon">
+                        <Setter Property="Foreground" Value="{DynamicResource AccentButtonForegroundPointerOver}"/>
+                    </Style>
+                </ListBox.Styles>
+                
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type questions:SingleQuestionViewModel}">
+                        <Grid Name="{Binding}" ColumnDefinitions=".3*, .5*, 1.6*, .5*" RowDefinitions="Auto">
+                            <CheckBox Grid.Column="0" Margin="20, 0, 0, 0" Background="Transparent" IsChecked="{Binding $parent[ListBoxItem].IsSelected}"/>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}"/>
+                            <TextBlock Grid.Column="2" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Description}"/>
+                            <StackPanel Grid.Column="3" VerticalAlignment="Center" Orientation="Horizontal">
+                                <Button Classes="upload-btn" Margin="5, 5, 5, 5" Padding="5, 5, 5, 5">
+                                    <PathIcon Data="{StaticResource upload_regular}"/>
+                                </Button>
+                                <TextBlock VerticalAlignment="Center" Margin="0, 0, 10, 0" Text="{Binding FileCount}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
     </StackPanel>
     
 </UserControl>

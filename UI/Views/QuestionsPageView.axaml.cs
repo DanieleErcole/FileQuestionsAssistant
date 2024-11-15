@@ -8,6 +8,7 @@ using UI.ViewModels.Questions;
 namespace UI.Views;
 
 public partial class QuestionsPageView : UserControl {
+    
     public QuestionsPageView() {
         InitializeComponent();
     }
