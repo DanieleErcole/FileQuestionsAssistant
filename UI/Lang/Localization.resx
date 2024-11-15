@@ -123,4 +123,7 @@
   <data name="CreateStyleQuestionDesc" xml:space="preserve">
     <value>Checks if a style with the specified properties exists in the document</value>
   </data>
+  <data name="FilesSelected" xml:space="preserve">
+    <value>files selected</value>
+  </data>
 </root>

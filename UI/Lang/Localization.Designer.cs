@@ -74,5 +74,11 @@ namespace UI.Lang {
                 return ResourceManager.GetString("CreateStyleQuestionDesc", resourceCulture);
             }
         }
+        
+        public static string FilesSelected {
+            get {
+                return ResourceManager.GetString("FilesSelected", resourceCulture);
+            }
+        }
     }
 }
