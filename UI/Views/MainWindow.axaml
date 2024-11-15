@@ -15,11 +15,14 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
-    <TransitioningContentControl Content="{Binding CurrentPage}" >
-        <TransitioningContentControl.PageTransition>
-            <PageSlide Orientation="Horizontal" Duration="0:00:00.500" />
-        </TransitioningContentControl.PageTransition>
-    </TransitioningContentControl>
+    
+    <StackPanel>
+        <TextBlock Margin="15, 15, 0, 10" FontSize="18" Text="{Binding CurrentPage.PageName}"/>
+        <TransitioningContentControl Content="{Binding CurrentPage}" >
+            <TransitioningContentControl.PageTransition>
+                <PageSlide Orientation="Horizontal" Duration="0:00:00.500" />
+            </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
+    </StackPanel>
 
 </Window>

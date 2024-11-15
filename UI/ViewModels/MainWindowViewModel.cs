@@ -9,8 +9,8 @@ public partial class MainWindowViewModel : ViewModelBase {
 
     private readonly IServiceProvider _services;
 
-    private ViewModelBase _currentPage;
-    public ViewModelBase CurrentPage { 
+    private PageViewModelBase _currentPage;
+    public PageViewModelBase CurrentPage { 
         get => _currentPage; 
         set => this.RaiseAndSetIfChanged(ref _currentPage, value); 
     }

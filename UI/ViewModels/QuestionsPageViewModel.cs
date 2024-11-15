@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
 using Core.Questions.Word;
 using ReactiveUI;
 using UI.ViewModels.Questions;
 
 namespace UI.ViewModels;
 
-public class QuestionsPageViewModel : ViewModelBase {
+public class QuestionsPageViewModel : PageViewModelBase {
+
+    public override string PageName => "Questions";
 
     private IServiceProvider _services;
     
@@ -21,8 +22,8 @@ public class QuestionsPageViewModel : ViewModelBase {
     public QuestionsPageViewModel(IServiceProvider services) {
         _services = services;
         _questions.Add(new CreateStyleQuestionVM(
-            new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"),
-            _services
+                new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+                _services
             ));
     }
     
