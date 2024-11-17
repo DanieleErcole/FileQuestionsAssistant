@@ -4,8 +4,8 @@ using Avalonia.Markup.Xaml;
 
 namespace UI.Views;
 
-public partial class ResultsPageview : UserControl {
-    public ResultsPageview() {
+public partial class ResultsPageView : UserControl {
+    public ResultsPageView() {
         InitializeComponent();
     }
 }

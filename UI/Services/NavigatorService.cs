@@ -6,21 +6,24 @@ namespace UI.Services;
 
 public class NavigatorService {
     
+    public const int Questions = 0;
+    public const int Results = 1;
+    
     private MainWindowViewModel _mainWindow;
 
-    private PageViewModelBase[] _pages;
+    private ViewModelBase[] _pages;
 
     public void Init(MainWindowViewModel mw, IServiceProvider services) {
         _mainWindow = mw;
-        _pages = new PageViewModelBase[] {
+        _pages = new ViewModelBase[] {
             new QuestionsPageViewModel(services),
             new ResultsPageViewModel()
         };
-        _mainWindow.CurrentPage = _pages[0];
+        _mainWindow.CurrentPage = _pages[Questions];
     }
 
-    public void NavigateTo<T>() where T : PageViewModelBase {
-        _mainWindow.CurrentPage = _pages.First(p => p.GetType().IsAssignableTo(typeof(T)));
+    public void NavigateTo(int index) {
+        _mainWindow.CurrentPage = _pages[index];
     }
 
 }
