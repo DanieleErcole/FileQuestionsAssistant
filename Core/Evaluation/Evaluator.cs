@@ -6,13 +6,13 @@ namespace Core.Evaluation;
 public class Evaluator<TFile> where TFile : IFile {
 
     public List<IQuestion<TFile>> Questions { get; } = [];
-    public List<IEnumerable<TFile>> Files { get; } = [];
+    private List<List<TFile>> Files { get; } = [];
 
     public IEnumerable<Result> Evaluate(int index = 0) {
         if (index >= Questions.Count) 
             throw new ArgumentOutOfRangeException();
 
-        if (!Files[index].Any())
+        if (Files[index].Count == 0)
             throw new InvalidOperationException();
 
         return Questions[index].Evaluate(Files[index]);
@@ -20,7 +20,7 @@ public class Evaluator<TFile> where TFile : IFile {
 
     public void AddQuestion(IQuestion<TFile> question, params TFile[] files) {
         Questions.Add(question);
-        Files.Add(files.Length != 0 ? files : new List<TFile>());
+        Files.Add(files.Length != 0 ? files.ToList() : []);
     }
 
     public void RemoveQuestion(int index) {
@@ -35,7 +35,12 @@ public class Evaluator<TFile> where TFile : IFile {
         if (index >= Files.Count)
             throw new ArgumentOutOfRangeException();
 
-        Files[index] = files.AsEnumerable();
+        if (Files[index].Count != 0) {
+            foreach (var f in Files[index])
+                f.Dispose();
+            Files[index].Clear();
+        }
+        Files[index] = files.ToList();
     }
 
     public void DisposeAllFiles() {
