@@ -5,6 +5,7 @@
              xmlns:viewModels="clr-namespace:UI.ViewModels"
              xmlns:questions="clr-namespace:UI.ViewModels.Questions"
              xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
+             xmlns:views="clr-namespace:UI.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="UI.Views.QuestionsPageView"
              x:DataType="viewModels:QuestionsPageViewModel">
@@ -15,13 +16,13 @@
         <viewModels:QuestionsPageViewModel/>
     </Design.DataContext>
     
-    <StackPanel>
-        <Border Margin="10, 0, 10, 0"
-                BorderThickness="1"
-                CornerRadius="2"
+    <DockPanel x:Name="PageContainer" Height="{Binding $parent[StackPanel].Height}">
+        <Border Margin="0, 0, 10, 0"
+                DockPanel.Dock="Top"
+                BorderThickness="0, 0, 0, 1"
                 Background="{actipro:ThemeResource Container1BackgroundBrush}"
-                BorderBrush="{actipro:ThemeResource Container1BorderBrush}"
-                BoxShadow="2 2 2 0 LightGray">
+                BorderBrush="{actipro:ThemeResource Container1BorderBrush}">
+                <!--BoxShadow="2 2 2 0 LightGray"-->
             <StackPanel x:Name="Toolbar" Orientation="Horizontal">
                 <StackPanel.Styles>
                     <Style Selector="Button.toolbar-base-btn">
@@ -68,18 +69,24 @@
             </StackPanel>
         </Border>
         
-        <ListBox x:Name="QuestionsList" 
+        <ListBox x:Name="QuestionsList"
+                 DockPanel.Dock="Bottom"
                  ItemsSource="{Binding Questions}" 
                  SelectionMode="Multiple, Toggle" 
                  SelectionChanged="OnSelectionChanged"
-                 Margin="20"
-                 CornerRadius="3">
+                 Margin="0">
                 <ListBox.Styles>
                     <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
                         <Setter Property="Background" Value="Transparent"></Setter>
                     </Style>
+                    <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="{actipro:ThemeResource Container3BackgroundBrush}"></Setter>
+                    </Style>
                     <Style Selector="ListBoxItem:pressed /template/ ContentPresenter">
                         <Setter Property="Background" Value="Transparent"></Setter>
+                    </Style>
+                    <Style Selector="ListBoxItem:pressed TextBlock">
+                        <Setter Property="Foreground" Value="{actipro:ThemeResource DefaultForegroundBrushSecondary}"></Setter>
                     </Style>
                 </ListBox.Styles>
                 
@@ -109,6 +116,6 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-    </StackPanel>
+    </DockPanel>
     
 </UserControl>
