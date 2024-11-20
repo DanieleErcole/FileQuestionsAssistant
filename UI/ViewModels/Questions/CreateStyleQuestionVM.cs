@@ -13,8 +13,8 @@ namespace UI.ViewModels.Questions;
 
 public class CreateStyleQuestionVM : SingleQuestionViewModel {
     
-    public override string Name => Lang.Localization.CreateStyleQuestionName;
-    public override string Description => Lang.Localization.CreateStyleQuestionDesc;
+    public override string Name => Lang.Lang.CreateStyleQuestionName;
+    public override string Description => Lang.Lang.CreateStyleQuestionDesc;
 
     protected override FilePickerFileType FileType => new("Word OpenXML files") {
         Patterns = new [] { "*.docx" },
@@ -37,7 +37,7 @@ public class CreateStyleQuestionVM : SingleQuestionViewModel {
         if (!openFiles.Any()) return;
 
         var files = await Task.WhenAll(openFiles
-            .Select(async f => new WordFile(await f.OpenReadAsync()))
+            .Select(async f => new WordFile(f.Name, await f.OpenReadAsync()))
             .ToArray()
         );
         _services.GetRequiredService<Evaluator<WordFile>>().SetFiles(Index, files);

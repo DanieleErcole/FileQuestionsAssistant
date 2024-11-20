@@ -17,16 +17,13 @@
     </Design.DataContext>
     
     <DockPanel x:Name="MainContainer">
-        <TabStrip DockPanel.Dock="Top" Classes="theme-subtle" SelectedIndex="{Binding CurrentIndex}">
+        <TabStrip DockPanel.Dock="Top" 
+                  Classes="theme-subtle" 
+                  SelectedIndex="{Binding CurrentIndex}">
             <TabStripItem>Questions</TabStripItem>
             <TabStripItem>Results</TabStripItem>
         </TabStrip>
         <ContentControl Content="{Binding CurrentPage}"/>
-        <!--<TransitioningContentControl DockPanel.Dock="Top" Content="{Binding CurrentPage}" >
-            <TransitioningContentControl.PageTransition>
-                <PageSlide Orientation="Horizontal" Duration="0:00:00.500" />
-            </TransitioningContentControl.PageTransition>
-        </TransitioningContentControl>-->
     </DockPanel>
 
 </Window>

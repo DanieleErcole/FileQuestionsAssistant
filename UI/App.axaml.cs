@@ -21,7 +21,7 @@ public partial class App : Application {
     }
 
     public override void OnFrameworkInitializationCompleted() {
-        Lang.Localization.Culture = CultureInfo.CurrentCulture;
+        Lang.Lang.Culture = CultureInfo.CurrentCulture;
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) {
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT

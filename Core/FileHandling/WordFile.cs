@@ -9,6 +9,7 @@ public class WordFile : IFile {
 
     private readonly WordprocessingDocument _doc;
 
+    public string Name { get; }
     public MainDocumentPart MainDoc { get; }
 
     public IEnumerable<Style> Styles {
@@ -23,7 +24,8 @@ public class WordFile : IFile {
         }
     }
 
-    public WordFile(Stream file) {
+    public WordFile(string name, Stream file) {
+        Name = name;
         try {
             _doc = WordprocessingDocument.Open(file, false);
             MainDoc = _doc.MainDocumentPart ?? throw new InvalidFileFormat();

@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AvaloniaResource Include="Lang\Localization.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="ActiproSoftware.Controls.Avalonia" Version="25.1.0" />
     <PackageReference Include="Avalonia" Version="11.2.0" />
     <PackageReference Include="Avalonia.Desktop" Version="11.2.0" />
@@ -37,17 +33,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Lang\Localization.Designer.cs">
-      <DependentUpon>Localization.resx</DependentUpon>
+    <Compile Update="Lang\Lang.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DependentUpon>Lang.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Lang\Localization.resx">
-      <LastGenOutput>Localization.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Lang\Lang.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lang.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

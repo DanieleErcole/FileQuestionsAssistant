@@ -23,7 +23,7 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
 
     private string _fileCount = "0";
     public string FileCount {
-        get => _fileCount + " " + Lang.Localization.FilesSelected;
+        get => _fileCount + " " + Lang.Lang.FilesSelected;
         set => this.RaiseAndSetIfChanged(ref _fileCount, value);
     }
 

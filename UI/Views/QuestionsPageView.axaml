@@ -5,7 +5,7 @@
              xmlns:viewModels="clr-namespace:UI.ViewModels"
              xmlns:questions="clr-namespace:UI.ViewModels.Questions"
              xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
-             xmlns:views="clr-namespace:UI.Views"
+             xmlns:lang="clr-namespace:UI.Lang"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="UI.Views.QuestionsPageView"
              x:DataType="viewModels:QuestionsPageViewModel">
@@ -16,14 +16,13 @@
         <viewModels:QuestionsPageViewModel/>
     </Design.DataContext>
     
-    <DockPanel x:Name="PageContainer" Height="{Binding $parent[StackPanel].Height}">
-        <Border Margin="0, 0, 10, 0"
-                DockPanel.Dock="Top"
-                BorderThickness="0, 0, 0, 1"
-                Background="{actipro:ThemeResource Container1BackgroundBrush}"
-                BorderBrush="{actipro:ThemeResource Container1BorderBrush}">
-                <!--BoxShadow="2 2 2 0 LightGray"-->
-            <StackPanel x:Name="Toolbar" Orientation="Horizontal">
+    <DockPanel x:Name="PageContainer" 
+               Height="{Binding $parent[StackPanel].Height}">
+        <StackPanel x:Name="Toolbar" 
+                    Orientation="Horizontal"
+                    Margin="0, 0, 10, 0"
+                    DockPanel.Dock="Top"
+                    Background="{actipro:ThemeResource Container1BackgroundBrush}">
                 <StackPanel.Styles>
                     <Style Selector="Button.toolbar-base-btn">
                         <Setter Property="Margin" Value="5, 5, 0, 5"></Setter>
@@ -53,7 +52,9 @@
                     </Button>
                 </StackPanel>
                 
-                <Panel Margin="10, 0, 10, 0" Width="1" Height="18" Background="{actipro:ThemeResource Container3BorderBrush}"/>
+                <Panel Margin="10, 0, 10, 0" 
+                       Width="1" Height="18" 
+                       Background="{actipro:ThemeResource Container3BorderBrush}"/>
                 
                 <StackPanel Orientation="Horizontal">
                     <Button Classes="toolbar-base-btn theme-subtle" Command="{Binding SaveSelectionCommand}">
@@ -67,6 +68,49 @@
                     </Button>
                 </StackPanel>
             </StackPanel>
+        
+        <Border DockPanel.Dock="Top"
+                BorderThickness="0, 1, 0, 0"
+                Background="{actipro:ThemeResource Container2BackgroundBrush}"
+                BorderBrush="{actipro:ThemeResource Container2BorderBrush}">
+            <Grid x:Name="Header" 
+                  Height="35" 
+                  ColumnDefinitions=".3*, .5*, 1.6*, .5*" 
+                  RowDefinitions="Auto">
+                
+                <Border Height="{Binding $parent[Grid].Height}" 
+                        Grid.Column="0"
+                        BorderThickness="0, 0, 1, 0"
+                        BorderBrush="{actipro:ThemeResource Container1BorderBrush}">
+                    <StackPanel Orientation="Horizontal">
+                
+                    </StackPanel>
+                </Border>
+                <Border Height="{Binding $parent[Grid].Height}" 
+                        Grid.Column="1"
+                        BorderThickness="0, 0, 1, 0"
+                        BorderBrush="{actipro:ThemeResource Container1BorderBrush}">
+                    <TextBlock Classes="size-sm" 
+                               Margin="40, 0, 0, 0" 
+                               Text="{x:Static lang:Lang.QNameHeaderText}" 
+                               VerticalAlignment="Center"/>
+                </Border>
+                <Border Height="{Binding $parent[Grid].Height}"
+                        Grid.Column="2"
+                        BorderThickness="0, 0, 1, 0"
+                        BorderBrush="{actipro:ThemeResource Container1BorderBrush}">
+                    <TextBlock Classes="size-sm"
+                               Text="{x:Static lang:Lang.QDescHeaderText}" 
+                               VerticalAlignment="Center"/>
+                </Border>
+                <Border Height="{Binding $parent[Grid].Height}" 
+                        Grid.Column="3"
+                        BorderThickness="0">
+                    <TextBlock Classes="size-sm"
+                               Text="File"
+                               VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
         </Border>
         
         <ListBox x:Name="QuestionsList"
@@ -76,6 +120,9 @@
                  SelectionChanged="OnSelectionChanged"
                  Margin="0">
                 <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="Padding" Value="0"></Setter>
+                    </Style>
                     <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
                         <Setter Property="Background" Value="Transparent"></Setter>
                     </Style>
@@ -92,24 +139,52 @@
                 
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type questions:SingleQuestionViewModel}">
-                        <Grid Name="{Binding}" ColumnDefinitions=".3*, .5*, 1.6*, .5*" RowDefinitions="Auto">
-                            <CheckBox Classes="theme-solid accent" Grid.Column="0" Margin="20, 0, 0, 0" IsChecked="{Binding $parent[ListBoxItem].IsSelected}"/>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <Svg  Width="10" Height="10" Path="avares://Assets/docx.svg"/>
-                                <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}"/>
+                        <Grid Height="45"
+                              ColumnDefinitions=".3*, .5*, 1.6*, .5*" 
+                              RowDefinitions="Auto">
+                            <Panel Height="{Binding $parent[Grid].Height}" 
+                                   Grid.Column="0">
+                                <CheckBox Classes="theme-solid accent"
+                                          VerticalAlignment="Center" 
+                                          HorizontalAlignment="Center"
+                                          IsChecked="{Binding IsSelected}"/>
+                            </Panel>
+                            <StackPanel Grid.Column="1"
+                                        Height="{Binding $parent[Grid].Height}"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Center">
+                                <Image Margin="0, 0, 10, 0"
+                                       VerticalAlignment="Center" 
+                                       HorizontalAlignment="Center"
+                                       Width="30" Height="30" 
+                                       Source="{SvgImage /Assets/docx.svg}"/>
+                                <TextBlock VerticalAlignment="Center" 
+                                           HorizontalAlignment="Center"
+                                           TextWrapping="Wrap"
+                                           Text="{Binding Name}"/>
                             </StackPanel>
-                            <TextBlock Grid.Column="2" VerticalAlignment="Center" 
-                                       TextWrapping="Wrap"
-                                       Text="{Binding Description}"/>
-                            <StackPanel Grid.Column="3" VerticalAlignment="Center" Orientation="Horizontal">
+                            <Panel Grid.Column="2" 
+                                   Height="{Binding $parent[Grid].Height}"
+                                   Margin="50, 0, 50, 0">
+                                <TextBlock VerticalAlignment="Center" 
+                                           TextWrapping="Wrap"
+                                           Text="{Binding Description}"/>
+                            </Panel>
+                            <StackPanel Grid.Column="3"
+                                        Height="{Binding $parent[Grid].Height}"
+                                        Orientation="Horizontal">
                                 <Button Classes="theme-outline" 
+                                        VerticalAlignment="Center" 
+                                        HorizontalAlignment="Center"
                                         Margin="5, 5, 5, 5" 
                                         Padding="5, 5, 5, 5"
                                         Command="{Binding UploadFiles}">
-                                    <PathIcon Width="15" Height="15" Data="{StaticResource upload_regular}"/>
+                                    <PathIcon Width="15" Height="15" 
+                                              Data="{StaticResource upload_regular}"/>
                                 </Button>
-                                <TextBlock VerticalAlignment="Center" 
-                                           Margin="0, 0, 10, 0" 
+                                <TextBlock Margin="0, 0, 10, 0"
+                                           VerticalAlignment="Center" 
+                                           HorizontalAlignment="Center"
                                            Text="{Binding FileCount}" />
                             </StackPanel>
                         </Grid>
