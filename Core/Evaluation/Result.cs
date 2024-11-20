@@ -1,20 +1,20 @@
-﻿using Core.Questions;
-
-namespace Core.Evaluation; 
+﻿namespace Core.Evaluation; 
 
 public class Result {
     
-    public bool IsSuccessful => _paramsFromFile?.All(p => p.Value.Equals(_params[p.Key])) ?? false;
-    private readonly Dictionary<string, object> _params;
-    private readonly Dictionary<string, object>? _paramsFromFile;
+    public bool IsSuccessful { get; }
+    private readonly Dictionary<string, object?> _correctParams;
+    private readonly List<Dictionary<string, object?>> _stylesFromFile;
 
-    public Result(Dictionary<string, object> originalParams, Dictionary<string, object>? paramsFromFile) {
-        _params = originalParams;
-        _paramsFromFile = paramsFromFile;
+    public Result(Dictionary<string, object?> originalParams, List<Dictionary<string, object?>> stylesFromFile, bool isSuccessful) {
+        IsSuccessful = isSuccessful;
+        _correctParams = originalParams;
+        _stylesFromFile = stylesFromFile;
     }
 
-    public (T?, T?) GetParamComparison<T>(string name) where T : notnull {
-        return _paramsFromFile is null ? (default, default) : (_params.Get<T>(name), _paramsFromFile.Get<T>(name));
-    }
+    public IEnumerable<(Dictionary<string, object?>, bool)> EachStyleWithRes() => _stylesFromFile
+        .Select(styleParams => (styleParams, styleParams.All(
+            p => p.Value != null && p.Value.Equals(_correctParams[p.Key])
+        )));
 
 }
