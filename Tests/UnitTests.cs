@@ -29,8 +29,8 @@ public class EvaluatorTests {
 
     internal class MyQuestion : IQuestion<MyFile> {
         public IEnumerable<Result> Evaluate(IEnumerable<MyFile> files) {
-            var d = new Dictionary<string, object>();
-            return files.Select(_ => new Result(d, d));
+            var d = new Dictionary<string, object?>();
+            return files.Select(_ => new Result(d, [], true));
         }
     }
 
@@ -58,7 +58,7 @@ public class WordTests {
     private const string WordFileDirectory = @"/home/daniele/RiderProjects/FileQuestionsAssistant/Tests/Files/";
 #endif
     
-    private static Stream _wordFile;
+    private static FileStream _wordFile;
 
     private Evaluator<WordFile> _evaluator;
 
@@ -77,20 +77,26 @@ public class WordTests {
     [Test]
     public void File_NotPresent() {
         Assert.Throws<FileError>(() => {
-            var f = new WordFile(_wordFile);
+            var f = new WordFile(_wordFile.Name, _wordFile);
             f.Dispose();
             Console.WriteLine($"{f.Styles}");
         });
     }
 
     [Test]
-    public void File_InvalidFormat() => Assert.Throws<InvalidFileFormat>(() => new WordFile(File.Open(WordFileDirectory + "InvalidFormat.docx", FileMode.Open)));
+    public void File_InvalidFormat() => Assert.Throws<InvalidFileFormat>(() => {
+        var f = File.Open(WordFileDirectory + "InvalidFormat.docx", FileMode.Open);
+        _ = new WordFile(f.Name, f);
+    });
 
     [TestCase("CustomStyle", "Normal", "Consolas", 12, 255, 0, 0, "center", true)]
     [TestCase("NotReal", "Normal", "Calibri", 12, 1, 1, 1, "left", false)]
-    public void WordCreateStyleQuestion_TestCase(string styleName, string baseStyleName, string fontName, int fontSize, int r, int g, int b, string alignment, bool expectedRes) {
-        var q = new CreateStyleQuestion(styleName, baseStyleName, fontName, fontSize, Color.FromArgb(r, g, b), alignment);
-        _evaluator.AddQuestion(q, new WordFile(_wordFile));
+    [TestCase("CustomStyle", "Normal", "Consolas", null, null, 0, 0, null, true)]
+    [TestCase("WrongName", "Heading 1", "Calibri", null, 255, 0, 0, null, false)]
+    public void WordCreateStyleQuestion_TestCase(string styleName, string? baseStyleName, string? fontName, int? fontSize, int? r, int? g, int? b, string? alignment, bool expectedRes) {
+        Color? rgb = r is null || g is null || b is null ? null : Color.FromArgb((int) r, (int) g, (int) b);
+        var q = new CreateStyleQuestion(styleName, baseStyleName, fontName, fontSize, rgb, alignment);
+        _evaluator.AddQuestion(q, new WordFile(_wordFile.Name, _wordFile));
 
         var res = _evaluator.Evaluate().First();
         Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));
