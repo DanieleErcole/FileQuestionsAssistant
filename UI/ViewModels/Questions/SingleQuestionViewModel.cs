@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Avalonia.Platform.Storage;
 using ReactiveUI;
 
@@ -18,8 +19,15 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
 
     public abstract string Name { get; }
     public abstract string Description { get; }
-    
     protected abstract FilePickerFileType FileType { get; }
+
+    public string Icon {
+        get {
+            if (FileType.Patterns!.Contains("*.docx"))
+                return "/Assets/docx.svg";
+            return FileType.Patterns!.Contains("*.xlsx") ? "/Assets/xlsx.svg" : "/Assets/pptx.svg";
+        }
+    }
 
     private string _fileCount = "0";
     public string FileCount {

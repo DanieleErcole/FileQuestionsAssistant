@@ -6,7 +6,7 @@ namespace Core.Evaluation;
 public class Evaluator<TFile> where TFile : IFile {
 
     public List<IQuestion<TFile>> Questions { get; } = [];
-    private List<List<TFile>> Files { get; } = [];
+    public List<List<TFile>> Files { get; } = [];
 
     public IEnumerable<Result> Evaluate(int index = 0) {
         if (index >= Questions.Count) 

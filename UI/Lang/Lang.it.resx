@@ -26,4 +26,16 @@
     <data name="QNameHeaderText" xml:space="preserve">
         <value>Nome</value>
     </data>
+    <data name="ToolTipDeleteSelectionButton" xml:space="preserve">
+        <value>Elimina selezione</value>
+    </data>
+    <data name="ToolTipEditButton" xml:space="preserve">
+        <value>Modifica domanda</value>
+    </data>
+    <data name="ToolTipSaveSelectionButton" xml:space="preserve">
+        <value>Salva selezione</value>
+    </data>
+    <data name="ToolTipAddQuestionButton" xml:space="preserve">
+        <value>Aggiungi domanda</value>
+    </data>
 </root>

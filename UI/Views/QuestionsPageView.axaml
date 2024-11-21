@@ -44,10 +44,13 @@
                 </StackPanel.Styles>
             
                 <StackPanel Orientation="Horizontal">
-                    <Button Classes="toolbar-base-btn theme-subtle">
+                    <Button Classes="toolbar-base-btn theme-subtle"
+                            ToolTip.Tip="{x:Static lang:Lang.ToolTipAddQuestionButton}">
                         <PathIcon Data="{StaticResource add_regular}"/>
                     </Button>
-                    <Button Classes="toolbar-base-btn theme-subtle">
+                    <Button Classes="toolbar-base-btn theme-subtle"
+                            ToolTip.Tip="{x:Static lang:Lang.ToolTipDeleteSelectionButton}"
+                            Command="{Binding DeleteSelectionCommand}">
                         <PathIcon Data="{StaticResource remove_regular}"/>
                     </Button>
                 </StackPanel>
@@ -57,13 +60,14 @@
                        Background="{actipro:ThemeResource Container3BorderBrush}"/>
                 
                 <StackPanel Orientation="Horizontal">
-                    <Button Classes="toolbar-base-btn theme-subtle" Command="{Binding SaveSelectionCommand}">
+                    <Button Classes="toolbar-base-btn theme-subtle"
+                            ToolTip.Tip="{x:Static lang:Lang.ToolTipSaveSelectionButton}"
+                            Command="{Binding SaveSelectionCommand}">
                         <PathIcon Data="{StaticResource save_regular}"/>
                     </Button>
-                    <Button Classes="toolbar-base-btn theme-subtle" Command="{Binding DeleteSelectionCommand}">
-                        <PathIcon Data="{StaticResource delete_regular}"/>
-                    </Button>
-                    <Button Classes="toolbar-base-btn theme-subtle" Command="{Binding EditQuestionCommand}">
+                    <Button Classes="toolbar-base-btn theme-subtle"
+                            ToolTip.Tip="{x:Static lang:Lang.ToolTipEditButton}"
+                            Command="{Binding EditQuestionCommand}">
                         <PathIcon Data="{StaticResource edit_regular}"/>
                     </Button>
                 </StackPanel>
@@ -80,34 +84,42 @@
                 
                 <Border Height="{Binding $parent[Grid].Height}" 
                         Grid.Column="0"
+                        Padding="6, 0, 4, 0"
                         BorderThickness="0, 0, 1, 0"
                         BorderBrush="{actipro:ThemeResource Container1BorderBrush}">
-                    <StackPanel Orientation="Horizontal">
-                
-                    </StackPanel>
+                    <CheckBox Classes="theme-solid accent"
+                              VerticalAlignment="Center" 
+                              HorizontalAlignment="Center"
+                              Command="{Binding HeaderCheckboxToggle}"
+                              IsThreeState="True" IsChecked="{Binding SelectionState}"/>
                 </Border>
                 <Border Height="{Binding $parent[Grid].Height}" 
                         Grid.Column="1"
+                        Padding="4, 0, 4, 0"
                         BorderThickness="0, 0, 1, 0"
                         BorderBrush="{actipro:ThemeResource Container1BorderBrush}">
-                    <TextBlock Classes="size-sm" 
-                               Margin="40, 0, 0, 0" 
-                               Text="{x:Static lang:Lang.QNameHeaderText}" 
+                    <TextBlock Classes="size-sm"
+                               Text="{x:Static lang:Lang.QNameHeaderText}"
+                               HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
                 </Border>
                 <Border Height="{Binding $parent[Grid].Height}"
                         Grid.Column="2"
+                        Padding="4, 0, 4, 0"
                         BorderThickness="0, 0, 1, 0"
                         BorderBrush="{actipro:ThemeResource Container1BorderBrush}">
                     <TextBlock Classes="size-sm"
                                Text="{x:Static lang:Lang.QDescHeaderText}" 
+                               HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
                 </Border>
                 <Border Height="{Binding $parent[Grid].Height}" 
                         Grid.Column="3"
+                        Padding="4, 0, 4, 0"
                         BorderThickness="0">
                     <TextBlock Classes="size-sm"
-                               Text="File"
+                               Text="{Binding TotFileCountStr}"
+                               HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
                 </Border>
             </Grid>
@@ -153,11 +165,11 @@
                                         Height="{Binding $parent[Grid].Height}"
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Center">
-                                <Image Margin="0, 0, 10, 0"
-                                       VerticalAlignment="Center" 
-                                       HorizontalAlignment="Center"
-                                       Width="30" Height="30" 
-                                       Source="{SvgImage /Assets/docx.svg}"/>
+                                <Svg Margin="0, 0, 10, 0"
+                                     VerticalAlignment="Center" 
+                                     HorizontalAlignment="Center"
+                                     Width="30" Height="30"
+                                     Path="{Binding Icon}"/>
                                 <TextBlock VerticalAlignment="Center" 
                                            HorizontalAlignment="Center"
                                            TextWrapping="Wrap"
@@ -165,13 +177,17 @@
                             </StackPanel>
                             <Panel Grid.Column="2" 
                                    Height="{Binding $parent[Grid].Height}"
-                                   Margin="50, 0, 50, 0">
+                                   Margin="50, 0, 50, 0"
+                                   VerticalAlignment="Center" 
+                                   HorizontalAlignment="Center">
                                 <TextBlock VerticalAlignment="Center" 
                                            TextWrapping="Wrap"
                                            Text="{Binding Description}"/>
                             </Panel>
                             <StackPanel Grid.Column="3"
                                         Height="{Binding $parent[Grid].Height}"
+                                        VerticalAlignment="Center" 
+                                        HorizontalAlignment="Center"
                                         Orientation="Horizontal">
                                 <Button Classes="theme-outline" 
                                         VerticalAlignment="Center" 

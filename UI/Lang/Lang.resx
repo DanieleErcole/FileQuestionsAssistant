@@ -33,4 +33,16 @@
     <data name="QDescHeaderText" xml:space="preserve">
         <value>Description</value>
     </data>
+    <data name="ToolTipEditButton" xml:space="preserve">
+        <value>Edit question</value>
+    </data>
+    <data name="ToolTipSaveSelectionButton" xml:space="preserve">
+        <value>Save selection</value>
+    </data>
+    <data name="ToolTipDeleteSelectionButton" xml:space="preserve">
+        <value>Delete selection</value>
+    </data>
+    <data name="ToolTipAddQuestionButton" xml:space="preserve">
+        <value>Add question</value>
+    </data>
 </root>

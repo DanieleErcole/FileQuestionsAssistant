@@ -32,7 +32,7 @@ public partial class App : Application {
                 .AddSingleton<NavigatorService>()
                 .AddSingleton<Evaluator<WordFile>>()
                 .AddSingleton(mw.StorageProvider)
-                // Add other files evaluator
+                //TODO: Add other files evaluator
                 .BuildServiceProvider();
             
             mw.DataContext = new MainWindowViewModel(services);

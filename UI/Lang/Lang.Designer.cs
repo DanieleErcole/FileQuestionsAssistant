@@ -103,5 +103,41 @@ namespace UI.Lang {
                 return ResourceManager.GetString("QNameHeaderText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add question.
+        /// </summary>
+        public static string ToolTipAddQuestionButton {
+            get {
+                return ResourceManager.GetString("ToolTipAddQuestionButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete selection.
+        /// </summary>
+        public static string ToolTipDeleteSelectionButton {
+            get {
+                return ResourceManager.GetString("ToolTipDeleteSelectionButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit question.
+        /// </summary>
+        public static string ToolTipEditButton {
+            get {
+                return ResourceManager.GetString("ToolTipEditButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save selection.
+        /// </summary>
+        public static string ToolTipSaveSelectionButton {
+            get {
+                return ResourceManager.GetString("ToolTipSaveSelectionButton", resourceCulture);
+            }
+        }
     }
 }
