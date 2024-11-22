@@ -38,4 +38,7 @@
     <data name="ToolTipAddQuestionButton" xml:space="preserve">
         <value>Aggiungi domanda</value>
     </data>
+    <data name="InvalidFileFormatMsg" xml:space="preserve">
+        <value>Formato file non valido</value>
+    </data>
 </root>

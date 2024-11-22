@@ -87,6 +87,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid file format: malformed file.
+        /// </summary>
+        public static string InvalidFileFormatMsg {
+            get {
+                return ResourceManager.GetString("InvalidFileFormatMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string QDescHeaderText {

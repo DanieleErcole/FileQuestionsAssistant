@@ -26,9 +26,10 @@ public partial class App : Application {
             BindingPlugins.DataValidators.RemoveAt(0);
 
             var mw = new MainWindow();
+            var dialogService = new DialogService(mw);
             var services = new ServiceCollection()
                 .AddSingleton<NavigatorService>()
-                .AddSingleton(new DialogService(mw))
+                .AddSingleton(dialogService)
                 .AddSingleton<Evaluator<WordFile>>()
                 .AddSingleton(mw.StorageProvider)
                 //TODO: Add other file evaluators

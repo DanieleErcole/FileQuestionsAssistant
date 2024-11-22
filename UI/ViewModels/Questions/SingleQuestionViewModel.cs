@@ -20,6 +20,12 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
     public abstract string Name { get; }
     public abstract string Description { get; }
     protected abstract FilePickerFileType FileType { get; }
+    
+    private bool _clearBtnVisible;
+    public bool ClearBtnVisible {
+        get => _clearBtnVisible;
+        set => this.RaiseAndSetIfChanged(ref _clearBtnVisible, value);
+    }
 
     public string Icon {
         get {
@@ -37,8 +43,11 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
 
     protected SingleQuestionViewModel(IServiceProvider services) {
         _services = services;
+        this.WhenAnyValue(x => x.FileCount)
+            .Subscribe(x => ClearBtnVisible = int.Parse(x.Split(" ")[0]) > 0);
     }
 
     public abstract void UploadFiles();
+    public abstract void ClearFiles();
 
 }

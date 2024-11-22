@@ -194,6 +194,17 @@
                                         HorizontalAlignment="Center"
                                         Margin="5, 5, 5, 5" 
                                         Padding="5, 5, 5, 5"
+                                        IsVisible="{Binding ClearBtnVisible}"
+                                        Command="{Binding ClearFiles}">
+                                    <PathIcon Width="15" Height="15" 
+                                              Data="{StaticResource delete_regular}"/>
+                                </Button>
+                                <Button Classes="theme-outline" 
+                                        VerticalAlignment="Center" 
+                                        HorizontalAlignment="Center"
+                                        Margin="5, 5, 5, 5" 
+                                        Padding="5, 5, 5, 5"
+                                        IsVisible="{Binding !ClearBtnVisible}"
                                         Command="{Binding UploadFiles}">
                                     <PathIcon Width="15" Height="15" 
                                               Data="{StaticResource upload_regular}"/>
