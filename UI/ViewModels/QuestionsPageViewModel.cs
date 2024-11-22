@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using Core.Evaluation;
-using Core.FileHandling;
 using Core.Questions.Word;
 using DynamicData;
 using DynamicData.Binding;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
+using UI.Services;
 using UI.ViewModels.Questions;
 
 namespace UI.ViewModels;
@@ -75,7 +73,8 @@ public class QuestionsPageViewModel : ViewModelBase {
             .Select(questions => questions.Count(q => q.IsSelected) == 1);
 
         SaveSelectionCommand = ReactiveCommand.Create(() => {
-            throw new NotImplementedException();
+            _services.GetRequiredService<DialogService>().ShowMessageDialog("Assurdo il dialog funziona", "Prova");
+            //throw new NotImplementedException();
         }, isAnySelected);
         DeleteSelectionCommand = ReactiveCommand.Create(() => Questions.RemoveMany(Questions.Where(q => q.IsSelected)), isAnySelected);
         EditQuestionCommand = ReactiveCommand.Create(() => {

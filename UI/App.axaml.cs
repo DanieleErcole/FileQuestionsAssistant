@@ -1,10 +1,8 @@
-using System;
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.FileHandling;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,9 +28,10 @@ public partial class App : Application {
             var mw = new MainWindow();
             var services = new ServiceCollection()
                 .AddSingleton<NavigatorService>()
+                .AddSingleton(new DialogService(mw))
                 .AddSingleton<Evaluator<WordFile>>()
                 .AddSingleton(mw.StorageProvider)
-                //TODO: Add other files evaluator
+                //TODO: Add other file evaluators
                 .BuildServiceProvider();
             
             mw.DataContext = new MainWindowViewModel(services);

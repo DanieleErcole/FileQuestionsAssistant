@@ -1,0 +1,30 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dialogs="clr-namespace:UI.ViewModels.Dialogs"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="125"
+             x:DataType="dialogs:MessageBoxViewModel"
+             x:Class="UI.Views.Dialogs.MessageBoxView">
+    
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <dialogs:MessageBoxViewModel/>
+    </Design.DataContext>
+    
+    <DockPanel 
+        Width="{Binding $parent[ContentControl].Width}"
+        Height="{Binding $parent[ContentControl].Height}">
+        <Panel DockPanel.Dock="Top" 
+               Width="{Binding $parent[DockPanel].Width}"
+               Margin="20, 15, 20, 0">
+            <TextBlock Text="{Binding Message}"></TextBlock>
+        </Panel>
+        <Panel Margin="0, 20, 0, 0"
+               Width="{Binding $parent[DockPanel].Width}" 
+               DockPanel.Dock="Bottom">
+            <Button Height="30" Margin="280, 20, 0, 0" Width="70" Click="Ok">OK</Button>
+        </Panel>
+    </DockPanel>
+</UserControl>
