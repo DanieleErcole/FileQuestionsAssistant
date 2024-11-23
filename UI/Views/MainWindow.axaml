@@ -4,6 +4,7 @@
         xmlns:vm="using:UI.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lang="clr-namespace:UI.Lang"
         mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="576"
         x:Class="UI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -20,8 +21,8 @@
         <TabStrip DockPanel.Dock="Top" 
                   Classes="theme-subtle" 
                   SelectedIndex="{Binding CurrentIndex}">
-            <TabStripItem>Questions</TabStripItem>
-            <TabStripItem>Results</TabStripItem>
+            <TabStripItem Content="{x:Static lang:Lang.QuestionsTab}"/>
+            <TabStripItem Content="{x:Static lang:Lang.ResultsTab}"/>
         </TabStrip>
         <ContentControl Content="{Binding CurrentPage}"/>
     </DockPanel>

@@ -123,6 +123,24 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Questions.
+        /// </summary>
+        public static string QuestionsTab {
+            get {
+                return ResourceManager.GetString("QuestionsTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Results.
+        /// </summary>
+        public static string ResultsTab {
+            get {
+                return ResourceManager.GetString("ResultsTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add question.
         /// </summary>
         public static string ToolTipAddQuestionButton {

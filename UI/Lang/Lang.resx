@@ -51,4 +51,10 @@
     <data name="ErrorDialogTitle" xml:space="preserve">
         <value>Error</value>
     </data>
+    <data name="QuestionsTab" xml:space="preserve">
+        <value>Questions</value>
+    </data>
+    <data name="ResultsTab" xml:space="preserve">
+        <value>Results</value>
+    </data>
 </root>
