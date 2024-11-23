@@ -31,6 +31,12 @@ public class Evaluator<TFile> where TFile : IFile {
         Files.RemoveAt(index);
     }
 
+    public void AddFiles(int index = 0, params TFile[] files) {
+        if (index >= Files.Count)
+            throw new ArgumentOutOfRangeException();
+        Files[index].AddRange(files);
+    }
+
     public void SetFiles(int index = 0, params TFile[] files) {
         if (index >= Files.Count)
             throw new ArgumentOutOfRangeException();
