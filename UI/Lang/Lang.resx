@@ -48,4 +48,7 @@
     <data name="InvalidFileFormatMsg" xml:space="preserve">
         <value>Invalid file format: malformed file</value>
     </data>
+    <data name="ErrorDialogTitle" xml:space="preserve">
+        <value>Error</value>
+    </data>
 </root>

@@ -14,12 +14,17 @@
     </Design.DataContext>
     
     <StackPanel>
-        <Panel VerticalAlignment="Top">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+            <Svg Margin="30, 15, 5, 0"
+                 VerticalAlignment="Center" 
+                 HorizontalAlignment="Center"
+                 Width="30" Height="30"
+                 Path="/Assets/Dismiss.svg"/>
             <TextBlock Text="{Binding Message}"
-                       Margin="30, 15, 30, 0"
+                       Margin="0, 15, 30, 0"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"/>
-        </Panel>
+        </StackPanel>
         <Panel VerticalAlignment="Bottom" 
                Margin="0, 20, 15, 15">
             <Button HorizontalAlignment="Right" Height="30" Width="70" Click="Ok">OK</Button>

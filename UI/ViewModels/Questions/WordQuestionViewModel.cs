@@ -20,21 +20,17 @@ public abstract class WordQuestionViewModel(IServiceProvider services) : SingleQ
     
     public override async void UploadFiles() {
         try {
-            var openFiles = await _services.GetRequiredService<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
-                AllowMultiple = true,
-                FileTypeFilter = new[] { FileType }
-            });
-
-            if (!openFiles.Any()) return;
-
-            var files = await Task.WhenAll(openFiles
+            var files = await Task.WhenAll((await OpenFiles())
                 .Select(async f => new WordFile(f.Name, await f.OpenReadAsync()))
                 .ToArray()
             );
-            _services.GetRequiredService<Evaluator<WordFile>>().SetFiles(Index, files);
+            if (files.Length == 0) 
+                return;
+            
+            _services.GetRequiredService<Evaluator<WordFile>>().AddFiles(Index, files);
             FileCount = files.Length.ToString();
-        } catch (ApplicationException e) {
-            UIException ex = e;
+        } catch (Exception e) {
+            UIException ex = e as ApplicationException ?? new ApplicationException(null, e);
             _services.GetRequiredService<DialogService>().ShowMessageDialog(ex.ToString());
         }
     }

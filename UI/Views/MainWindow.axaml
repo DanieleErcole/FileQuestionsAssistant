@@ -7,7 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="576"
         x:Class="UI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/logo.png"
         Title="FileQuestionsAssistant">
 
     <Design.DataContext>

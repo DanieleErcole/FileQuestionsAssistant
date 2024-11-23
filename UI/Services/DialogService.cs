@@ -17,7 +17,8 @@ public class DialogService {
         return Task.FromResult(true);
     }
     
-    public async void ShowMessageDialog(string message, string title = "Error") {
+    public async void ShowMessageDialog(string message, string title = "") {
+        if (title == "") title = Lang.Lang.ErrorDialogTitle;
         var dialog = new Dialog {
             DataContext = new DialogViewModel(new MessageBoxViewModel(title, message))
         };
