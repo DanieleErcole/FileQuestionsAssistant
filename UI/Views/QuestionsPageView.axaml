@@ -23,27 +23,30 @@
                     Margin="0, 0, 10, 0"
                     DockPanel.Dock="Top"
                     Background="{actipro:ThemeResource Container1BackgroundBrush}">
-                <StackPanel.Styles>
-                    <Style Selector="Button.toolbar-base-btn">
-                        <Setter Property="Margin" Value="5, 5, 0, 5"></Setter>
-                        <Setter Property="Width" Value="30"></Setter>
-                        <Setter Property="Height" Value="30"></Setter>
-                    </Style>
-                    <Style Selector="Button.toolbar-base-btn:pointerover /template/ ContentPresenter">
-                        <Setter Property="Background" Value="{actipro:ThemeResource Container4BackgroundBrush}"></Setter>
-                        <Setter Property="BorderBrush" Value="{actipro:ThemeResource Container4BorderBrush}"></Setter>
-                    </Style>
-                    <Style Selector="Button.toolbar-base-btn > PathIcon">
-                        <Setter Property="Foreground" Value="{actipro:ThemeResource DefaultForegroundBrushSecondary}"></Setter>
-                        <Setter Property="Width" Value="18"/>
-                        <Setter Property="Height" Value="18"/>
-                    </Style>
-                    <Style Selector="Button.toolbar-base-btn:disabled > PathIcon">
-                        <Setter Property="Foreground" Value="{actipro:ThemeResource DefaultForegroundBrushDisabled}"></Setter>
-                    </Style>
-                </StackPanel.Styles>
+            <StackPanel.Styles>
+                <Style Selector="Button.toolbar-base-btn">
+                    <Setter Property="Margin" Value="5, 5, 0, 5"></Setter>
+                    <Setter Property="Width" Value="30"></Setter>
+                    <Setter Property="Height" Value="30"></Setter>
+                </Style>
+                <Style Selector="Button.toolbar-base-btn:pointerover /template/ ContentPresenter">
+                    <Setter Property="Background" Value="{actipro:ThemeResource Container4BackgroundBrush}"></Setter>
+                    <Setter Property="BorderBrush" Value="{actipro:ThemeResource Container4BorderBrush}"></Setter>
+                </Style>
+                <Style Selector="Button.toolbar-base-btn > PathIcon">
+                    <Setter Property="Foreground" Value="{actipro:ThemeResource DefaultForegroundBrushSecondary}"></Setter>
+                    <Setter Property="Width" Value="18"/>
+                    <Setter Property="Height" Value="18"/>
+                </Style>
+                <Style Selector="Button.toolbar-base-btn:disabled > PathIcon">
+                    <Setter Property="Foreground" Value="{actipro:ThemeResource DefaultForegroundBrushDisabled}"></Setter>
+                </Style>
+            </StackPanel.Styles>
             
-                <StackPanel Orientation="Horizontal">
+            <Grid Width="{Binding $parent[Window].Width}" 
+                  ColumnDefinitions="70, 21, 70, *"
+                  RowDefinitions="Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
                     <Button Classes="toolbar-base-btn theme-subtle"
                             ToolTip.Tip="{x:Static lang:Lang.ToolTipAddQuestionButton}"
                             Command="{Binding AddQuestionBtn}">
@@ -56,11 +59,11 @@
                     </Button>
                 </StackPanel>
                 
-                <Panel Margin="10, 0, 10, 0" 
+                <Panel Grid.Column="1" 
                        Width="1" Height="18" 
                        Background="{actipro:ThemeResource Container3BorderBrush}"/>
                 
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <Button Classes="toolbar-base-btn theme-subtle"
                             ToolTip.Tip="{x:Static lang:Lang.ToolTipSaveSelectionButton}"
                             Command="{Binding SaveSelectionCommand}">
@@ -72,7 +75,16 @@
                         <PathIcon Data="{StaticResource edit_regular}"/>
                     </Button>
                 </StackPanel>
-            </StackPanel>
+                <TextBox Grid.Column="3" Margin="0, 0, 10, 0"
+                         Padding="7, 3"
+                         FontSize="12"
+                         Width="200"
+                         VerticalContentAlignment="Center"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Right" 
+                         Watermark="Search"/>
+            </Grid>
+        </StackPanel>
         
         <Border DockPanel.Dock="Top"
                 BorderThickness="0, 1, 0, 0"
