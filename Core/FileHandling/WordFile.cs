@@ -16,10 +16,10 @@ public class WordFile : IFile {
         get {
             try {
                 if (MainDoc.StylesWithEffectsPart is { } s)
-                    return s.Styles?.Elements<Style>() ?? throw new InvalidFileFormat();
-                return MainDoc.StyleDefinitionsPart?.Styles?.Elements<Style>() ?? throw new InvalidFileFormat();
+                    return s.Styles?.Elements<Style>() ?? throw new InvalidFileFormat(Name);
+                return MainDoc.StyleDefinitionsPart?.Styles?.Elements<Style>() ?? throw new InvalidFileFormat(Name);
             } catch (Exception e) when (e is not ApplicationException) {
-                throw new FileError(e);
+                throw new FileError(Name, e);
             }
         }
     }
@@ -28,9 +28,9 @@ public class WordFile : IFile {
         Name = name;
         try {
             _doc = WordprocessingDocument.Open(file, false);
-            MainDoc = _doc.MainDocumentPart ?? throw new InvalidFileFormat();
+            MainDoc = _doc.MainDocumentPart ?? throw new InvalidFileFormat(Name);
         } catch (Exception e) when (e is not ApplicationException) {
-            throw new FileError(e);
+            throw new FileError(Name, e);
         }
     }
 
