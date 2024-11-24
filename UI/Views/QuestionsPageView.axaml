@@ -45,7 +45,8 @@
             
                 <StackPanel Orientation="Horizontal">
                     <Button Classes="toolbar-base-btn theme-subtle"
-                            ToolTip.Tip="{x:Static lang:Lang.ToolTipAddQuestionButton}">
+                            ToolTip.Tip="{x:Static lang:Lang.ToolTipAddQuestionButton}"
+                            Command="{Binding AddQuestionBtn}">
                         <PathIcon Data="{StaticResource add_regular}"/>
                     </Button>
                     <Button Classes="toolbar-base-btn theme-subtle"

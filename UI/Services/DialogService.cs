@@ -17,12 +17,13 @@ public class DialogService {
         return Task.FromResult(true);
     }
     
-    public async void ShowMessageDialog(string message, string title = "") {
+    /*public async void ShowMessageDialog(string message, string title = "") {
+        //TODO: notifications exists, delete this it's useless now
         if (title == "") title = Lang.Lang.ErrorDialogTitle;
         var dialog = new Dialog {
             DataContext = new DialogViewModel(new MessageBoxViewModel(title, message))
         };
         await dialog.ShowDialog(_mainWindow);
-    }
+    }*/
 
 }

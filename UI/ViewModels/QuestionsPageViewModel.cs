@@ -4,13 +4,14 @@ using System.Drawing;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using Avalonia.Controls.Notifications;
 using Core.Questions.Word;
 using DynamicData;
 using DynamicData.Binding;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
-using UI.Services;
 using UI.ViewModels.Questions;
+using Notification = Avalonia.Controls.Notifications.Notification;
 
 namespace UI.ViewModels;
 
@@ -73,12 +74,13 @@ public class QuestionsPageViewModel : ViewModelBase {
             .Select(questions => questions.Count(q => q.IsSelected) == 1);
 
         SaveSelectionCommand = ReactiveCommand.Create(() => {
-            _services.GetRequiredService<DialogService>().ShowMessageDialog("Assurdo il dialog funziona", "Prova");
-            //throw new NotImplementedException();
+            _services.GetRequiredService<WindowNotificationManager>()
+                .Show(new Notification("Not implemented", "Question serialization not implemented yet!"));
         }, isAnySelected);
         DeleteSelectionCommand = ReactiveCommand.Create(() => Questions.RemoveMany(Questions.Where(q => q.IsSelected)), isAnySelected);
         EditQuestionCommand = ReactiveCommand.Create(() => {
-            throw new NotImplementedException();  
+            _services.GetRequiredService<WindowNotificationManager>()
+                .Show(new Notification("Not implemented", "Question edit dialog not implemented yet!")); 
         }, isOnlyOneSelected);
     }
 
@@ -101,6 +103,12 @@ public class QuestionsPageViewModel : ViewModelBase {
                     SelectionState = false;
                 else SelectionState = null;
             });
+    }
+
+    public void AddQuestionBtn() {
+        //TODO: show add question dialog
+        _services.GetRequiredService<WindowNotificationManager>()
+            .Show(new Notification("Not implemented", "Question creation dialog not implemented yet!"));
     }
 
     public void HeaderCheckboxToggle() {

@@ -1,6 +1,7 @@
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Notifications;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Core.Evaluation;
@@ -11,6 +12,16 @@ using UI.ViewModels;
 using UI.Views;
 
 namespace UI;
+
+public static class NotificationExtensions {
+    public static void ShowError(this WindowNotificationManager nm, string title, string message) {
+        nm.Show(new Notification {
+            Title = title,
+            Message = message,
+            Type = NotificationType.Error,
+        });
+    }
+}
 
 public partial class App : Application {
     
@@ -31,6 +42,10 @@ public partial class App : Application {
                 .AddSingleton<NavigatorService>()
                 .AddSingleton(dialogService)
                 .AddSingleton<Evaluator<WordFile>>()
+                .AddSingleton(new WindowNotificationManager(mw) {
+                    Position = NotificationPosition.BottomRight,
+                    MaxItems = 3,
+                })
                 .AddSingleton(mw.StorageProvider)
                 //TODO: Add other file evaluators
                 .BuildServiceProvider();

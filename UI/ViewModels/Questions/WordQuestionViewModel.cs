@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.FileHandling;
+using Core.Utils.Errors;
 using Microsoft.Extensions.DependencyInjection;
 using UI.Services;
 using ApplicationException = Core.Utils.Errors.ApplicationException;
@@ -24,14 +26,17 @@ public abstract class WordQuestionViewModel(IServiceProvider services) : SingleQ
                 .Select(async f => new WordFile(f.Name, await f.OpenReadAsync()))
                 .ToArray()
             );
-            if (files.Length == 0) 
+            if (files.Length == 0)
                 return;
-            
+
             _services.GetRequiredService<Evaluator<WordFile>>().AddFiles(Index, files);
             FileCount = files.Length.ToString();
-        } catch (Exception e) {
-            UIException ex = e as ApplicationException ?? new ApplicationException(null, e);
-            _services.GetRequiredService<DialogService>().ShowMessageDialog(ex.ToString());
+        } catch (UnauthorizedAccessException e) {
+            UIException ex = e;
+            _services.GetRequiredService<WindowNotificationManager>().ShowError("Error opening file", ex.ToString());
+        } catch (ApplicationException e) {
+            UIException ex = e;
+            _services.GetRequiredService<WindowNotificationManager>().ShowError($"Error opening file: {(e as FileError)?.Filename ?? ""}", ex.ToString());
         }
     }
 
