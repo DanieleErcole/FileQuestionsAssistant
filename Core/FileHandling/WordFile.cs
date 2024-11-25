@@ -24,6 +24,11 @@ public class WordFile : IFile {
         }
     }
 
+    public static WordFile FromPath(string path) {
+        var file = File.Open(path, FileMode.Open, FileAccess.Read);
+        return new WordFile(file.Name, file);
+    }
+    
     public WordFile(string name, Stream file) {
         Name = name;
         try {
