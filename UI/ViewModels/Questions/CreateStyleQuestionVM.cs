@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions.Word;
 using Microsoft.Extensions.DependencyInjection;
-using UI.Services;
-using ApplicationException = Core.Utils.Errors.ApplicationException;
 
 namespace UI.ViewModels.Questions;
 

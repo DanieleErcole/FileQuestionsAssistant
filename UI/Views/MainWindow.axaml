@@ -17,14 +17,6 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     
-    <DockPanel x:Name="MainContainer">
-        <TabStrip DockPanel.Dock="Top" 
-                  Classes="theme-subtle" 
-                  SelectedIndex="{Binding CurrentIndex}">
-            <TabStripItem Content="{x:Static lang:Lang.QuestionsTab}"/>
-            <TabStripItem Content="{x:Static lang:Lang.ResultsTab}"/>
-        </TabStrip>
-        <ContentControl Content="{Binding CurrentPage}"/>
-    </DockPanel>
+    <ContentControl Content="{Binding CurrentPage}"/>
 
 </Window>

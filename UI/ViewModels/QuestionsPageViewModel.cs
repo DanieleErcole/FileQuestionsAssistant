@@ -45,24 +45,41 @@ public class QuestionsPageViewModel : ViewModelBase {
     public QuestionsPageViewModel(IServiceProvider services) {
         _services = services;
         // Solo per vedere il risultato
-        _questions.Add(new CreateStyleQuestionVM(
-                new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
-                _services
-            ));
-        _questions.Add(new CreateStyleQuestionVM(
-            new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
-            _services
-        ));
-        _questions.Add(new CreateStyleQuestionVM(
-            new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
-            _services
-        ));
-        _questions.Add(new CreateStyleQuestionVM(
-            new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
-            _services
-        ));
+        /*_questions.Add(new CreateStyleQuestionVM(
+                   new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+                   _services
+               ));
+           _questions.Add(new CreateStyleQuestionVM(
+               new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+               _services
+           ));
+           _questions.Add(new CreateStyleQuestionVM(
+               new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+               _services
+           ));
+           _questions.Add(new CreateStyleQuestionVM(
+               new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+               _services
+           ));*/
         
-        SetupReactiveComponents();
+        Questions.ToObservableChangeSet()
+            .AutoRefresh(q => q.FileCount)
+            .ToCollection()
+            .Subscribe(questions => {
+                TotFileCountStr = questions.Sum(q => int.Parse(q.FileCount.Split(" ")[0])).ToString();
+            });
+
+        Questions.ToObservableChangeSet()
+            .AutoRefresh(q => q.IsSelected)
+            .ToCollection()
+            .Subscribe(questions => {
+                var count = questions.Count(q => q.IsSelected);
+                if (count == questions.Count)
+                    SelectionState = true;
+                else if (count == 0)
+                    SelectionState = false;
+                else SelectionState = null;
+            });
 
         var isAnySelected = Questions.ToObservableChangeSet()
             .AutoRefresh(q => q.IsSelected)
@@ -82,27 +99,6 @@ public class QuestionsPageViewModel : ViewModelBase {
             _services.GetRequiredService<WindowNotificationManager>()
                 .Show(new Notification("Not implemented", "Question edit dialog not implemented yet!")); 
         }, isOnlyOneSelected);
-    }
-
-    private void SetupReactiveComponents() {
-        Questions.ToObservableChangeSet()
-            .AutoRefresh(q => q.FileCount)
-            .ToCollection()
-            .Subscribe(questions => {
-                TotFileCountStr = questions.Sum(q => int.Parse(q.FileCount.Split(" ")[0])).ToString();
-            });
-
-        Questions.ToObservableChangeSet()
-            .AutoRefresh(q => q.IsSelected)
-            .ToCollection()
-            .Subscribe(questions => {
-                var count = questions.Count(q => q.IsSelected);
-                if (count == questions.Count)
-                    SelectionState = true;
-                else if (count == 0)
-                    SelectionState = false;
-                else SelectionState = null;
-            });
     }
 
     public void AddQuestionBtn() {
