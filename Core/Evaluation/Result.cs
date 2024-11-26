@@ -12,9 +12,12 @@ public class Result {
         _stylesFromFile = stylesFromFile;
     }
 
-    public IEnumerable<(Dictionary<string, object?>, bool)> EachStyleWithRes() => _stylesFromFile
-        .Select(styleParams => (styleParams, styleParams.All(
-            p => p.Value != null && p.Value.Equals(_correctParams[p.Key])
-        )));
+    public IEnumerable<(Dictionary<string, object?>, Dictionary<string, bool>)> EachStyleWithRes() => _stylesFromFile
+        .Select(styleParams => (
+            styleParams, 
+            styleParams
+                .Select(p => new KeyValuePair<string, bool>(p.Key, p.Value == _correctParams[p.Key]))
+                .ToDictionary()
+            ));
 
 }

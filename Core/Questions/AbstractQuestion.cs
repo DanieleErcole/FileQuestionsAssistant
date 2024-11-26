@@ -15,8 +15,10 @@ public static class ParamsExtensions {
     }
 }
 
-public abstract class AbstractQuestion<TFile> : IQuestion<TFile> where TFile : IFile {
+public abstract class AbstractQuestion<TFile>(string name, string? desc) : IQuestion<TFile> where TFile : IFile {
 
+    public string Name { get; } = name;
+    public string? Desc { get; } = desc;
     protected readonly Dictionary<string, object?> _params = new();
 
     public abstract IEnumerable<Result> Evaluate(IEnumerable<TFile> files);

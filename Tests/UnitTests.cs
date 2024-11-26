@@ -59,6 +59,7 @@ public class WordTests {
 #endif
     
     private static FileStream _wordFile;
+    private static byte[] _ogFile;
 
     private Evaluator<WordFile> _evaluator;
 
@@ -69,7 +70,10 @@ public class WordTests {
     public void TearDown() => _evaluator.DisposeAllFiles();
 
     [OneTimeSetUp]
-    public void SetupBeforeAll() => _wordFile = File.Open(WordFileDirectory + "Document1.docx", FileMode.Open);
+    public void SetupBeforeAll() {
+        _wordFile = File.Open(WordFileDirectory + "Document1.docx", FileMode.Open);
+        _ogFile = File.ReadAllBytes(WordFileDirectory + "OgFile.docx");
+    }
 
     [OneTimeTearDown]
     public void TearDownAfterAll() => _wordFile.Close();
@@ -89,13 +93,13 @@ public class WordTests {
         _ = new WordFile(f.Name, f);
     });
 
-    [TestCase("CustomStyle", "", "Normal", "Consolas", 12, 255, 0, 0, "center", true)]
-    [TestCase("NotReal", "", "Normal", "Calibri", 12, 1, 1, 1, "left", false)]
-    [TestCase("CustomStyle", "", "Normal", "Consolas", null, null, 0, 0, null, true)]
-    [TestCase("WrongName", "", "Heading 1", "Calibri", null, 255, 0, 0, null, false)]
-    public void WordCreateStyleQuestion_TestCase(string styleName, string ogFilePath, string? baseStyleName, string? fontName, int? fontSize, int? r, int? g, int? b, string? alignment, bool expectedRes) {
+    [TestCase("CustomStyle", "Normal", "Consolas", 12, 255, 0, 0, "center", true)]
+    [TestCase("NotReal", "Normal", "Calibri", 12, 1, 1, 1, "left", false)]
+    [TestCase("CustomStyle", "Normal", "Consolas", null, null, 0, 0, null, true)]
+    [TestCase("WrongName", "Heading 1", "Calibri", null, 255, 0, 0, null, false)]
+    public void WordCreateStyleQuestion_TestCase(string styleName, string? baseStyleName, string? fontName, int? fontSize, int? r, int? g, int? b, string? alignment, bool expectedRes) {
         Color? rgb = r is null || g is null || b is null ? null : Color.FromArgb((int) r, (int) g, (int) b);
-        var q = new CreateStyleQuestion(styleName, ogFilePath, baseStyleName, fontName, fontSize, rgb, alignment);
+        var q = new CreateStyleQuestion("Name", "Description", styleName, Convert.ToBase64String(_ogFile), baseStyleName, fontName, fontSize, rgb, alignment);
         _evaluator.AddQuestion(q, new WordFile(_wordFile.Name, _wordFile));
 
         var res = _evaluator.Evaluate().First();
