@@ -1,5 +1,5 @@
 namespace UI.ViewModels;
 
-public class QuestionDataPageViewModel {
+public class QuestionDataPageViewModel : ViewModelBase {
     
 }

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Linq;
+using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Core.Questions.Word;
-using DynamicData;
-using DynamicData.Binding;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 using UI.ViewModels.Questions;
@@ -25,80 +21,33 @@ public class QuestionsPageViewModel : ViewModelBase {
         set => this.RaiseAndSetIfChanged(ref _questions, value);
     }
 
-    private string _totFileStr = "0";
-    public string TotFileCountStr {
-        get => $"{_totFileStr} {Lang.Lang.FilesSelected}";
-        private set => this.RaiseAndSetIfChanged(ref _totFileStr, value);
-    }
-
-    private bool? _selectionState;
-    public bool? SelectionState {
-        get => _selectionState;
-        private set => this.RaiseAndSetIfChanged(ref _selectionState, value);
-    }
-
-    public ReactiveCommand<Unit, Unit> SaveSelectionCommand { get; }
-    public ReactiveCommand<Unit, Unit> DeleteSelectionCommand { get; }
-    
-    public ReactiveCommand<Unit, Unit> EditQuestionCommand { get; }
-
     public QuestionsPageViewModel(IServiceProvider services) {
         _services = services;
         // Solo per vedere il risultato
-        /*_questions.Add(new CreateStyleQuestionVM(
-                   new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
-                   _services
-               ));
-           _questions.Add(new CreateStyleQuestionVM(
-               new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
-               _services
-           ));
-           _questions.Add(new CreateStyleQuestionVM(
-               new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
-               _services
-           ));
-           _questions.Add(new CreateStyleQuestionVM(
-               new CreateStyleQuestion("CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
-               _services
-           ));*/
-        
-        Questions.ToObservableChangeSet()
-            .AutoRefresh(q => q.FileCount)
-            .ToCollection()
-            .Subscribe(questions => {
-                TotFileCountStr = questions.Sum(q => int.Parse(q.FileCount.Split(" ")[0])).ToString();
-            });
-
-        Questions.ToObservableChangeSet()
-            .AutoRefresh(q => q.IsSelected)
-            .ToCollection()
-            .Subscribe(questions => {
-                var count = questions.Count(q => q.IsSelected);
-                if (count == questions.Count)
-                    SelectionState = true;
-                else if (count == 0)
-                    SelectionState = false;
-                else SelectionState = null;
-            });
-
-        var isAnySelected = Questions.ToObservableChangeSet()
-            .AutoRefresh(q => q.IsSelected)
-            .ToCollection()
-            .Select(questions => questions.Any(q => q.IsSelected));
-        var isOnlyOneSelected = Questions.ToObservableChangeSet()
-            .AutoRefresh(q => q.IsSelected)
-            .ToCollection()
-            .Select(questions => questions.Count(q => q.IsSelected) == 1);
-
-        SaveSelectionCommand = ReactiveCommand.Create(() => {
-            _services.GetRequiredService<WindowNotificationManager>()
-                .Show(new Notification("Not implemented", "Question serialization not implemented yet!"));
-        }, isAnySelected);
-        DeleteSelectionCommand = ReactiveCommand.Create(() => Questions.RemoveMany(Questions.Where(q => q.IsSelected)), isAnySelected);
-        EditQuestionCommand = ReactiveCommand.Create(() => {
-            _services.GetRequiredService<WindowNotificationManager>()
-                .Show(new Notification("Not implemented", "Question edit dialog not implemented yet!")); 
-        }, isOnlyOneSelected);
+        _questions.Add(new CreateStyleQuestionVM(
+            new CreateStyleQuestion("Nome1", "Desc1", "CustomStyle", "", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+            _services));
+        _questions.Add(new CreateStyleQuestionVM(
+            new CreateStyleQuestion("Nome2", null,"CustomStyle", "", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+            _services));
+        _questions.Add(new CreateStyleQuestionVM(
+            new CreateStyleQuestion("Nome3", "Desc3","CustomStyle", "", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+            _services));
+        _questions.Add(new CreateStyleQuestionVM(
+            new CreateStyleQuestion("Nome4", null,"CustomStyle", "", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+            _services));
+        _questions.Add(new CreateStyleQuestionVM(
+            new CreateStyleQuestion("Nome5", "Desc1", "CustomStyle", "", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+            _services));
+        _questions.Add(new CreateStyleQuestionVM(
+            new CreateStyleQuestion("Nome6", null,"CustomStyle", "", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+            _services));
+        _questions.Add(new CreateStyleQuestionVM(
+            new CreateStyleQuestion("Nome7", "Desc3","CustomStyle", "", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+            _services));
+        _questions.Add(new CreateStyleQuestionVM(
+            new CreateStyleQuestion("Nome8", null,"CustomStyle", "", "Normal", "Consolas", 12, Color.Fuchsia, "center"), 
+            _services));
     }
 
     public void AddQuestionBtn() {
@@ -107,19 +56,23 @@ public class QuestionsPageViewModel : ViewModelBase {
             .Show(new Notification("Not implemented", "Question creation dialog not implemented yet!"));
     }
 
-    public void HeaderCheckboxToggle() {
-        switch (SelectionState) {
-            case null or true: {
-                foreach (var q in Questions)
-                    q.IsSelected = false;
-                break;
-            }
-            case false: {
-                foreach (var q in Questions)
-                    q.IsSelected = true;
-                break;
-            }
-        }
+    public void DeleteQuestion(object param) {
+        var question = param as SingleQuestionViewModel;
+        var deletedIndex = question!.Index;
+        
+        question.OnRemove();
+        Questions.Remove(question);
+        
+        foreach (var q in Questions)
+            if (q.Index > deletedIndex)
+                q.Index -= 1;
+    }
+
+    public void OnSelectedQuestion(SelectionChangedEventArgs e) {
+        if (e.AddedItems.Count != 1) return;
+        var selected = e.AddedItems[0] as SingleQuestionViewModel;
+        _services.GetRequiredService<WindowNotificationManager>()
+            .Show(new Notification("Selected a question", $"Selected question: {selected!.Name}"));
     }
     
 }

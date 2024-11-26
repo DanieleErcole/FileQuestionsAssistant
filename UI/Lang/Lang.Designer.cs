@@ -60,6 +60,24 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose a question template and create a question.
+        /// </summary>
+        public static string AddQuestionBtnDesc {
+            get {
+                return ResourceManager.GetString("AddQuestionBtnDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new question.
+        /// </summary>
+        public static string AddQuestionBtnText {
+            get {
+                return ResourceManager.GetString("AddQuestionBtnText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checks if a style with the specified properties exists in the document.
         /// </summary>
         public static string CreateStyleQuestionDesc {
@@ -96,6 +114,24 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import a local question file.
+        /// </summary>
+        public static string ImportQuestionBtnDesc {
+            get {
+                return ResourceManager.GetString("ImportQuestionBtnDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import question.
+        /// </summary>
+        public static string ImportQuestionBtnText {
+            get {
+                return ResourceManager.GetString("ImportQuestionBtnText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid file format: malformed file.
         /// </summary>
         public static string InvalidFileFormatMsg {
@@ -105,25 +141,7 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        public static string QDescHeaderText {
-            get {
-                return ResourceManager.GetString("QDescHeaderText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string QNameHeaderText {
-            get {
-                return ResourceManager.GetString("QNameHeaderText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Questions.
+        ///   Looks up a localized string similar to Your questions.
         /// </summary>
         public static string QuestionsTab {
             get {
@@ -132,7 +150,16 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Results.
+        ///   Looks up a localized string similar to Recents.
+        /// </summary>
+        public static string RecentText {
+            get {
+                return ResourceManager.GetString("RecentText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Question evaluation.
         /// </summary>
         public static string ResultsTab {
             get {
@@ -150,29 +177,11 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete selection.
+        ///   Looks up a localized string similar to Remove question from the list.
         /// </summary>
-        public static string ToolTipDeleteSelectionButton {
+        public static string ToolTipRemoveButton {
             get {
-                return ResourceManager.GetString("ToolTipDeleteSelectionButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit question.
-        /// </summary>
-        public static string ToolTipEditButton {
-            get {
-                return ResourceManager.GetString("ToolTipEditButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save selection.
-        /// </summary>
-        public static string ToolTipSaveSelectionButton {
-            get {
-                return ResourceManager.GetString("ToolTipSaveSelectionButton", resourceCulture);
+                return ResourceManager.GetString("ToolTipRemoveButton", resourceCulture);
             }
         }
     }

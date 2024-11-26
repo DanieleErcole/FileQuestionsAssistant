@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -36,7 +37,9 @@ public partial class App : Application {
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            var mw = new MainWindow();
+            var mw = new MainWindow {
+                DataContext = new MainWindowViewModel()
+            };
             var dialogService = new DialogService(mw);
             var services = new ServiceCollection()
                 .AddSingleton<NavigatorService>()
@@ -50,8 +53,8 @@ public partial class App : Application {
                 //TODO: Add other file evaluators
                 .BuildServiceProvider();
             
-            mw.DataContext = new MainWindowViewModel(services);
             desktop.MainWindow = mw;
+            services.GetRequiredService<NavigatorService>().Init(mw.MainFrame, services);
         }
 
         base.OnFrameworkInitializationCompleted();

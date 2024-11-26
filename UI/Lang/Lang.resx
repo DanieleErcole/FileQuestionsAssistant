@@ -27,20 +27,8 @@
     <data name="FilesSelected" xml:space="preserve">
         <value>files selected</value>
     </data>
-    <data name="QNameHeaderText" xml:space="preserve">
-        <value>Name</value>
-    </data>
-    <data name="QDescHeaderText" xml:space="preserve">
-        <value>Description</value>
-    </data>
-    <data name="ToolTipEditButton" xml:space="preserve">
-        <value>Edit question</value>
-    </data>
-    <data name="ToolTipSaveSelectionButton" xml:space="preserve">
-        <value>Save selection</value>
-    </data>
-    <data name="ToolTipDeleteSelectionButton" xml:space="preserve">
-        <value>Delete selection</value>
+    <data name="ToolTipRemoveButton" xml:space="preserve">
+        <value>Remove question from the list</value>
     </data>
     <data name="ToolTipAddQuestionButton" xml:space="preserve">
         <value>Add question</value>
@@ -52,9 +40,24 @@
         <value>Error</value>
     </data>
     <data name="QuestionsTab" xml:space="preserve">
-        <value>Questions</value>
+        <value>Your questions</value>
     </data>
     <data name="ResultsTab" xml:space="preserve">
-        <value>Results</value>
+        <value>Question evaluation</value>
+    </data>
+    <data name="RecentText" xml:space="preserve">
+        <value>Recents</value>
+    </data>
+    <data name="AddQuestionBtnText" xml:space="preserve">
+        <value>Create new question</value>
+    </data>
+    <data name="AddQuestionBtnDesc" xml:space="preserve">
+        <value>Choose a question template and create a question</value>
+    </data>
+    <data name="ImportQuestionBtnText" xml:space="preserve">
+        <value>Import question</value>
+    </data>
+    <data name="ImportQuestionBtnDesc" xml:space="preserve">
+        <value>Import a local question file</value>
     </data>
 </root>

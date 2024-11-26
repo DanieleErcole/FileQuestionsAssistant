@@ -20,20 +20,8 @@
     <data name="FilesSelected" xml:space="preserve">
         <value>file selezionati</value>
     </data>
-    <data name="QDescHeaderText" xml:space="preserve">
-        <value>Descrizione</value>
-    </data>
-    <data name="QNameHeaderText" xml:space="preserve">
-        <value>Nome</value>
-    </data>
-    <data name="ToolTipDeleteSelectionButton" xml:space="preserve">
-        <value>Elimina selezione</value>
-    </data>
-    <data name="ToolTipEditButton" xml:space="preserve">
-        <value>Modifica domanda</value>
-    </data>
-    <data name="ToolTipSaveSelectionButton" xml:space="preserve">
-        <value>Salva selezione</value>
+    <data name="ToolTipRemoveButton" xml:space="preserve">
+        <value>Rimuovi domanda dall'elenco</value>
     </data>
     <data name="ToolTipAddQuestionButton" xml:space="preserve">
         <value>Aggiungi domanda</value>
@@ -45,9 +33,24 @@
         <value>Errore</value>
     </data>
     <data name="QuestionsTab" xml:space="preserve">
-        <value>Domande</value>
+        <value>Let tue domande</value>
     </data>
     <data name="ResultsTab" xml:space="preserve">
-        <value>Risultati</value>
+        <value>Valutazione domande</value>
+    </data>
+    <data name="RecentText" xml:space="preserve">
+        <value>Recenti</value>
+    </data>
+    <data name="AddQuestionBtnText" xml:space="preserve">
+        <value>Crea nuova domanda</value>
+    </data>
+    <data name="AddQuestionBtnDesc" xml:space="preserve">
+        <value>Crea una nuova domanda scegliendo un modello tra quelli preimpostati</value>
+    </data>
+    <data name="ImportQuestionBtnText" xml:space="preserve">
+        <value>Importa domanda</value>
+    </data>
+    <data name="ImportQuestionBtnDesc" xml:space="preserve">
+        <value>Importa una domanda da file</value>
     </data>
 </root>

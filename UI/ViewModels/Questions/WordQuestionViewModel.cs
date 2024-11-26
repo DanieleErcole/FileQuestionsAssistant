@@ -7,12 +7,11 @@ using Core.Evaluation;
 using Core.FileHandling;
 using Core.Utils.Errors;
 using Microsoft.Extensions.DependencyInjection;
-using UI.Services;
 using ApplicationException = Core.Utils.Errors.ApplicationException;
 
 namespace UI.ViewModels.Questions;
 
-public abstract class WordQuestionViewModel(IServiceProvider services) : SingleQuestionViewModel(services) {
+public abstract class WordQuestionViewModel(string name, string desc, IServiceProvider services) : SingleQuestionViewModel(name, desc, services) {
     
     protected override FilePickerFileType FileType => new("Word OpenXML files") {
         Patterns = new [] { "*.docx" },
@@ -20,6 +19,11 @@ public abstract class WordQuestionViewModel(IServiceProvider services) : SingleQ
         MimeTypes = new [] { "application/vnd.openxmlformats-officedocument.wordprocessingml.document" }
     };
     
+    public override void OnRemove() {
+        var ev = _services.GetRequiredService<Evaluator<WordFile>>();
+        ev.RemoveQuestion(Index);
+    }
+
     public override async void UploadFiles() {
         try {
             var files = await Task.WhenAll((await OpenFiles())
@@ -30,19 +34,17 @@ public abstract class WordQuestionViewModel(IServiceProvider services) : SingleQ
                 return;
 
             _services.GetRequiredService<Evaluator<WordFile>>().AddFiles(Index, files);
-            FileCount = files.Length.ToString();
         } catch (UnauthorizedAccessException e) {
             UIException ex = e;
             _services.GetRequiredService<WindowNotificationManager>().ShowError("Error opening file", ex.ToString());
-        } catch (ApplicationException e) {
-            UIException ex = e;
+        } catch (Exception e) {
+            UIException ex = e as ApplicationException ?? new ApplicationException(null, e);
             _services.GetRequiredService<WindowNotificationManager>().ShowError($"Error opening file: {(e as FileError)?.Filename ?? ""}", ex.ToString());
         }
     }
 
     public override void ClearFiles() {
         _services.GetRequiredService<Evaluator<WordFile>>().SetFiles(Index);
-        FileCount = "0";
     }
     
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using Core.Evaluation;
+using Core.FileHandling;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 
@@ -10,25 +12,12 @@ namespace UI.ViewModels.Questions;
 
 public abstract class SingleQuestionViewModel : ViewModelBase {
     
-    protected IServiceProvider _services;
+    protected readonly IServiceProvider _services;
     
     public int Index { get; set; }
-
-    private bool _selected;
-    public bool IsSelected {
-        get => _selected; 
-        set => this.RaiseAndSetIfChanged(ref _selected, value); 
-    }
-
-    public abstract string Name { get; }
-    public abstract string Description { get; }
+    public string Name { get; }
+    public string Description { get; }
     protected abstract FilePickerFileType FileType { get; }
-    
-    private bool _clearBtnVisible;
-    public bool ClearBtnVisible {
-        get => _clearBtnVisible;
-        set => this.RaiseAndSetIfChanged(ref _clearBtnVisible, value);
-    }
 
     public string Icon {
         get {
@@ -38,16 +27,10 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
         }
     }
 
-    private string _fileCount = "0";
-    public string FileCount {
-        get => _fileCount + " " + Lang.Lang.FilesSelected;
-        set => this.RaiseAndSetIfChanged(ref _fileCount, value);
-    }
-
-    protected SingleQuestionViewModel(IServiceProvider services) {
+    protected SingleQuestionViewModel(string name, string desc, IServiceProvider services) {
         _services = services;
-        this.WhenAnyValue(x => x.FileCount)
-            .Subscribe(x => ClearBtnVisible = int.Parse(x.Split(" ")[0]) > 0);
+        Name = name;
+        Description = desc;
     }
 
     protected Task<IReadOnlyList<IStorageFile>> OpenFiles() {
@@ -56,7 +39,8 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
             FileTypeFilter = new[] { FileType }
         });
     }
-
+    
+    public abstract void OnRemove();
     public abstract void UploadFiles();
     public abstract void ClearFiles();
 
