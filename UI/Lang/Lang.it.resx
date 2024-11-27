@@ -23,9 +23,6 @@
     <data name="ToolTipRemoveButton" xml:space="preserve">
         <value>Rimuovi domanda dall'elenco</value>
     </data>
-    <data name="ToolTipAddQuestionButton" xml:space="preserve">
-        <value>Aggiungi domanda</value>
-    </data>
     <data name="InvalidFileFormatMsg" xml:space="preserve">
         <value>Formato file non valido</value>
     </data>

@@ -168,15 +168,6 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add question.
-        /// </summary>
-        public static string ToolTipAddQuestionButton {
-            get {
-                return ResourceManager.GetString("ToolTipAddQuestionButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove question from the list.
         /// </summary>
         public static string ToolTipRemoveButton {

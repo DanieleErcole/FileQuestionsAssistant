@@ -30,9 +30,6 @@
     <data name="ToolTipRemoveButton" xml:space="preserve">
         <value>Remove question from the list</value>
     </data>
-    <data name="ToolTipAddQuestionButton" xml:space="preserve">
-        <value>Add question</value>
-    </data>
     <data name="InvalidFileFormatMsg" xml:space="preserve">
         <value>Invalid file format: malformed file</value>
     </data>

@@ -41,6 +41,7 @@ public partial class App : Application {
                 DataContext = new MainWindowViewModel()
             };
             var dialogService = new DialogService(mw);
+            var serializer = new QuestionSerializer();
             var services = new ServiceCollection()
                 .AddSingleton<NavigatorService>()
                 .AddSingleton(dialogService)
@@ -49,10 +50,12 @@ public partial class App : Application {
                     Position = NotificationPosition.BottomRight,
                     MaxItems = 3,
                 })
+                .AddSingleton(serializer)
                 .AddSingleton(mw.StorageProvider)
                 //TODO: Add other file evaluators
                 .BuildServiceProvider();
             
+            serializer.Init(services);
             desktop.MainWindow = mw;
             services.GetRequiredService<NavigatorService>().Init(mw.MainFrame, services);
         }

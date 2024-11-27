@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
-using Core.Evaluation;
-using Core.FileHandling;
 using Microsoft.Extensions.DependencyInjection;
-using ReactiveUI;
 
 namespace UI.ViewModels.Questions;
 
@@ -36,7 +33,7 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
     protected Task<IReadOnlyList<IStorageFile>> OpenFiles() {
         return _services.GetRequiredService<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
             AllowMultiple = true,
-            FileTypeFilter = new[] { FileType }
+            FileTypeFilter = [FileType]
         });
     }
     
