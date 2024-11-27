@@ -8,16 +8,17 @@ namespace Core.Questions.Word;
 
 public class CreateStyleQuestion : AbstractQuestion<WordFile> {
 
-    public CreateStyleQuestion(string name, string? desc, string styleName, string originalFile, string? baseStyleName = null, string? fontName = null, 
-        int? fontSize = null, Color? color = null, string? alignment = null) : base(name, desc) {
+    public CreateStyleQuestion(string name, string? desc, string ogFile, string styleName, string? baseStyleName = null, string? fontName = null, 
+        int? fontSize = null, Color? color = null, string? alignment = null) : base(name, desc, ogFile) {
         _params.Add("styleName", styleName);
         _params.Add("baseStyleName", baseStyleName);
         _params.Add("fontName", fontName);
         _params.Add("fontSize", fontSize);
         _params.Add("color", color);
         _params.Add("alignment", alignment);
-        _params.Add("originalFile", originalFile);
     }
+    
+    public CreateStyleQuestion(QuestionData data) : base(data) {}
 
     public override IEnumerable<Result> Evaluate(IEnumerable<WordFile> files) => 
         files.Select(file => {
@@ -57,9 +58,8 @@ public class CreateStyleQuestion : AbstractQuestion<WordFile> {
                     ["alignment"] = s.StyleParagraphProperties?.Justification?.Val?.InnerText
                 };
             });
-
-            var encodedOgFile = _params.Get<string>("originalFile")!;
-            var ogFile = new WordFile("original", new MemoryStream(Convert.FromBase64String(encodedOgFile)));
+            
+            WordFile ogFile = OgFile;
             var ogStyles = ogFile.Styles.Select(styleToDict);
 
             var diff = file.Styles

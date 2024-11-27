@@ -1,4 +1,5 @@
-﻿using Core.Evaluation;
+﻿using System.Text.Json.Serialization;
+using Core.Evaluation;
 using Core.FileHandling;
 
 namespace Core.Questions;
@@ -15,11 +16,35 @@ public static class ParamsExtensions {
     }
 }
 
-public abstract class AbstractQuestion<TFile>(string name, string? desc) : IQuestion<TFile> where TFile : IFile {
+public class QuestionData {
+    
+    public required string Name { get; init; }
+    public string? Desc { get; init; }
+    
+    public required byte[] OgFile { get; init; }
+    public required Dictionary<string, object?> Params { get; init; }
 
-    public string Name { get; } = name;
-    public string? Desc { get; } = desc;
-    protected readonly Dictionary<string, object?> _params = new();
+}
+
+public abstract class AbstractQuestion<TFile>(QuestionData data) : IQuestion<TFile> where TFile : IFile {
+
+    [JsonIgnore]
+    public string Name => Data.Name;
+    [JsonIgnore]
+    public string? Desc => Data.Desc;
+    [JsonIgnore]
+    protected byte[] OgFile => Data.OgFile;
+    [JsonIgnore]
+    protected Dictionary<string, object?> _params => Data.Params;
+
+    public QuestionData Data { get; } = data;
+
+    protected AbstractQuestion(string name, string? desc, string ogFile) : this(new QuestionData {
+        Name = name,
+        Desc = desc,
+        OgFile = Convert.FromBase64String(ogFile),
+        Params = new Dictionary<string, object?>()
+    }) {}
 
     public abstract IEnumerable<Result> Evaluate(IEnumerable<TFile> files);
 

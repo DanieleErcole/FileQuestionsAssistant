@@ -49,8 +49,16 @@ public class Evaluator<TFile> where TFile : IFile {
         Files[index] = files.ToList();
     }
 
+    public void DisposeFiles(int index = 0) {
+        if (index >= Files.Count)
+            throw new ArgumentOutOfRangeException();
+        foreach (var f in Files[index])
+            f.Dispose();
+        Files[index].Clear();
+    }
+    
     public void DisposeAllFiles() {
-        foreach (var f in Files.SelectMany(files => files))
+        foreach (var f in Files.SelectMany(f => f))
             f.Dispose();
     }
 

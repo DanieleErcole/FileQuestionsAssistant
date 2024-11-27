@@ -34,6 +34,10 @@ public class WordFile : IFile {
         }
     }
 
+    public static implicit operator WordFile(byte[] raw) {
+        return new WordFile("in_memory", new MemoryStream(raw));
+    }
+
     public void Dispose() {
         _doc.Dispose();
         GC.SuppressFinalize(this);

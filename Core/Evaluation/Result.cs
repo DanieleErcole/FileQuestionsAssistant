@@ -4,20 +4,18 @@ public class Result {
     
     public bool IsSuccessful { get; }
     private readonly Dictionary<string, object?> _correctParams;
-    private readonly List<Dictionary<string, object?>> _stylesFromFile;
+    private readonly List<Dictionary<string, object?>> _paramsFromFile;
 
-    public Result(Dictionary<string, object?> originalParams, List<Dictionary<string, object?>> stylesFromFile, bool isSuccessful) {
+    public Result(Dictionary<string, object?> originalParams, List<Dictionary<string, object?>> paramsFromFile, bool isSuccessful) {
         IsSuccessful = isSuccessful;
         _correctParams = originalParams;
-        _stylesFromFile = stylesFromFile;
+        _paramsFromFile = paramsFromFile;
     }
 
-    public IEnumerable<(Dictionary<string, object?>, Dictionary<string, bool>)> EachStyleWithRes() => _stylesFromFile
-        .Select(styleParams => (
-            styleParams, 
-            styleParams
-                .Select(p => new KeyValuePair<string, bool>(p.Key, p.Value == _correctParams[p.Key]))
-                .ToDictionary()
-            ));
+    public IEnumerable<Dictionary<string, (object?, bool)>> EachParamsWithRes() => _paramsFromFile
+        .Select(styleParams => styleParams
+            .Select(p => new KeyValuePair<string, (object?, bool)>(p.Key, (p.Value, p.Value == _correctParams[p.Key])))
+            .ToDictionary()
+        );
 
 }

@@ -68,6 +68,7 @@ public class WordTests {
 
     [TearDown]
     public void TearDown() => _evaluator.DisposeAllFiles();
+    
 
     [OneTimeSetUp]
     public void SetupBeforeAll() {
@@ -99,7 +100,7 @@ public class WordTests {
     [TestCase("WrongName", "Heading 1", "Calibri", null, 255, 0, 0, null, false)]
     public void WordCreateStyleQuestion_TestCase(string styleName, string? baseStyleName, string? fontName, int? fontSize, int? r, int? g, int? b, string? alignment, bool expectedRes) {
         Color? rgb = r is null || g is null || b is null ? null : Color.FromArgb((int) r, (int) g, (int) b);
-        var q = new CreateStyleQuestion("Name", "Description", styleName, Convert.ToBase64String(_ogFile), baseStyleName, fontName, fontSize, rgb, alignment);
+        var q = new CreateStyleQuestion("Name", "Description", Convert.ToBase64String(_ogFile), styleName, baseStyleName, fontName, fontSize, rgb, alignment);
         _evaluator.AddQuestion(q, new WordFile(_wordFile.Name, _wordFile));
 
         var res = _evaluator.Evaluate().First();
