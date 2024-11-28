@@ -109,8 +109,6 @@
                          Margin="10, 20, 0, 0">
                     <ListBox.Resources>
                         <input:XamlUICommand x:Key="DeleteQuestion"
-                                             IconSource="Delete"
-                                             Description="{x:Static lang:Lang.ToolTipRemoveButton}"
                                              Command="{Binding DeleteQuestion}"/>
                     </ListBox.Resources>
                     
@@ -146,6 +144,7 @@
                                         VerticalContentAlignment="Center"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right"
+                                        ToolTip.Tip="{x:Static lang:Lang.ToolTipRemoveButton}"
                                         Command="{DynamicResource DeleteQuestion}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
                                     <controls:SymbolIcon Symbol="Delete" FontSize="20"/>

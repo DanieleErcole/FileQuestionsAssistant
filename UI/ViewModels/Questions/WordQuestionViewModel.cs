@@ -23,7 +23,7 @@ public abstract class WordQuestionViewModel(string name, string desc, IServicePr
         var ev = _services.GetRequiredService<Evaluator<WordFile>>();
         ev.RemoveQuestion(Index);
     }
-
+    
     public override async void UploadFiles() {
         try {
             var files = await Task.WhenAll((await OpenFiles())
@@ -42,7 +42,7 @@ public abstract class WordQuestionViewModel(string name, string desc, IServicePr
             _services.GetRequiredService<WindowNotificationManager>().ShowError($"Error opening file: {(e as FileError)?.Filename ?? ""}", ex.ToString());
         }
     }
-
+    
     public override void ClearFiles() {
         _services.GetRequiredService<Evaluator<WordFile>>().SetFiles(Index);
     }

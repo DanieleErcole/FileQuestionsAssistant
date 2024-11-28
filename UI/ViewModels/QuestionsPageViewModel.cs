@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -7,7 +8,6 @@ using Avalonia.Controls.Notifications;
 using Avalonia.Platform.Storage;
 using Core.FileHandling;
 using Core.Questions.Word;
-using DynamicData;
 using FluentAvalonia.UI.Data;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
@@ -44,7 +44,12 @@ public class QuestionsPageViewModel : ViewModelBase {
         });
 
         var loadedQuestions = _services.GetRequiredService<QuestionSerializer>().LoadTrackedQuestions() ?? [];
-        _questions.AddRange(loadedQuestions);
+        foreach (var q in loadedQuestions) {
+            _questions.Add(q switch {
+                CreateStyleQuestion csq => new CreateStyleQuestionVM(csq, _services),
+                _ => throw new UnreachableException()
+            });
+        }
     }
 
     public void AddQuestionBtn() {
@@ -52,8 +57,8 @@ public class QuestionsPageViewModel : ViewModelBase {
     }
     
     public async Task AddQuestionTest() {
-        var q = new CreateStyleQuestion("Nome1", "Desc1", "", "CustomStyle", "Normal", "Consolas", 12, Color.Fuchsia,
-            "center");
+        var q = new CreateStyleQuestion("Nome1", "Desc1", "", "CustomStyle", "Normal", 
+            "Consolas", 12, Color.Fuchsia, "center");
         var qvm = new CreateStyleQuestionVM(q, _services);
         _questions.Add(qvm);
         var file = await _services.GetRequiredService<IStorageProvider>()
