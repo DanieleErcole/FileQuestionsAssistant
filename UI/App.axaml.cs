@@ -44,7 +44,7 @@ public partial class App : Application {
             var services = new ServiceCollection()
                 .AddSingleton<NavigatorService>()
                 .AddSingleton(dialogService)
-                .AddSingleton<Evaluator<WordFile>>()
+                .AddSingleton<Evaluator>()
                 .AddSingleton(new WindowNotificationManager(mw) {
                     Position = NotificationPosition.BottomRight,
                     MaxItems = 3,

@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Platform.Storage;
-using Core.FileHandling;
+using Core.Evaluation;
+using Core.Questions;
 using Core.Questions.Word;
 using FluentAvalonia.UI.Data;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,70 +29,73 @@ public class QuestionsPageViewModel : ViewModelBase {
             QuestionsSearch.Refresh();
         }
     }
-
-    private readonly ObservableCollection<SingleQuestionViewModel> _questions = [];
+    
     public IterableCollectionView QuestionsSearch { get; }
+    
+    private SingleQuestionViewModel FromTypeToViewModel(IQuestion question) {
+        return question switch {
+            CreateStyleQuestion csq => new CreateStyleQuestionVM(csq, _services),
+            _ => throw new UnreachableException()
+        };
+    }
 
     public QuestionsPageViewModel(IServiceProvider services) {
         _services = services;
         
-        QuestionsSearch = new IterableCollectionView(_questions, o => {
+        var ev = _services.GetRequiredService<Evaluator>();
+        var loadedQuestions = _services.GetRequiredService<QuestionSerializer>().LoadTrackedQuestions() ?? [];
+        
+        foreach (var q in loadedQuestions)
+            ev.AddQuestion(q);
+        
+        QuestionsSearch = new IterableCollectionView(ev.Questions.Select(FromTypeToViewModel), o => {
             var q = (o as SingleQuestionViewModel)!;
             return string.IsNullOrWhiteSpace(SearchText) ||
                    q.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
                    q.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
         });
-
-        var loadedQuestions = _services.GetRequiredService<QuestionSerializer>().LoadTrackedQuestions() ?? [];
-        foreach (var q in loadedQuestions) {
-            _questions.Add(q switch {
-                CreateStyleQuestion csq => new CreateStyleQuestionVM(csq, _services),
-                _ => throw new UnreachableException()
-            });
-        }
-    }
-
-    public void AddQuestionBtn() {
-        _services.GetRequiredService<NavigatorService>().NavigateTo(NavigatorService.QuestionForm);
     }
     
-    public async Task AddQuestionTest() {
-        var q = new CreateStyleQuestion("Nome1", "Desc1", "", "CustomStyle", "Normal", 
-            "Consolas", 12, Color.Fuchsia, "center");
-        var qvm = new CreateStyleQuestionVM(q, _services);
-        _questions.Add(qvm);
-        var file = await _services.GetRequiredService<IStorageProvider>()
-            .SaveFilePickerAsync(new FilePickerSaveOptions {
-                Title = "Save Text File",
-                FileTypeChoices = [
-                    new FilePickerFileType("JSON file") {
-                        Patterns = ["*.json"],
-                        AppleUniformTypeIdentifiers = ["public.json"],
-                        MimeTypes = ["application/json"]
-                    }
-                ],
+    #region Button commands
+
+        public async Task OpenQuestion() {
+            var files = await _services.GetRequiredService<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
+                AllowMultiple = false,
+                FileTypeFilter = [_services.GetRequiredService<QuestionSerializer>().FileType]
             });
-        if (file is not null)
-            await _services.GetRequiredService<QuestionSerializer>().Create<CreateStyleQuestion, WordFile>(file, q);
-    }
+            
+            if (!files.Any()) return;
+            var serializer = _services.GetRequiredService<QuestionSerializer>();
+            var q = await serializer.Load(files[0]);
+            
+            if (q is null) return;
+            await serializer.AddTrackedQuestion(files[0]);
+            _services.GetRequiredService<Evaluator>().AddQuestion(q);
+            QuestionsSearch.Refresh();
+            
+            _services.GetRequiredService<WindowNotificationManager>()
+                .Show(new Notification("Opened a question", $"Opened question file: {files[0].Name} and added to the tracked files"));
+            //_services.GetRequiredService<NavigatorService>().NavigateTo(NavigatorService.Results);
+        }
 
-    public void DeleteQuestion(object param) {
-        var question = param as SingleQuestionViewModel;
-        var deletedIndex = question!.Index;
-        
-        question.OnRemove();
-        _questions.Remove(question);
-        
-        foreach (var q in _questions)
-            if (q.Index > deletedIndex)
-                q.Index -= 1;
-    }
+        public void AddQuestionBtn() {
+            _services.GetRequiredService<NavigatorService>().NavigateTo(NavigatorService.QuestionForm);
+        }
 
-    public void OnSelectedQuestion(SelectionChangedEventArgs e) {
-        if (e.AddedItems.Count != 1) return;
-        var selected = e.AddedItems[0] as SingleQuestionViewModel;
-        _services.GetRequiredService<WindowNotificationManager>()
-            .Show(new Notification("Selected a question", $"Selected question: {selected!.Name}"));
-    }
+        public async Task DeleteQuestion(object param) {
+            var question = (param as SingleQuestionViewModel)!;
+            _services.GetRequiredService<Evaluator>().RemoveQuestion(question.Index);
+            await _services.GetRequiredService<QuestionSerializer>().RemoveTrackedQuestion(question);
+            QuestionsSearch.Refresh();
+        }
+
+        public void OnSelectedQuestion(SelectionChangedEventArgs e) {
+            if (e.AddedItems.Count != 1) return;
+            var selected = e.AddedItems[0] as SingleQuestionViewModel;
+            _services.GetRequiredService<WindowNotificationManager>()
+                .Show(new Notification("Selected a question", $"Selected question: {selected!.Name}"));
+        }
+    
+    #endregion
     
 }

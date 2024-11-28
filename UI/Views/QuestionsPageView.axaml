@@ -62,7 +62,8 @@
                     </Style>
                 </StackPanel.Styles>
                 
-                <Button Margin="0, 20, 0, 20">
+                <Button Margin="0, 20, 0, 20"
+                        Command="{Binding OpenQuestion}">
                     <StackPanel>
                         <controls:SymbolIcon Symbol="OpenLocal"
                                              FontSize="30"/>
@@ -73,7 +74,7 @@
                         </StackPanel>
                     </StackPanel>
                 </Button>
-                <Button Margin="0, 0, 0, 20" Command="{Binding AddQuestionBtn}">
+                <Button Command="{Binding AddQuestionBtn}">
                     <StackPanel>
                         <controls:SymbolIcon Symbol="Add"
                                              FontSize="30"/>
@@ -85,10 +86,6 @@
                                        Text="{x:Static lang:Lang.AddQuestionBtnDesc}"/>
                         </StackPanel>
                     </StackPanel>
-                </Button>
-                <Button Command="{Binding AddQuestionTest}">
-                    <controls:SymbolIcon Symbol="Add"
-                                         FontSize="30"/>
                 </Button>
             </StackPanel>
             

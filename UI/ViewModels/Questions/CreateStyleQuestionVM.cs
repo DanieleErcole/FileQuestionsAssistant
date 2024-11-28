@@ -1,6 +1,5 @@
 ﻿using System;
 using Core.Evaluation;
-using Core.FileHandling;
 using Core.Questions.Word;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,9 +9,7 @@ public class CreateStyleQuestionVM : WordQuestionViewModel {
 
     public CreateStyleQuestionVM(CreateStyleQuestion question, IServiceProvider services) 
         : base(question.Name, question.Desc ?? Lang.Lang.CreateStyleQuestionDesc, services) {
-        var e = _services.GetRequiredService<Evaluator<WordFile>>();
-        e.AddQuestion(question);
-        Index = e.Questions.IndexOf(question);
+        Index = _services.GetRequiredService<Evaluator>().Questions.IndexOf(question);
     }
     
 }

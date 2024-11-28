@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using Core.Evaluation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace UI.ViewModels.Questions;
@@ -37,8 +38,10 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
         });
     }
     
-    public abstract void OnRemove();
     public abstract void UploadFiles();
-    public abstract void ClearFiles();
+    
+    public void ClearFiles() {
+        _services.GetRequiredService<Evaluator>().SetFiles(Index);
+    }
 
 }

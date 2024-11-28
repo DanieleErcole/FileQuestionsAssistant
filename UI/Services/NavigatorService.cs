@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using Avalonia.Controls;
-using DocumentFormat.OpenXml.Spreadsheet;
 using FluentAvalonia.UI.Controls;
-using FluentAvalonia.UI.Media.Animation;
 using UI.ViewModels;
 using UI.Views;
 using Control = Avalonia.Controls.Control;
@@ -40,7 +35,7 @@ public class NavigatorService {
         _windowFrame.NavigationPageFactory = new AppNavFactory();
         _pages = [
             new QuestionsPageViewModel(services),
-            new QuestionDataPageViewModel(),
+            new QuestionDataPageViewModel(services),
             new ResultsPageViewModel()
         ];
         NavigateTo(Questions);
