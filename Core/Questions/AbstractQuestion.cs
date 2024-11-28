@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Core.Evaluation;
+﻿using Core.Evaluation;
 using Core.FileHandling;
 
 namespace Core.Questions;
@@ -16,8 +15,13 @@ public static class ParamsExtensions {
     }
 }
 
+public enum QuestionType {
+    CreateStyleQuestion,
+}
+
 public class QuestionData {
-    
+
+    public QuestionType Type { get; internal set; }
     public required string Name { get; init; }
     public string? Desc { get; init; }
     
@@ -27,15 +31,11 @@ public class QuestionData {
 }
 
 public abstract class AbstractQuestion<TFile>(QuestionData data) : IQuestion<TFile> where TFile : IFile {
-
-    [JsonIgnore]
+    
     public string Name => Data.Name;
-    [JsonIgnore]
     public string? Desc => Data.Desc;
-    [JsonIgnore]
     protected byte[] OgFile => Data.OgFile;
-    [JsonIgnore]
-    protected Dictionary<string, object?> _params => Data.Params;
+    protected Dictionary<string, object?> Params => Data.Params;
 
     public QuestionData Data { get; } = data;
 

@@ -24,6 +24,7 @@ public class UtilsTests {
 public class EvaluatorTests {
 
     internal class MyFile : IFile {
+        public string Name { get; } = "MyFile";
         public void Dispose() {}
     }
 

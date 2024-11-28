@@ -5,11 +5,11 @@ using ApplicationException = Core.Utils.Errors.ApplicationException;
 
 namespace Core.FileHandling; 
 
-public class WordFile : IFile {
+public class WordFile(string name) : IFile {
 
     private readonly WordprocessingDocument _doc;
-
-    public string Name { get; }
+    
+    public string Name { get; } = name;
     public MainDocumentPart MainDoc { get; }
 
     public IEnumerable<Style> Styles {
@@ -24,8 +24,7 @@ public class WordFile : IFile {
         }
     }
     
-    public WordFile(string name, Stream file) {
-        Name = name;
+    public WordFile(string name, Stream file) : this(name) {
         try {
             _doc = WordprocessingDocument.Open(file, false);
             MainDoc = _doc.MainDocumentPart ?? throw new InvalidFileFormat(Name);
@@ -42,5 +41,5 @@ public class WordFile : IFile {
         _doc.Dispose();
         GC.SuppressFinalize(this);
     }
-
+    
 }
