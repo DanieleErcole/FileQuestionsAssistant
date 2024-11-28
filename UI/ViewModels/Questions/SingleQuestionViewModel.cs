@@ -15,6 +15,7 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
     public int Index { get; set; }
     public string Name { get; }
     public string Description { get; }
+    public abstract string Path { get; }
     protected abstract FilePickerFileType FileType { get; }
 
     public string Icon {
@@ -38,7 +39,7 @@ public abstract class SingleQuestionViewModel : ViewModelBase {
         });
     }
     
-    public abstract void UploadFiles();
+    public abstract Task UploadFiles();
     
     public void ClearFiles() {
         _services.GetRequiredService<Evaluator>().SetFiles(Index);

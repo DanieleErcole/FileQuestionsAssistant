@@ -28,7 +28,7 @@ public class QuestionSerializer {
         WriteIndented = true,
     };
 
-    private static AbstractQuestion? FromTypeNameToObj(QuestionData? data) {
+    private static IQuestion? FromTypeNameToObj(QuestionData? data) {
         if (data is null) return null;
         //TODO: add other question types
         return data.Type switch {
@@ -38,31 +38,40 @@ public class QuestionSerializer {
     }
 
     public async Task AddTrackedQuestion(IStorageFile file) {
-        var filePath = Uri.UnescapeDataString(file.Path.AbsolutePath);
-        var paths = new List<string>(await File.ReadAllLinesAsync(TrackedFilePath));
-        
-        if (paths.Any(line => line == filePath)) return;
-        paths.Add(filePath);
-        
-        await using var stream = File.Open(TrackedFilePath, FileMode.Create);
-        await using var streamWriter = new StreamWriter(stream);
-        foreach (var p in paths)
-            await streamWriter.WriteLineAsync(p);
+        try {
+            var filePath = Uri.UnescapeDataString(file.Path.AbsolutePath);
+            var paths = new List<string>(await File.ReadAllLinesAsync(TrackedFilePath));
+
+            if (paths.Any(line => line == filePath)) 
+                throw new UnableToOpenQuestion();
+            paths.Add(filePath); 
+            
+            await using var stream = File.Open(TrackedFilePath, FileMode.Create);
+            await using var streamWriter = new StreamWriter(stream);
+            foreach (var p in paths)
+                await streamWriter.WriteLineAsync(p);
+        } catch (Exception e) when (e is not UIException) {
+            throw new FileError(file.Name, e);
+        }
     }
 
     public async Task RemoveTrackedQuestion(SingleQuestionViewModel vm) {
-        var paths = new List<string>(await File.ReadAllLinesAsync(TrackedFilePath));
-        if (paths.Count == 0)
-            return;
-        paths.RemoveAt(vm.Index);
+        try {
+            var paths = new List<string>(await File.ReadAllLinesAsync(TrackedFilePath));
+            if (paths.Count == 0)
+                return;
+            paths.RemoveAt(vm.Index);
         
-        await using var stream = File.Open(TrackedFilePath, FileMode.Create);
-        await using var streamWriter = new StreamWriter(stream);
-        foreach (var p in paths)
-            await streamWriter.WriteLineAsync(p);
+            await using var stream = File.Open(TrackedFilePath, FileMode.Create);
+            await using var streamWriter = new StreamWriter(stream);
+            foreach (var p in paths)
+                await streamWriter.WriteLineAsync(p);
+        } catch (Exception e) {
+            throw new FileError("TrackedQuestions.txt", e);
+        }
     }
 
-    public AbstractQuestion[]? LoadTrackedQuestions() {
+    public IQuestion[]? LoadTrackedQuestions() {
         if (!Directory.Exists(TrackedDirectoryPath))
             Directory.CreateDirectory(TrackedDirectoryPath);
         if (!File.Exists(TrackedFilePath)) {
@@ -88,9 +97,14 @@ public class QuestionSerializer {
         }
     }
 
-    public async Task Create(IStorageFile file, AbstractQuestion question) {
-        await AddTrackedQuestion(file);
+    public async Task<bool> Create(IStorageFile file, AbstractQuestion question) {
+        var overwritten = false;
+        try {
+            await AddTrackedQuestion(file);
+        } catch (Exception _) {overwritten = true;}
+        
         await Save(file, question);
+        return overwritten;
     }
     
     public async Task Save(IStorageFile file, AbstractQuestion question) {
@@ -103,7 +117,7 @@ public class QuestionSerializer {
         }
     }
     
-    public async Task<AbstractQuestion?> Load(IStorageFile file) {
+    public async Task<IQuestion?> Load(IStorageFile file) {
         try {
             await using var stream = await file.OpenReadAsync();
             using var streamReader = new StreamReader(stream);

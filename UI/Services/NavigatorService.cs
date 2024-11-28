@@ -28,7 +28,7 @@ public class NavigatorService {
     public const int Results = 2;
     
     private Frame _windowFrame;
-    private ViewModelBase[] _pages;
+    private PageViewModelBase[] _pages;
 
     public void Init(Frame windowFrame, IServiceProvider services) {
         _windowFrame = windowFrame;
@@ -42,6 +42,7 @@ public class NavigatorService {
     }
 
     public void NavigateTo(int index) {
+        _pages[index].OnNavigatedTo();
         _windowFrame.NavigateFromObject(_pages[index]);
     }
     

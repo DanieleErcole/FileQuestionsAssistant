@@ -6,10 +6,10 @@ using Avalonia.Controls.Notifications;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Core.Evaluation;
-using Core.FileHandling;
 using Microsoft.Extensions.DependencyInjection;
 using UI.Services;
 using UI.ViewModels;
+using UI.ViewModels.Questions;
 using UI.Views;
 
 namespace UI;
@@ -21,6 +21,12 @@ public static class NotificationExtensions {
             Message = message,
             Type = NotificationType.Error,
         });
+    }
+}
+
+public static class ServicesExtensions {
+    public static T Get<T>(this IServiceProvider provider) where T : notnull {
+        return provider.GetRequiredService<T>();
     }
 }
 
@@ -40,9 +46,11 @@ public partial class App : Application {
             var mw = new MainWindow {
                 DataContext = new MainWindowViewModel()
             };
+            
             var dialogService = new DialogService(mw);
             var services = new ServiceCollection()
                 .AddSingleton<NavigatorService>()
+                .AddSingleton<ErrorHandler>()
                 .AddSingleton(dialogService)
                 .AddSingleton<Evaluator>()
                 .AddSingleton(new WindowNotificationManager(mw) {
@@ -51,11 +59,11 @@ public partial class App : Application {
                 })
                 .AddSingleton<QuestionSerializer>()
                 .AddSingleton(mw.StorageProvider)
-                //TODO: Add other file evaluators
                 .BuildServiceProvider();
             
             desktop.MainWindow = mw;
-            services.GetRequiredService<NavigatorService>().Init(mw.MainFrame, services);
+            services.Get<ErrorHandler>().Init(services);
+            services.Get<NavigatorService>().Init(mw.MainFrame, services);
         }
 
         base.OnFrameworkInitializationCompleted();

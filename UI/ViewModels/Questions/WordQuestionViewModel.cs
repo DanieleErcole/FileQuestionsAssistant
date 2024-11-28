@@ -14,27 +14,28 @@ namespace UI.ViewModels.Questions;
 public abstract class WordQuestionViewModel(string name, string desc, IServiceProvider services) : SingleQuestionViewModel(name, desc, services) {
     
     protected override FilePickerFileType FileType => new("Word OpenXML files") {
-        Patterns = new [] { "*.docx" },
-        AppleUniformTypeIdentifiers = new [] { "org.openxmlformats.wordprocessingml.document" },
-        MimeTypes = new [] { "application/vnd.openxmlformats-officedocument.wordprocessingml.document" }
+        Patterns = ["*.docx"],
+        AppleUniformTypeIdentifiers = ["org.openxmlformats.wordprocessingml.document"],
+        MimeTypes = ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
     };
     
-    public override async void UploadFiles() {
+    public override async Task UploadFiles() {
         try {
-            var files = await Task.WhenAll((await OpenFiles())
-                .Select(async f => new WordFile(f.Name, await f.OpenReadAsync()))
+            IFile[] files = await Task.WhenAll((await OpenFiles())
+                .Select(async f => {
+                    try {
+                        return new WordFile(f.Name, await f.OpenReadAsync());
+                    } catch (Exception e) { throw new FileError(f.Name, e); }
+                })
                 .ToArray()
             );
             if (files.Length == 0)
                 return;
 
             _services.GetRequiredService<Evaluator>().AddFiles(Index, files);
-        } catch (UnauthorizedAccessException e) {
+        } catch (FileError e) {
             UIException ex = e;
-            _services.GetRequiredService<WindowNotificationManager>().ShowError("Error opening file", ex.ToString());
-        } catch (Exception e) {
-            UIException ex = e as ApplicationException ?? new ApplicationException(null, e);
-            _services.GetRequiredService<WindowNotificationManager>().ShowError($"Error opening file: {(e as FileError)?.Filename ?? ""}", ex.ToString());
+            _services.GetRequiredService<WindowNotificationManager>().ShowError($"Error opening file: {e.Filename}", ex.ToString());
         }
     }
     

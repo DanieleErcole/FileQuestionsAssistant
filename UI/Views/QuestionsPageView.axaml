@@ -118,6 +118,9 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type questions:SingleQuestionViewModel}">
                             <DockPanel Width="{Binding $parent[ListBoxItem].Width}">
+                                <ToolTip.Tip>
+                                    <TextBlock Text="{Binding Path}"/>
+                                </ToolTip.Tip>
                                 <Svg Path="{Binding Icon}"
                                      DockPanel.Dock="Left"
                                      Margin="10, 0, 0, 0"
