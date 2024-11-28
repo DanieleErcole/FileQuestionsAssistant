@@ -24,7 +24,8 @@ public class QuestionData {
     public QuestionType Type { get; internal set; }
     public required string Name { get; init; }
     public string? Desc { get; init; }
-    
+    public required string Path { get; init; }
+
     public required byte[] OgFile { get; init; }
     public required Dictionary<string, object?> Params { get; init; }
 
@@ -39,9 +40,10 @@ public abstract class AbstractQuestion(QuestionData data) : IQuestion {
 
     public QuestionData Data { get; } = data;
 
-    protected AbstractQuestion(string name, string? desc, string ogFile) : this(new QuestionData {
+    protected AbstractQuestion(string path, string name, string? desc, string ogFile) : this(new QuestionData {
         Name = name,
         Desc = desc,
+        Path = path,
         OgFile = Convert.FromBase64String(ogFile),
         Params = new Dictionary<string, object?>()
     }) {}

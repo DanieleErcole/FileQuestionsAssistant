@@ -8,8 +8,8 @@ namespace Core.Questions.Word;
 
 public class CreateStyleQuestion : AbstractQuestion {
 
-    public CreateStyleQuestion(string name, string? desc, string ogFile, string styleName, string? baseStyleName = null, 
-        string? fontName = null, int? fontSize = null, Color? color = null, string? alignment = null) : base(name, desc, ogFile) {
+    public CreateStyleQuestion(string path, string name, string? desc, string ogFile, string styleName, string? baseStyleName = null, 
+        string? fontName = null, int? fontSize = null, Color? color = null, string? alignment = null) : base(path, name, desc, ogFile) {
         Data.Type = QuestionType.CreateStyleQuestion;
         Params.Add("styleName", styleName);
         Params.Add("baseStyleName", baseStyleName);
