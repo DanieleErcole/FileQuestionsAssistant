@@ -3,10 +3,10 @@ using Core.Questions;
 
 namespace Core.Evaluation; 
 
-public class Evaluator<TFile> where TFile : IFile {
+public class Evaluator {
 
-    public List<IQuestion<TFile>> Questions { get; } = [];
-    public List<List<TFile>> Files { get; } = [];
+    public List<IQuestion> Questions { get; } = [];
+    public List<List<IFile>> Files { get; } = [];
 
     public IEnumerable<Result> Evaluate(int index = 0) {
         if (index >= Questions.Count) 
@@ -18,26 +18,26 @@ public class Evaluator<TFile> where TFile : IFile {
         return Questions[index].Evaluate(Files[index]);
     }
 
-    public void AddQuestion(IQuestion<TFile> question, params TFile[] files) {
+    public void AddQuestion(IQuestion question, params IFile[] files) {
         Questions.Add(question);
         Files.Add(files.Length != 0 ? files.ToList() : []);
     }
 
     public void RemoveQuestion(int index) {
-        if (index > Questions.Count)
+        if (index >= Questions.Count)
             throw new ArgumentOutOfRangeException();
 
         Questions.RemoveAt(index);
         Files.RemoveAt(index);
     }
 
-    public void AddFiles(int index = 0, params TFile[] files) {
+    public void AddFiles(int index = 0, params IFile[] files) {
         if (index >= Files.Count)
             throw new ArgumentOutOfRangeException();
         Files[index].AddRange(files);
     }
 
-    public void SetFiles(int index = 0, params TFile[] files) {
+    public void SetFiles(int index = 0, params IFile[] files) {
         if (index >= Files.Count)
             throw new ArgumentOutOfRangeException();
 

@@ -6,7 +6,7 @@ using Color = System.Drawing.Color;
 
 namespace Core.Questions.Word;
 
-public class CreateStyleQuestion : AbstractQuestion<WordFile> {
+public class CreateStyleQuestion : AbstractQuestion {
 
     public CreateStyleQuestion(string name, string? desc, string ogFile, string styleName, string? baseStyleName = null, 
         string? fontName = null, int? fontSize = null, Color? color = null, string? alignment = null) : base(name, desc, ogFile) {
@@ -21,8 +21,8 @@ public class CreateStyleQuestion : AbstractQuestion<WordFile> {
     
     public CreateStyleQuestion(QuestionData data) : base(data) {}
     
-    public override IEnumerable<Result> Evaluate(IEnumerable<WordFile> files) => 
-        files.Select(file => {
+    public override IEnumerable<Result> Evaluate(IEnumerable<IFile> files) => 
+        files.OfType<WordFile>().Select(file => {
             var baseStyleName = Params.Get<string>("baseStyleName");
             var fontName = Params.Get<string>("fontName");
             var fontSize = Params.Get<int?>("fontSize");
@@ -64,6 +64,7 @@ public class CreateStyleQuestion : AbstractQuestion<WordFile> {
             var ogStyles = ogFile.Styles.Select(styleToDict);
 
             var diff = file.Styles
+                .Where(s => s.Type?.InnerText == "paragraph")
                 .Select(styleToDict)
                 .Where(s => ogStyles.All(x =>
                     s.Get<string>("styleName") != x.Get<string>("styleName") ||

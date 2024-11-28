@@ -28,8 +28,8 @@ public class EvaluatorTests {
         public void Dispose() {}
     }
 
-    internal class MyQuestion : IQuestion<MyFile> {
-        public IEnumerable<Result> Evaluate(IEnumerable<MyFile> files) {
+    internal class MyQuestion : IQuestion {
+        public IEnumerable<Result> Evaluate(IEnumerable<IFile> files) {
             var d = new Dictionary<string, object?>();
             return files.Select(_ => new Result(d, [], true));
         }
@@ -37,13 +37,13 @@ public class EvaluatorTests {
 
     [Test]
     public void Evaluate_ThrowsArgumentOutOfRangeException() {
-        var evaluator = new Evaluator<MyFile>();
+        var evaluator = new Evaluator();
         Assert.Throws<ArgumentOutOfRangeException>(() => evaluator.Evaluate());
     }
 
     [Test]
     public void Evaluate_NoFiles() {
-        var evaluator = new Evaluator<MyFile>();
+        var evaluator = new Evaluator();
         evaluator.AddQuestion(new MyQuestion());
         Assert.Throws<InvalidOperationException>(() => evaluator.Evaluate());
     }
@@ -62,10 +62,10 @@ public class WordTests {
     private static FileStream _wordFile;
     private static byte[] _ogFile;
 
-    private Evaluator<WordFile> _evaluator;
+    private Evaluator _evaluator;
 
     [SetUp]
-    public void Setup() => _evaluator = new Evaluator<WordFile>();
+    public void Setup() => _evaluator = new Evaluator();
 
     [TearDown]
     public void TearDown() => _evaluator.DisposeAllFiles();
@@ -102,9 +102,15 @@ public class WordTests {
     public void WordCreateStyleQuestion_TestCase(string styleName, string? baseStyleName, string? fontName, int? fontSize, int? r, int? g, int? b, string? alignment, bool expectedRes) {
         Color? rgb = r is null || g is null || b is null ? null : Color.FromArgb((int) r, (int) g, (int) b);
         var q = new CreateStyleQuestion("Name", "Description", Convert.ToBase64String(_ogFile), styleName, baseStyleName, fontName, fontSize, rgb, alignment);
+        
         _evaluator.AddQuestion(q, new WordFile(_wordFile.Name, _wordFile));
-
         var res = _evaluator.Evaluate().First();
+        
+        foreach (var p in res.EachParamsWithRes()) {
+            foreach (var (key, value) in p)
+                Console.WriteLine($"{key}: {value}");
+            Console.WriteLine("---------------");
+        }
         Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));
     }
 

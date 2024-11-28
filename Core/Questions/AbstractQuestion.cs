@@ -30,7 +30,7 @@ public class QuestionData {
 
 }
 
-public abstract class AbstractQuestion<TFile>(QuestionData data) : IQuestion<TFile> where TFile : IFile {
+public abstract class AbstractQuestion(QuestionData data) : IQuestion {
     
     public string Name => Data.Name;
     public string? Desc => Data.Desc;
@@ -46,6 +46,6 @@ public abstract class AbstractQuestion<TFile>(QuestionData data) : IQuestion<TFi
         Params = new Dictionary<string, object?>()
     }) {}
 
-    public abstract IEnumerable<Result> Evaluate(IEnumerable<TFile> files);
+    public abstract IEnumerable<Result> Evaluate(IEnumerable<IFile> files);
 
 }
