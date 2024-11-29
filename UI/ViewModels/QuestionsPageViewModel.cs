@@ -20,8 +20,6 @@ namespace UI.ViewModels;
 
 public class QuestionsPageViewModel : PageViewModelBase {
 
-    private readonly IServiceProvider _services;
-
     private string? _searchText;
     public string? SearchText {
         get => _searchText;
@@ -40,9 +38,7 @@ public class QuestionsPageViewModel : PageViewModelBase {
         };
     }
 
-    public QuestionsPageViewModel(IServiceProvider services) {
-        _services = services;
-        
+    public QuestionsPageViewModel(IServiceProvider services) : base(services) {
         var ev = _services.GetRequiredService<Evaluator>();
         var loadedQuestions = _services.GetRequiredService<QuestionSerializer>().LoadTrackedQuestions() ?? [];
         
@@ -56,7 +52,7 @@ public class QuestionsPageViewModel : PageViewModelBase {
                    q.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
         });
     }
-    
+
     public override void OnNavigatedTo() {
         QuestionsSearch.Refresh();
     }
@@ -72,19 +68,18 @@ public class QuestionsPageViewModel : PageViewModelBase {
             
             try {
                 var serializer = _services.Get<QuestionSerializer>();
-                // Add the opened file to the tracked ones
-                await serializer.AddTrackedQuestion(files[0]);
-                // Load the question file
-                if (await serializer.Load(files[0]) is { } q)
+                if (await serializer.Load(files[0]) is { } q) {
+                    await serializer.AddTrackedQuestion(files[0]);
                     _services.Get<Evaluator>().AddQuestion(q);
+                    
+                    QuestionsSearch.Refresh();
+                    // Test
+                    _services.Get<WindowNotificationManager>()
+                        .Show(new Notification("Opened a question", $"Opened question file: {files[0].Name} and added to the tracked files"));
+                }
             } catch (Exception e) {
                 _services.Get<ErrorHandler>().ShowError(e);
-                return;
             }
-            
-            QuestionsSearch.Refresh();
-            _services.Get<WindowNotificationManager>()
-                .Show(new Notification("Opened a question", $"Opened question file: {files[0].Name} and added to the tracked files"));
             //_services.GetRequiredService<NavigatorService>().NavigateTo(NavigatorService.Results);
         }
 
@@ -101,7 +96,6 @@ public class QuestionsPageViewModel : PageViewModelBase {
                 //TODO: handle the case where the tracked questions file is deleted while running the application
                 //TODO: add exceptions matching the current implemented error cases
                 _services.Get<ErrorHandler>().ShowError(e);
-                //_services.Get<WindowNotificationManager>().ShowError("Unable to untrack question", $"Error while opening {e.Filename}");
             }
             QuestionsSearch.Refresh();
         }

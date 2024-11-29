@@ -1,7 +1,4 @@
 ﻿
-
-using System;
-
 namespace UI.ViewModels.Dialogs;
 
 public class DialogViewModel : ViewModelBase {

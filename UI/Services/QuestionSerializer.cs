@@ -114,6 +114,8 @@ public class QuestionSerializer {
             await using var stream = await file.OpenReadAsync();
             using var streamReader = new StreamReader(stream);
             return JsonSerializer.Deserialize<AbstractQuestion>(await streamReader.ReadToEndAsync(), _options);
+        } catch (JsonException _) {
+            throw new InvalidFileFormat(file.Name);
         } catch (Exception e) {
             throw new FileError(file.Name, e);
         }

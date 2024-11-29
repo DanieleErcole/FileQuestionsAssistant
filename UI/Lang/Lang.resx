@@ -33,9 +33,6 @@
     <data name="InvalidFileFormatMsg" xml:space="preserve">
         <value>Invalid file format: malformed file</value>
     </data>
-    <data name="ErrorDialogTitle" xml:space="preserve">
-        <value>Error</value>
-    </data>
     <data name="QuestionsTab" xml:space="preserve">
         <value>Your questions</value>
     </data>
@@ -56,5 +53,32 @@
     </data>
     <data name="ImportQuestionBtnDesc" xml:space="preserve">
         <value>Import a local question file</value>
+    </data>
+    <data name="NewQuestionTab" xml:space="preserve">
+        <value>New question</value>
+    </data>
+    <data name="ErrorOpeningFilename" xml:space="preserve">
+        <value>Error opening file</value>
+    </data>
+    <data name="UnableToOpenQuestion" xml:space="preserve">
+        <value>Unable to open question</value>
+    </data>
+    <data name="UnableToOpenQuestionDesc" xml:space="preserve">
+        <value>Question already tracked</value>
+    </data>
+    <data name="UnableToAccessFile" xml:space="preserve">
+        <value>Unable to access the file</value>
+    </data>
+    <data name="NoPermissionDesc" xml:space="preserve">
+        <value>You do not have permission to access this file</value>
+    </data>
+    <data name="UnknownError" xml:space="preserve">
+        <value>An unknown error occurred</value>
+    </data>
+    <data name="SearchPlaceholder" xml:space="preserve">
+        <value>Search</value>
+    </data>
+    <data name="ChooseQuestionTypeText" xml:space="preserve">
+        <value>Choose question type</value>
     </data>
 </root>

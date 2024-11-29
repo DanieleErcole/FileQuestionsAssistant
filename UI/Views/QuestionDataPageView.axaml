@@ -4,11 +4,49 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:viewModels="clr-namespace:UI.ViewModels"
+             xmlns:lang="clr-namespace:UI.Lang"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="UI.Views.QuestionDataPageView"
              x:DataType="viewModels:QuestionDataPageViewModel">
-    <Button Command="{Binding AddQuestionTest}">
-        <controls:SymbolIcon Symbol="Add"
-                             FontSize="30"/>
-    </Button>
+    <UserControl.Styles>
+        <Style Selector="Button">
+            <Setter Property="Cursor" Value="Hand"></Setter>
+        </Style>
+        <Style Selector="ListBoxItem">
+            <Setter Property="Cursor" Value="Hand"></Setter>
+        </Style>
+    </UserControl.Styles>
+    
+    <DockPanel x:Name="PageContainer"
+               Height="{Binding $parent[StackPanel].Height}">
+        <StackPanel DockPanel.Dock="Top" 
+                    Orientation="Horizontal">
+            <Button Margin="20, 10, 0, 20"
+                    HorizontalAlignment="Left"
+                    Command="{Binding ToQuestionPage}">
+                <controls:SymbolIcon Symbol="Back" FontSize="20"/>
+            </Button>
+            <TextBlock Margin="20, 10, 0, 20"
+                       HorizontalAlignment="Left"
+                       Theme="{StaticResource SubtitleTextBlockStyle}"
+                       Text="{x:Static lang:Lang.NewQuestionTab}"/>
+        </StackPanel>
+        <DropDownButton DockPanel.Dock="Top"
+                        Margin="30, 0, 0, 0"
+                        Content="{Binding FormType}">
+            <DropDownButton.Flyout>
+                <controls:FAMenuFlyout>
+                    <controls:MenuFlyoutItem Command="{Binding SelectQuestionType}" 
+                                             CommandParameter="0"
+                                             Text="{x:Static lang:Lang.CreateStyleQuestionName}"/>
+                </controls:FAMenuFlyout>
+            </DropDownButton.Flyout>
+        </DropDownButton>
+        
+        <ScrollViewer DockPanel.Dock="Top" 
+                      Margin="20">
+            <ContentControl Content="{Binding Content}"/>
+        </ScrollViewer>
+        
+    </DockPanel>
 </UserControl>

@@ -1,5 +1,10 @@
-﻿namespace UI.ViewModels;
+﻿using System;
 
-public abstract class PageViewModelBase : ViewModelBase {
+namespace UI.ViewModels;
+
+public abstract class PageViewModelBase(IServiceProvider services) : ViewModelBase {
+    
+    protected readonly IServiceProvider _services = services;
+
     public abstract void OnNavigatedTo();
 }

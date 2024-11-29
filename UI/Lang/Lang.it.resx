@@ -26,9 +26,6 @@
     <data name="InvalidFileFormatMsg" xml:space="preserve">
         <value>Formato file non valido</value>
     </data>
-    <data name="ErrorDialogTitle" xml:space="preserve">
-        <value>Errore</value>
-    </data>
     <data name="QuestionsTab" xml:space="preserve">
         <value>Let tue domande</value>
     </data>
@@ -49,5 +46,32 @@
     </data>
     <data name="ImportQuestionBtnDesc" xml:space="preserve">
         <value>Importa una domanda da file</value>
+    </data>
+    <data name="NewQuestionTab" xml:space="preserve">
+        <value>Crea domanda</value>
+    </data>
+    <data name="ErrorOpeningFilename" xml:space="preserve">
+        <value>Errore durante l'apertura del file</value>
+    </data>
+    <data name="UnableToOpenQuestion" xml:space="preserve">
+        <value>Impossibile aprire la domanda</value>
+    </data>
+    <data name="UnableToOpenQuestionDesc" xml:space="preserve">
+        <value>La domanda è già presente</value>
+    </data>
+    <data name="UnableToAccessFile" xml:space="preserve">
+        <value>Impossibile accedere al file</value>
+    </data>
+    <data name="NoPermissionDesc" xml:space="preserve">
+        <value>Non hai l'autorizzazione per accedere a questo file</value>
+    </data>
+    <data name="UnknownError" xml:space="preserve">
+        <value>Errore sconosciuto</value>
+    </data>
+    <data name="SearchPlaceholder" xml:space="preserve">
+        <value>Cerca</value>
+    </data>
+    <data name="ChooseQuestionTypeText" xml:space="preserve">
+        <value>Scegli il tipo di domanda</value>
     </data>
 </root>

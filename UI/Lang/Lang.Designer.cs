@@ -78,6 +78,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose question type.
+        /// </summary>
+        public static string ChooseQuestionTypeText {
+            get {
+                return ResourceManager.GetString("ChooseQuestionTypeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checks if a style with the specified properties exists in the document.
         /// </summary>
         public static string CreateStyleQuestionDesc {
@@ -96,11 +105,11 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
+        ///   Looks up a localized string similar to Error opening file.
         /// </summary>
-        public static string ErrorDialogTitle {
+        public static string ErrorOpeningFilename {
             get {
-                return ResourceManager.GetString("ErrorDialogTitle", resourceCulture);
+                return ResourceManager.GetString("ErrorOpeningFilename", resourceCulture);
             }
         }
         
@@ -141,6 +150,24 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New question.
+        /// </summary>
+        public static string NewQuestionTab {
+            get {
+                return ResourceManager.GetString("NewQuestionTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You do not have permission to access this file.
+        /// </summary>
+        public static string NoPermissionDesc {
+            get {
+                return ResourceManager.GetString("NoPermissionDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your questions.
         /// </summary>
         public static string QuestionsTab {
@@ -168,11 +195,56 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SearchPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove question from the list.
         /// </summary>
         public static string ToolTipRemoveButton {
             get {
                 return ResourceManager.GetString("ToolTipRemoveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to access the file.
+        /// </summary>
+        public static string UnableToAccessFile {
+            get {
+                return ResourceManager.GetString("UnableToAccessFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to open question.
+        /// </summary>
+        public static string UnableToOpenQuestion {
+            get {
+                return ResourceManager.GetString("UnableToOpenQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Question already tracked.
+        /// </summary>
+        public static string UnableToOpenQuestionDesc {
+            get {
+                return ResourceManager.GetString("UnableToOpenQuestionDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unknown error occurred.
+        /// </summary>
+        public static string UnknownError {
+            get {
+                return ResourceManager.GetString("UnknownError", resourceCulture);
             }
         }
     }

@@ -10,17 +10,20 @@ public class UIException(string title, string desc, Exception? inner = null) : E
     public string Desc { get; } = desc;
 
     public static UIException FromException(Exception e) {
-        return new UIException("Unknown error", e.InnerException?.Message ?? "");
+        return e switch {
+            ApplicationException appEx => appEx,
+            _ => new UIException(Lang.Lang.UnknownError, e.InnerException?.Message ?? "")
+        };
     }
 
     public static implicit operator UIException(ApplicationException ex) {
         return ex switch {
-            InvalidFileFormat => new UIException("Error opening file", Lang.Lang.InvalidFileFormatMsg),
+            InvalidFileFormat => new UIException(Lang.Lang.ErrorOpeningFilename, Lang.Lang.InvalidFileFormatMsg),
             FileError other => other.InnerException switch {
-                UnauthorizedAccessException => new UIException("Unable to access the file", "You do not have permission to access this file"),
-                _ => new UIException($"Error opening file: {other.Filename}", other.InnerException?.Message ?? "")
+                UnauthorizedAccessException => new UIException(Lang.Lang.UnableToAccessFile, Lang.Lang.NoPermissionDesc),
+                _ => new UIException(Lang.Lang.ErrorOpeningFilename + $": {other.Filename}", other.InnerException?.Message ?? "")
             },
-            _ => new UIException("Unknown error", ex.InnerException?.Message ?? "")
+            _ => new UIException(Lang.Lang.UnknownError, ex.InnerException?.Message ?? "")
         };
     }
 
@@ -30,4 +33,4 @@ public class UIException(string title, string desc, Exception? inner = null) : E
     
 }
 
-public class UnableToOpenQuestion() : UIException("Unable to open question", "Question already tracked");
+public class UnableToOpenQuestion() : UIException(Lang.Lang.UnableToOpenQuestion, Lang.Lang.UnableToOpenQuestionDesc);

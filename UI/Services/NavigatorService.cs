@@ -36,7 +36,7 @@ public class NavigatorService {
         _pages = [
             new QuestionsPageViewModel(services),
             new QuestionDataPageViewModel(services),
-            new ResultsPageViewModel()
+            new ResultsPageViewModel(services)
         ];
         NavigateTo(Questions);
     }

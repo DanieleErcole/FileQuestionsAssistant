@@ -1,23 +1,50 @@
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
-using Avalonia.Controls.Notifications;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.Questions.Word;
 using Core.Utils.Errors;
-using Microsoft.Extensions.DependencyInjection;
+using ReactiveUI;
 using UI.Services;
+using UI.ViewModels.QuestionForms;
 using UI.ViewModels.Questions;
 
 namespace UI.ViewModels;
 
-public class QuestionDataPageViewModel : PageViewModelBase {
-    
-    private readonly IServiceProvider _services;
+public class QuestionDataPageViewModel(IServiceProvider services) : PageViewModelBase(services) {
 
-    public QuestionDataPageViewModel(IServiceProvider services) {
-        _services = services;
+    private string _formType = Lang.Lang.ChooseQuestionTypeText;
+    public string FormType {
+        get => _formType;
+        set => this.RaiseAndSetIfChanged(ref _formType, value);
+    }
+    
+    private ViewModelBase? _content;
+    public ViewModelBase? Content {
+        get => _content;
+        set => this.RaiseAndSetIfChanged(ref _content, value);
+    }
+
+    public override void OnNavigatedTo() {
+        FormType = Lang.Lang.ChooseQuestionTypeText;
+        Content = null;
+    }
+
+    public void ToQuestionPage() {
+        _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
+    }
+
+    public void SelectQuestionType(int index) {
+        Content = index switch {
+            0 => new CreateStyleQuestionFormViewModel(),
+            _ => throw new UnreachableException()
+        };
+        FormType = index switch {
+            0 => Lang.Lang.CreateStyleQuestionName,
+            _ => throw new UnreachableException()
+        };
     }
     
     public async Task AddQuestionTest() {
@@ -43,9 +70,6 @@ public class QuestionDataPageViewModel : PageViewModelBase {
             }
             _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
         }
-    }
-
-    public override void OnNavigatedTo() {
     }
     
 }
