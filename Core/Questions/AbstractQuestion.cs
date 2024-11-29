@@ -1,5 +1,7 @@
-﻿using Core.Evaluation;
+﻿using System.Text.Json.Serialization;
+using Core.Evaluation;
 using Core.FileHandling;
+using Core.Questions.Word;
 
 namespace Core.Questions;
 
@@ -15,38 +17,33 @@ public static class ParamsExtensions {
     }
 }
 
-public enum QuestionType {
-    CreateStyleQuestion,
-}
-
-public class QuestionData {
-
-    public QuestionType Type { get; internal set; }
-    public required string Name { get; init; }
-    public string? Desc { get; init; }
-    public required string Path { get; init; }
-
-    public required byte[] OgFile { get; init; }
-    public required Dictionary<string, object?> Params { get; init; }
-
-}
-
-public abstract class AbstractQuestion(QuestionData data) : IQuestion {
+//TODO: add other question types
+[JsonDerivedType(typeof(CreateStyleQuestion), typeDiscriminator: 0)]
+public abstract class AbstractQuestion : IQuestion {
     
-    public string Name => Data.Name;
-    public string? Desc => Data.Desc;
-    protected byte[] OgFile => Data.OgFile;
-    protected Dictionary<string, object?> Params => Data.Params;
+    public string Name { get; set; }
+    public string? Desc { get; set; }
+    public string Path { get; set; }
+    public byte[] OgFile { get; set; }
+    
+    [JsonInclude]
+    protected Dictionary<string, object?> Params = new();
 
-    public QuestionData Data { get; } = data;
+    [JsonConstructor]
+    public AbstractQuestion(string name, string desc, string path, byte[] ogFile, Dictionary<string, object?> Params) {
+        Name = name;
+        Desc = desc;
+        Path = path;
+        OgFile = ogFile;
+        this.Params = Params;
+    }
 
-    protected AbstractQuestion(string path, string name, string? desc, string ogFile) : this(new QuestionData {
-        Name = name,
-        Desc = desc,
-        Path = path,
-        OgFile = Convert.FromBase64String(ogFile),
-        Params = new Dictionary<string, object?>()
-    }) {}
+    protected AbstractQuestion(string path, string name, string? desc, string ogFile) {
+        Name = name;
+        Desc = desc;
+        Path = path;
+        OgFile = Convert.FromBase64String(ogFile);
+    }
 
     public abstract IEnumerable<Result> Evaluate(IEnumerable<IFile> files);
 

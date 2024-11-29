@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions;
@@ -29,7 +31,10 @@ public class EvaluatorTests {
     }
 
     internal class MyQuestion : IQuestion {
-        public QuestionData Data { get; }
+        public string Name { get; set; }
+        public string? Desc { get; set; }
+        public string Path { get; set; }
+        public byte[] OgFile { get; set; }
 
         public IEnumerable<Result> Evaluate(IEnumerable<IFile> files) {
             var d = new Dictionary<string, object?>();
@@ -48,6 +53,30 @@ public class EvaluatorTests {
         var evaluator = new Evaluator();
         evaluator.AddQuestion(new MyQuestion());
         Assert.Throws<InvalidOperationException>(() => evaluator.Evaluate());
+    }
+
+    public class TestClass {
+        public string Name { get; set; }
+        public string Desc { get; set; }
+
+        [JsonConstructor]
+        public TestClass(string name, string desc) {
+            Name = name;
+            Desc = desc;
+        }
+        
+        public TestClass(TestClass other) {
+            Name = other.Name;
+            Desc = other.Desc;
+        }
+    }
+    
+    [Test]
+    public void Serializer_test() {
+        var test = new TestClass("Ciao", "Ciao");
+        var json = JsonSerializer.Serialize(test);
+        var deserialized = JsonSerializer.Deserialize<TestClass>(json);
+        Assert.That(deserialized?.Name, Is.EqualTo(test.Name));
     }
 
 }
@@ -114,6 +143,15 @@ public class WordTests {
             Console.WriteLine("---------------");
         }
         Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));
+    }
+
+    [Test]
+    public void WordCreateStyleQuestion_polymorphic_serialization() {
+        AbstractQuestion q = new CreateStyleQuestion("", "Name", "Description", Convert.ToBase64String(_ogFile), "styleName", 
+            "baseStyleName", "fontName", 12, Color.Blue, "alignment");
+        var json = JsonSerializer.Serialize(q);
+        var deserialized = JsonSerializer.Deserialize<AbstractQuestion>(json);
+        Assert.That(deserialized is CreateStyleQuestion, Is.EqualTo(true));
     }
 
 }

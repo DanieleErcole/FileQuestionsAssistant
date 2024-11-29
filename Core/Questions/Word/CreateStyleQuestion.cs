@@ -1,4 +1,5 @@
-﻿using Core.Evaluation;
+﻿using System.Text.Json.Serialization;
+using Core.Evaluation;
 using Core.FileHandling;
 using Core.Utils;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -10,7 +11,6 @@ public class CreateStyleQuestion : AbstractQuestion {
 
     public CreateStyleQuestion(string path, string name, string? desc, string ogFile, string styleName, string? baseStyleName = null, 
         string? fontName = null, int? fontSize = null, Color? color = null, string? alignment = null) : base(path, name, desc, ogFile) {
-        Data.Type = QuestionType.CreateStyleQuestion;
         Params.Add("styleName", styleName);
         Params.Add("baseStyleName", baseStyleName);
         Params.Add("fontName", fontName);
@@ -19,7 +19,9 @@ public class CreateStyleQuestion : AbstractQuestion {
         Params.Add("alignment", alignment);
     }
     
-    public CreateStyleQuestion(QuestionData data) : base(data) {}
+    [JsonConstructor]
+    public CreateStyleQuestion(string name, string desc, string path, byte[] ogFile, Dictionary<string, object?> Params) 
+        : base(name, desc, path, ogFile, Params) {}
     
     public override IEnumerable<Result> Evaluate(IEnumerable<IFile> files) => 
         files.OfType<WordFile>().Select(file => {

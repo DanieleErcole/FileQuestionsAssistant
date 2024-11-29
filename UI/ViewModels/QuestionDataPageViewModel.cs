@@ -35,7 +35,7 @@ public class QuestionDataPageViewModel : PageViewModelBase {
                 var ev = _services.Get<Evaluator>();
                 if (await _services.Get<QuestionSerializer>().Create(file, q))
                     // if you overwrote a file first remove from the evaluator list the question with the same path (the overwritten one)
-                    ev.RemoveQuestion(ev.Questions.FindIndex(x => x.Data.Path == path));
+                    ev.RemoveQuestion(ev.Questions.FindIndex(x => x.Path == path));
                 ev.AddQuestion(q);
             } catch (FileError e) {
                 _services.Get<ErrorHandler>().ShowError(e);
