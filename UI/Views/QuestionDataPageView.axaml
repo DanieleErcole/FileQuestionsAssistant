@@ -12,6 +12,9 @@
         <Style Selector="Button">
             <Setter Property="Cursor" Value="Hand"></Setter>
         </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Cursor" Value="Hand"></Setter>
+        </Style>
         <Style Selector="ListBoxItem">
             <Setter Property="Cursor" Value="Hand"></Setter>
         </Style>
@@ -35,17 +38,16 @@
                 <controls:SymbolIcon Symbol="Add"/>
             </Button>-->
         </StackPanel>
-        <DropDownButton DockPanel.Dock="Top"
-                        Margin="30, 0, 0, 0"
-                        Content="{Binding FormType}">
-            <DropDownButton.Flyout>
-                <controls:FAMenuFlyout>
-                    <controls:MenuFlyoutItem Command="{Binding SelectQuestionType}" 
-                                             CommandParameter="0"
-                                             Text="{x:Static lang:Lang.CreateStyleQuestionName}"/>
-                </controls:FAMenuFlyout>
-            </DropDownButton.Flyout>
-        </DropDownButton>
+        <TextBlock DockPanel.Dock="Top"
+                   Margin="30, 0, 0, 0"
+                   Text="{x:Static lang:Lang.ChooseQuestionTypeText}"/>
+        <ComboBox DockPanel.Dock="Top"
+                  Margin="30, 10, 0, 0"
+                  Width="200"
+                  MaxDropDownHeight="200"
+                  SelectedIndex="{Binding SelectedIndex}">
+            <ComboBoxItem Content="{x:Static lang:Lang.CreateStyleQuestionName}"/>
+        </ComboBox>
         
         <ScrollViewer DockPanel.Dock="Top" 
                       Margin="20">

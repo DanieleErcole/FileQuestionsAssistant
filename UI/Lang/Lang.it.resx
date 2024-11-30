@@ -72,6 +72,6 @@
         <value>Cerca</value>
     </data>
     <data name="ChooseQuestionTypeText" xml:space="preserve">
-        <value>Scegli il tipo di domanda</value>
+        <value>Tipo di domanda</value>
     </data>
 </root>

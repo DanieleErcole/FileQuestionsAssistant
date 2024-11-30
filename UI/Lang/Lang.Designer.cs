@@ -78,7 +78,7 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose question type.
+        ///   Looks up a localized string similar to Question type.
         /// </summary>
         public static string ChooseQuestionTypeText {
             get {

@@ -14,10 +14,16 @@ namespace UI.ViewModels;
 
 public class QuestionDataPageViewModel(IServiceProvider services) : PageViewModelBase(services) {
 
-    private string _formType = Lang.Lang.ChooseQuestionTypeText;
-    public string FormType {
-        get => _formType;
-        set => this.RaiseAndSetIfChanged(ref _formType, value);
+    private int _selectedIndex;
+    public int SelectedIndex {
+        get => _selectedIndex;
+        set {
+            _selectedIndex = value;
+            Content = _selectedIndex switch {
+                0 => new CreateStyleQuestionFormViewModel(),
+                _ => null
+            };
+        }
     }
     
     private ViewModelBase? _content;
@@ -27,23 +33,11 @@ public class QuestionDataPageViewModel(IServiceProvider services) : PageViewMode
     }
 
     public override void OnNavigatedTo() {
-        FormType = Lang.Lang.ChooseQuestionTypeText;
-        Content = null;
+        SelectedIndex = 0;
     }
 
     public void ToQuestionPage() {
         _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
-    }
-
-    public void SelectQuestionType(int index) {
-        Content = index switch {
-            0 => new CreateStyleQuestionFormViewModel(),
-            _ => throw new UnreachableException()
-        };
-        FormType = index switch {
-            0 => Lang.Lang.CreateStyleQuestionName,
-            _ => throw new UnreachableException()
-        };
     }
     
     public async Task AddQuestionTest() {
