@@ -24,6 +24,8 @@ public class UtilsTests {
 
 [TestFixture]
 public class EvaluatorTests {
+    
+    private Evaluator _evaluator;
 
     internal class MyFile : IFile {
         public string Name { get; } = "MyFile";
@@ -41,42 +43,26 @@ public class EvaluatorTests {
             return files.Select(_ => new Result(d, [], true));
         }
     }
+    
+    [SetUp]
+    public void Setup() => _evaluator = new Evaluator();
 
     [Test]
     public void Evaluate_ThrowsArgumentOutOfRangeException() {
-        var evaluator = new Evaluator();
-        Assert.Throws<ArgumentOutOfRangeException>(() => evaluator.Evaluate());
+        Assert.Throws<ArgumentOutOfRangeException>(() => _evaluator.Evaluate());
     }
 
     [Test]
     public void Evaluate_NoFiles() {
-        var evaluator = new Evaluator();
-        evaluator.AddQuestion(new MyQuestion());
-        Assert.Throws<InvalidOperationException>(() => evaluator.Evaluate());
+        _evaluator.AddQuestion(new MyQuestion());
+        Assert.Throws<InvalidOperationException>(() => _evaluator.Evaluate());
     }
 
-    public class TestClass {
-        public string Name { get; set; }
-        public string Desc { get; set; }
-
-        [JsonConstructor]
-        public TestClass(string name, string desc) {
-            Name = name;
-            Desc = desc;
-        }
-        
-        public TestClass(TestClass other) {
-            Name = other.Name;
-            Desc = other.Desc;
-        }
-    }
-    
     [Test]
-    public void Serializer_test() {
-        var test = new TestClass("Ciao", "Ciao");
-        var json = JsonSerializer.Serialize(test);
-        var deserialized = JsonSerializer.Deserialize<TestClass>(json);
-        Assert.That(deserialized?.Name, Is.EqualTo(test.Name));
+    public void Evaluate_AddQuestion() {
+        _evaluator.AddQuestion(new MyQuestion());
+        _evaluator.AddQuestion(new MyQuestion());
+        Assert.That(_evaluator.Files, Has.Count.EqualTo(_evaluator.Questions.Count));
     }
 
 }

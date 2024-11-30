@@ -2,7 +2,7 @@
 using Avalonia.Controls.Notifications;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace UI.ViewModels.Questions;
+namespace UI.Services;
 
 public class ErrorHandler {
 
@@ -13,6 +13,7 @@ public class ErrorHandler {
     }
 
     public void ShowError(Exception ex) {
+        Console.WriteLine(ex);
         var err = ex as UIException ?? UIException.FromException(ex);
         _services.GetRequiredService<WindowNotificationManager>().ShowError(err.Title, err.Desc);
     }

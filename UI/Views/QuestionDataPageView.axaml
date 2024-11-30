@@ -23,6 +23,7 @@
                     Orientation="Horizontal">
             <Button Margin="20, 10, 0, 20"
                     HorizontalAlignment="Left"
+                    Theme="{StaticResource TransparentButton}"
                     Command="{Binding ToQuestionPage}">
                 <controls:SymbolIcon Symbol="Back" FontSize="20"/>
             </Button>
@@ -30,6 +31,9 @@
                        HorizontalAlignment="Left"
                        Theme="{StaticResource SubtitleTextBlockStyle}"
                        Text="{x:Static lang:Lang.NewQuestionTab}"/>
+            <!--<Button Command="{Binding AddQuestionTest}">
+                <controls:SymbolIcon Symbol="Add"/>
+            </Button>-->
         </StackPanel>
         <DropDownButton DockPanel.Dock="Top"
                         Margin="30, 0, 0, 0"
