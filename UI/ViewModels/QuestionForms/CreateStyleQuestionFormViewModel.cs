@@ -1,5 +1,9 @@
-﻿namespace UI.ViewModels.QuestionForms;
+﻿using Core.Questions;
 
-public class CreateStyleQuestionFormViewModel : ViewModelBase {
-    
+namespace UI.ViewModels.QuestionForms;
+
+public class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
+    public override AbstractQuestion CreateQuestion() {
+        throw new System.NotImplementedException();
+    }
 }

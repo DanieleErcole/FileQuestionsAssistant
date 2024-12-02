@@ -39,8 +39,8 @@ public class QuestionsPageViewModel : PageViewModelBase {
     }
 
     public QuestionsPageViewModel(IServiceProvider services) : base(services) {
-        var ev = _services.GetRequiredService<Evaluator>();
-        var loadedQuestions = _services.GetRequiredService<QuestionSerializer>().LoadTrackedQuestions() ?? [];
+        var ev = _services.Get<Evaluator>();
+        var loadedQuestions = _services.Get<QuestionSerializer>().LoadTrackedQuestions() ?? [];
         
         foreach (var q in loadedQuestions)
             ev.AddQuestion(q);

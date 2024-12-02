@@ -49,6 +49,13 @@
             <ComboBoxItem Content="{x:Static lang:Lang.CreateStyleQuestionName}"/>
         </ComboBox>
         
+        <Panel DockPanel.Dock="Bottom"
+               Margin="0, 0, 20, 20">
+            <Button HorizontalAlignment="Right" 
+                    Classes="accent" 
+                    Content="Create"/>
+        </Panel>
+        
         <ScrollViewer DockPanel.Dock="Top" 
                       Margin="20">
             <ContentControl Content="{Binding Content}"/>

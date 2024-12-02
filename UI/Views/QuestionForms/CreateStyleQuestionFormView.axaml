@@ -4,10 +4,89 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:questionForms="clr-namespace:UI.ViewModels.QuestionForms"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:lang="clr-namespace:UI.Lang"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="questionForms:CreateStyleQuestionFormViewModel"
              x:Class="UI.Views.QuestionForms.CreateStyleQuestionFormView">
     <StackPanel>
         <controls:InfoBar Title="" IsOpen="True" Severity="Error" Message="There was an error with the fields"/>
+        <Grid ColumnDefinitions="*, *, *"
+              Margin="20, 20, 20, 0">
+            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
+                <TextBlock Margin="2, 0, 0, 3" 
+                           Text="Question name" />
+                <TextBox Width="200"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
+                <TextBlock Margin="2, 0, 0, 3"
+                           Text="Original file"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Upload" />
+                    <TextBlock VerticalAlignment="Center"
+                               Margin="10, 0, 0, 0"
+                               Text="{x:Static lang:Lang.FilesSelected}" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">
+                <TextBlock Margin="2, 0, 0, 3"
+                           Text="Question Description"/>
+                <TextBox Width="230" 
+                         TextWrapping="Wrap"/>
+            </StackPanel>
+        </Grid>
+        <StackPanel Margin="20">
+            <TextBlock Margin="2, 0, 0, 3"
+                       Text="Location"/>
+            <Grid ColumnDefinitions="3*, *">
+                <Panel Grid.Column="0">
+                    <TextBox />
+                </Panel>
+                <Button Grid.Column="1" DockPanel.Dock="Left" Margin="15 0, 0, 0">
+                    <controls:SymbolIcon Symbol="More"/>
+                </Button>
+            </Grid>
+        </StackPanel>
+        <Separator Margin="20,0, 20, 20"/>
+        <Grid ColumnDefinitions="*, *, *"
+              RowDefinitions="*, *"
+              Margin="20, 0, 20, 0">
+            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
+                <TextBlock Margin="2, 0, 0, 5" 
+                           Text="Style name" />
+                <TextBox Width="200"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
+                <TextBlock Margin="2, 0, 0, 5" 
+                           Text="Based on" />
+                <ComboBox Width="200"></ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">
+                <TextBlock Margin="2, 0, 0, 5" 
+                           Text="Font name" />
+                <ComboBox Width="200"></ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"
+                        Margin="0, 20, 0, 0">
+                <TextBlock Margin="2, 0, 0, 5" 
+                           Text="Alignment" />
+                <ComboBox Width="200">
+                    <ComboBoxItem Content="left"/>
+                    <ComboBoxItem Content="right"/>
+                    <ComboBoxItem Content="center"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"
+                        Margin="0, 20, 0, 0">
+                <TextBlock Margin="2, 0, 0, 5" 
+                           Text="Color" />
+                <controls:ColorPickerButton/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right"
+                        Margin="0, 20, 0, 0">
+                <TextBlock Margin="2, 0, 0, 5" 
+                           Text="Font size"/>
+                <controls:NumberBox Width="200"/>
+            </StackPanel>
+        </Grid>
     </StackPanel>
 </UserControl>

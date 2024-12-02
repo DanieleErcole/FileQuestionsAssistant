@@ -26,8 +26,8 @@ public class QuestionDataPageViewModel(IServiceProvider services) : PageViewMode
         }
     }
     
-    private ViewModelBase? _content;
-    public ViewModelBase? Content {
+    private QuestionFormBaseVM? _content;
+    public QuestionFormBaseVM? Content {
         get => _content;
         set => this.RaiseAndSetIfChanged(ref _content, value);
     }
@@ -38,6 +38,12 @@ public class QuestionDataPageViewModel(IServiceProvider services) : PageViewMode
 
     public void ToQuestionPage() {
         _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
+    }
+
+    public async Task NewQuestion() {
+        var q = Content?.CreateQuestion();
+        if (q is null) return;
+        //TODO: add the question and save the file
     }
     
     public async Task AddQuestionTest() {
