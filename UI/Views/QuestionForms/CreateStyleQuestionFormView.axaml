@@ -9,39 +9,50 @@
              x:DataType="questionForms:CreateStyleQuestionFormViewModel"
              x:Class="UI.Views.QuestionForms.CreateStyleQuestionFormView">
     <StackPanel>
-        <controls:InfoBar Title="" IsOpen="True" Severity="Error" Message="There was an error with the fields"/>
+        <controls:InfoBar CloseButtonCommand="{Binding CloseErr}"
+                          IsOpen="{Binding IsError}" 
+                          Severity="Error" 
+                          Message="{Binding ErrorMsg}"/>
         <Grid ColumnDefinitions="*, *, *"
               Margin="20, 20, 20, 0">
-            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
+            <StackPanel Grid.Row="0" Grid.Column="0" 
+                        HorizontalAlignment="Left">
                 <TextBlock Margin="2, 0, 0, 3" 
-                           Text="Question name" />
-                <TextBox Width="200"/>
+                           Text="{x:Static lang:Lang.QuestionNameLabel}"/>
+                <TextBox Width="200" Text="{Binding Name}"/>
             </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="0" Grid.Column="1" 
+                        HorizontalAlignment="Center">
                 <TextBlock Margin="2, 0, 0, 3"
-                           Text="Original file"/>
+                           Text="{x:Static lang:Lang.OGFileLabel}"/>
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="Upload" />
+                    <Button Content="Upload"
+                            Command="{Binding UploadOgFile}"/>
                     <TextBlock VerticalAlignment="Center"
                                Margin="10, 0, 0, 0"
-                               Text="{x:Static lang:Lang.FilesSelected}" />
+                               Text="{Binding Filename}" />
                 </StackPanel>
             </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">
+            <StackPanel Grid.Row="0" Grid.Column="2" 
+                        HorizontalAlignment="Right">
                 <TextBlock Margin="2, 0, 0, 3"
-                           Text="Question Description"/>
+                           Text="{x:Static lang:Lang.QuestionDescLabel}"/>
                 <TextBox Width="230" 
-                         TextWrapping="Wrap"/>
+                         TextWrapping="Wrap"
+                         Text="{Binding Desc}"/>
             </StackPanel>
         </Grid>
         <StackPanel Margin="20">
             <TextBlock Margin="2, 0, 0, 3"
-                       Text="Location"/>
+                       Text="{x:Static lang:Lang.PathLabel}"/>
             <Grid ColumnDefinitions="3*, *">
                 <Panel Grid.Column="0">
-                    <TextBox />
+                    <TextBox Text="{Binding Path}"/>
                 </Panel>
-                <Button Grid.Column="1" DockPanel.Dock="Left" Margin="15 0, 0, 0">
+                <Button Grid.Column="1" 
+                        DockPanel.Dock="Left" 
+                        Margin="15 0, 0, 0"
+                        Command="{Binding LoadLocation}">
                     <controls:SymbolIcon Symbol="More"/>
                 </Button>
             </Grid>
@@ -50,42 +61,56 @@
         <Grid ColumnDefinitions="*, *, *"
               RowDefinitions="*, *"
               Margin="20, 0, 20, 0">
-            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
+            <StackPanel Grid.Row="0" Grid.Column="0" 
+                        HorizontalAlignment="Left">
                 <TextBlock Margin="2, 0, 0, 5" 
-                           Text="Style name" />
-                <TextBox Width="200"/>
+                           Text="{x:Static lang:Lang.StyleNameLabel}"/>
+                <TextBox Width="200" Text="{Binding StyleName}"/>
             </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="0" Grid.Column="1" 
+                        HorizontalAlignment="Center">
                 <TextBlock Margin="2, 0, 0, 5" 
-                           Text="Based on" />
-                <ComboBox Width="200"></ComboBox>
+                           Text="{x:Static lang:Lang.BasedOnLabel}"/>
+                <ComboBox Width="200" 
+                          ItemsSource="{Binding BasedOnStyles}"
+                          SelectedItem="{Binding BasedOnSelected}"/>
             </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">
+            <StackPanel Grid.Row="0" Grid.Column="2" 
+                        HorizontalAlignment="Right">
                 <TextBlock Margin="2, 0, 0, 5" 
-                           Text="Font name" />
-                <ComboBox Width="200"></ComboBox>
+                           Text="{x:Static lang:Lang.FontNameLabel}"/>
+                <ComboBox Width="200" 
+                          ItemsSource="{Binding FontNames}"
+                          SelectedItem="{Binding FontNamesSelected}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"
                         Margin="0, 20, 0, 0">
                 <TextBlock Margin="2, 0, 0, 5" 
-                           Text="Alignment" />
-                <ComboBox Width="200">
+                           Text="{x:Static lang:Lang.AlignmentLabel}"/>
+                <ComboBox Width="200"
+                          SelectedItem="{Binding AlignmentSelected}">
                     <ComboBoxItem Content="left"/>
                     <ComboBoxItem Content="right"/>
                     <ComboBoxItem Content="center"/>
                 </ComboBox>
             </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"
+            <StackPanel Grid.Row="1" Grid.Column="1" 
+                        HorizontalAlignment="Center"
                         Margin="0, 20, 0, 0">
                 <TextBlock Margin="2, 0, 0, 5" 
-                           Text="Color" />
-                <controls:ColorPickerButton/>
+                           Text="{x:Static lang:Lang.ColorLabel}"/>
+                <controls:ColorPickerButton Color="{Binding Color}"/>
             </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right"
+            <StackPanel Grid.Row="1" Grid.Column="2" 
+                        HorizontalAlignment="Right"
                         Margin="0, 20, 0, 0">
                 <TextBlock Margin="2, 0, 0, 5" 
-                           Text="Font size"/>
-                <controls:NumberBox Width="200"/>
+                           Text="{x:Static lang:Lang.FontSizeLabel}"/>
+                <controls:NumberBox Width="200"
+                                    NumberFormatter="{x:Static questionForms:QuestionFormBaseVM.IntFormat}"
+                                    ValidationMode="InvalidInputOverwritten"
+                                    SpinButtonPlacementMode="Inline"
+                                    Value="{Binding FontSize}"/>
             </StackPanel>
         </Grid>
     </StackPanel>

@@ -17,8 +17,8 @@
     <data name="CreateStyleQuestionName" xml:space="preserve">
         <value>Crea stile Word</value>
     </data>
-    <data name="FilesSelected" xml:space="preserve">
-        <value>file selezionati</value>
+    <data name="NoFilesSelected" xml:space="preserve">
+        <value>Nessun file selezionato</value>
     </data>
     <data name="ToolTipRemoveButton" xml:space="preserve">
         <value>Rimuovi domanda dall'elenco</value>
@@ -27,7 +27,7 @@
         <value>Formato file non valido</value>
     </data>
     <data name="QuestionsTab" xml:space="preserve">
-        <value>Let tue domande</value>
+        <value>Le tue domande</value>
     </data>
     <data name="ResultsTab" xml:space="preserve">
         <value>Valutazione domande</value>
@@ -73,5 +73,38 @@
     </data>
     <data name="ChooseQuestionTypeText" xml:space="preserve">
         <value>Tipo di domanda</value>
+    </data>
+    <data name="MissingRequiredFields" xml:space="preserve">
+        <value>Non sono stati compilati tutti i campi obbligatori.</value>
+    </data>
+    <data name="QuestionNameLabel" xml:space="preserve">
+        <value>Nome domanda*</value>
+    </data>
+    <data name="OGFileLabel" xml:space="preserve">
+        <value>File originale*</value>
+    </data>
+    <data name="QuestionDescLabel" xml:space="preserve">
+        <value>Descrizione domanda</value>
+    </data>
+    <data name="PathLabel" xml:space="preserve">
+        <value>Percorso*</value>
+    </data>
+    <data name="StyleNameLabel" xml:space="preserve">
+        <value>Nome stile*</value>
+    </data>
+    <data name="BasedOnLabel" xml:space="preserve">
+        <value>Basato su</value>
+    </data>
+    <data name="FontNameLabel" xml:space="preserve">
+        <value>Nome del carattere</value>
+    </data>
+    <data name="AlignmentLabel" xml:space="preserve">
+        <value>Allineamento</value>
+    </data>
+    <data name="ColorLabel" xml:space="preserve">
+        <value>Colore</value>
+    </data>
+    <data name="FontSizeLabel" xml:space="preserve">
+        <value>Dimensione del carattere</value>
     </data>
 </root>

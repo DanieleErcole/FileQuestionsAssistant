@@ -78,11 +78,38 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alignment.
+        /// </summary>
+        public static string AlignmentLabel {
+            get {
+                return ResourceManager.GetString("AlignmentLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Based on.
+        /// </summary>
+        public static string BasedOnLabel {
+            get {
+                return ResourceManager.GetString("BasedOnLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Question type.
         /// </summary>
         public static string ChooseQuestionTypeText {
             get {
                 return ResourceManager.GetString("ChooseQuestionTypeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        public static string ColorLabel {
+            get {
+                return ResourceManager.GetString("ColorLabel", resourceCulture);
             }
         }
         
@@ -114,11 +141,20 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to files selected.
+        ///   Looks up a localized string similar to Font name.
         /// </summary>
-        public static string FilesSelected {
+        public static string FontNameLabel {
             get {
-                return ResourceManager.GetString("FilesSelected", resourceCulture);
+                return ResourceManager.GetString("FontNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size.
+        /// </summary>
+        public static string FontSizeLabel {
+            get {
+                return ResourceManager.GetString("FontSizeLabel", resourceCulture);
             }
         }
         
@@ -150,6 +186,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The required fields are missing..
+        /// </summary>
+        public static string MissingRequiredFields {
+            get {
+                return ResourceManager.GetString("MissingRequiredFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New question.
         /// </summary>
         public static string NewQuestionTab {
@@ -159,11 +204,56 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No files selected.
+        /// </summary>
+        public static string NoFilesSelected {
+            get {
+                return ResourceManager.GetString("NoFilesSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You do not have permission to access this file.
         /// </summary>
         public static string NoPermissionDesc {
             get {
                 return ResourceManager.GetString("NoPermissionDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Original file*.
+        /// </summary>
+        public static string OGFileLabel {
+            get {
+                return ResourceManager.GetString("OGFileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location*.
+        /// </summary>
+        public static string PathLabel {
+            get {
+                return ResourceManager.GetString("PathLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Question description.
+        /// </summary>
+        public static string QuestionDescLabel {
+            get {
+                return ResourceManager.GetString("QuestionDescLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Question name*.
+        /// </summary>
+        public static string QuestionNameLabel {
+            get {
+                return ResourceManager.GetString("QuestionNameLabel", resourceCulture);
             }
         }
         
@@ -200,6 +290,15 @@ namespace UI.Lang {
         public static string SearchPlaceholder {
             get {
                 return ResourceManager.GetString("SearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style name*.
+        /// </summary>
+        public static string StyleNameLabel {
+            get {
+                return ResourceManager.GetString("StyleNameLabel", resourceCulture);
             }
         }
         

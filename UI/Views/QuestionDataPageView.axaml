@@ -34,9 +34,6 @@
                        HorizontalAlignment="Left"
                        Theme="{StaticResource SubtitleTextBlockStyle}"
                        Text="{x:Static lang:Lang.NewQuestionTab}"/>
-            <!--<Button Command="{Binding AddQuestionTest}">
-                <controls:SymbolIcon Symbol="Add"/>
-            </Button>-->
         </StackPanel>
         <TextBlock DockPanel.Dock="Top"
                    Margin="30, 0, 0, 0"
@@ -53,7 +50,8 @@
                Margin="0, 0, 20, 20">
             <Button HorizontalAlignment="Right" 
                     Classes="accent" 
-                    Content="Create"/>
+                    Content="Create"
+                    Command="{Binding NewQuestion}"/>
         </Panel>
         
         <ScrollViewer DockPanel.Dock="Top" 

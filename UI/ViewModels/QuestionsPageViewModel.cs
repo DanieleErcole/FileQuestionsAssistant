@@ -62,14 +62,15 @@ public class QuestionsPageViewModel : PageViewModelBase {
         public async Task OpenQuestion() {
             var files = await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
                 AllowMultiple = false,
-                FileTypeFilter = [_services.Get<QuestionSerializer>().FileType]
+                FileTypeFilter = [QuestionSerializer.FileType]
             });
             if (!files.Any()) return;
             
+            var filePath = Uri.UnescapeDataString(files[0].Path.AbsolutePath);
             try {
                 var serializer = _services.Get<QuestionSerializer>();
-                if (await serializer.Load(files[0]) is { } q) {
-                    await serializer.AddTrackedQuestion(files[0]);
+                if (await serializer.Load(filePath) is { } q) {
+                    await serializer.AddTrackedQuestion(filePath);
                     _services.Get<Evaluator>().AddQuestion(q);
                     
                     QuestionsSearch.Refresh();

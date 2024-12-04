@@ -19,7 +19,7 @@ public class QuestionSerializer {
     private static string TrackedFilePath => Path.Combine(TrackedDirectoryPath, TrackedFileName);
     private const string TrackedFileName = "TrackedQuestions.txt";
     
-    public FilePickerFileType FileType { get; } = new("JSON file") {
+    public static FilePickerFileType FileType { get; } = new("JSON file") {
         Patterns = ["*.json"],
         AppleUniformTypeIdentifiers = ["public.json"],
         MimeTypes = ["application/json"]
@@ -29,9 +29,8 @@ public class QuestionSerializer {
         WriteIndented = true,
     };
 
-    public async Task AddTrackedQuestion(IStorageFile file) {
+    public async Task AddTrackedQuestion(string filePath) {
         try {
-            var filePath = Uri.UnescapeDataString(file.Path.AbsolutePath);
             var paths = new List<string>(await File.ReadAllLinesAsync(TrackedFilePath));
 
             if (paths.Any(line => line == filePath)) 
@@ -43,7 +42,7 @@ public class QuestionSerializer {
             foreach (var p in paths)
                 await streamWriter.WriteLineAsync(p);
         } catch (Exception e) when (e is not UIException) {
-            throw new FileError(file.Name, e);
+            throw new FileError(filePath, e);
         }
     }
 
@@ -89,35 +88,35 @@ public class QuestionSerializer {
         }
     }
 
-    public async Task<bool> Create(IStorageFile file, AbstractQuestion question) {
-        await Save(file, question);
+    public async Task<bool> Create(string path, AbstractQuestion question) {
+        await Save(path, question);
         try {
-            await AddTrackedQuestion(file);
+            await AddTrackedQuestion(path);
             return false;
         } catch (Exception _) {
             return true;
         }
     }
     
-    public async Task Save(IStorageFile file, AbstractQuestion question) {
+    public async Task Save(string path, AbstractQuestion question) {
         try {
-            using var stream = file.OpenWriteAsync();
-            await using var streamWriter = new StreamWriter(await stream);
+            await using var stream = File.Open(path, FileMode.Create);
+            await using var streamWriter = new StreamWriter(stream);
             await streamWriter.WriteLineAsync(JsonSerializer.Serialize(question, _options));
         } catch (Exception e) {
-            throw new FileError(file.Name, e);
+            throw new FileError(path, e);
         }
     }
     
-    public async Task<AbstractQuestion?> Load(IStorageFile file) {
+    public async Task<AbstractQuestion?> Load(string path) {
         try {
-            await using var stream = await file.OpenReadAsync();
+            await using var stream = File.OpenRead(path);
             using var streamReader = new StreamReader(stream);
             return JsonSerializer.Deserialize<AbstractQuestion>(await streamReader.ReadToEndAsync(), _options);
         } catch (JsonException _) {
-            throw new InvalidFileFormat(file.Name);
+            throw new InvalidFileFormat(path);
         } catch (Exception e) {
-            throw new FileError(file.Name, e);
+            throw new FileError(path, e);
         }
     }
 

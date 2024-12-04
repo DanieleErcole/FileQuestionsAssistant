@@ -24,8 +24,8 @@
     <data name="CreateStyleQuestionName" xml:space="preserve">
         <value>Create Word style</value>
     </data>
-    <data name="FilesSelected" xml:space="preserve">
-        <value>files selected</value>
+    <data name="NoFilesSelected" xml:space="preserve">
+        <value>No files selected</value>
     </data>
     <data name="ToolTipRemoveButton" xml:space="preserve">
         <value>Remove question from the list</value>
@@ -80,5 +80,38 @@
     </data>
     <data name="ChooseQuestionTypeText" xml:space="preserve">
         <value>Question type</value>
+    </data>
+    <data name="MissingRequiredFields" xml:space="preserve">
+        <value>The required fields are missing.</value>
+    </data>
+    <data name="QuestionNameLabel" xml:space="preserve">
+        <value>Question name*</value>
+    </data>
+    <data name="OGFileLabel" xml:space="preserve">
+        <value>Original file*</value>
+    </data>
+    <data name="QuestionDescLabel" xml:space="preserve">
+        <value>Question description</value>
+    </data>
+    <data name="PathLabel" xml:space="preserve">
+        <value>Location*</value>
+    </data>
+    <data name="StyleNameLabel" xml:space="preserve">
+        <value>Style name*</value>
+    </data>
+    <data name="BasedOnLabel" xml:space="preserve">
+        <value>Based on</value>
+    </data>
+    <data name="FontNameLabel" xml:space="preserve">
+        <value>Font name</value>
+    </data>
+    <data name="AlignmentLabel" xml:space="preserve">
+        <value>Alignment</value>
+    </data>
+    <data name="ColorLabel" xml:space="preserve">
+        <value>Color</value>
+    </data>
+    <data name="FontSizeLabel" xml:space="preserve">
+        <value>Font size</value>
     </data>
 </root>
