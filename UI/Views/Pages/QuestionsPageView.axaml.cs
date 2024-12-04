@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using Avalonia.Controls;
-using UI.ViewModels;
-using UI.ViewModels.Questions;
+﻿using Avalonia.Controls;
+using UI.ViewModels.Pages;
 
 namespace UI.Views;
 

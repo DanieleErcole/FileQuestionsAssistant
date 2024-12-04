@@ -45,6 +45,18 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Lang.resx</DependentUpon>
     </Compile>
+    <Compile Update="Views\Pages\QuestionDataPageView.axaml.cs">
+      <DependentUpon>QuestionDataPageView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pages\QuestionsPageView.axaml.cs">
+      <DependentUpon>QuestionsPageView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pages\ResultsPageView.axaml.cs">
+      <DependentUpon>ResultsPageView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

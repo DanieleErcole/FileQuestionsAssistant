@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UI.ViewModels;
+namespace UI.ViewModels.Pages;
 
 public abstract class PageViewModelBase(IServiceProvider services) : ViewModelBase {
     

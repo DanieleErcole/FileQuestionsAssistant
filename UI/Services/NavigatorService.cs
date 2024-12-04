@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAvalonia.UI.Controls;
 using UI.ViewModels;
+using UI.ViewModels.Pages;
 using UI.Views;
 using Control = Avalonia.Controls.Control;
 

@@ -10,13 +10,12 @@ using Core.Questions;
 using Core.Questions.Word;
 using Core.Utils.Errors;
 using FluentAvalonia.UI.Data;
-using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 using UI.Services;
 using UI.ViewModels.Questions;
 using Notification = Avalonia.Controls.Notifications.Notification;
 
-namespace UI.ViewModels;
+namespace UI.ViewModels.Pages;
 
 public class QuestionsPageViewModel : PageViewModelBase {
 

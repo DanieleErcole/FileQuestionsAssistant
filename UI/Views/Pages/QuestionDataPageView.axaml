@@ -5,9 +5,10 @@
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:viewModels="clr-namespace:UI.ViewModels"
              xmlns:lang="clr-namespace:UI.Lang"
+             xmlns:pages="clr-namespace:UI.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="UI.Views.QuestionDataPageView"
-             x:DataType="viewModels:QuestionDataPageViewModel">
+             x:DataType="pages:QuestionDataPageViewModel">
     <UserControl.Styles>
         <Style Selector="Button">
             <Setter Property="Cursor" Value="Hand"></Setter>

@@ -2,14 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:UI.ViewModels"
              xmlns:questions="clr-namespace:UI.ViewModels.Questions"
              xmlns:lang="clr-namespace:UI.Lang"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:input="clr-namespace:FluentAvalonia.UI.Input;assembly=FluentAvalonia"
+             xmlns:pages="clr-namespace:UI.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="UI.Views.QuestionsPageView"
-             x:DataType="viewModels:QuestionsPageViewModel">
+             x:DataType="pages:QuestionsPageViewModel">
     <UserControl.Styles>
         <Style Selector="Button">
             <Setter Property="Cursor" Value="Hand"></Setter>
@@ -22,7 +22,7 @@
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <viewModels:QuestionsPageViewModel/>
+        <pages:QuestionsPageViewModel/>
     </Design.DataContext>
     
     <DockPanel x:Name="PageContainer"
@@ -117,10 +117,11 @@
                         
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type questions:SingleQuestionViewModel}">
-                            <DockPanel Width="{Binding $parent[ListBoxItem].Width}">
-                                <ToolTip.Tip>
-                                    <TextBlock Text="{Binding Path}"/>
-                                </ToolTip.Tip>
+                            <DockPanel Width="{Binding $parent[ListBoxItem].Bounds.Width}"
+                                       Background="Transparent"
+                                       ToolTip.ShowDelay="500"
+                                       ToolTip.BetweenShowDelay="-1"
+                                       ToolTip.Tip="{Binding Path}">
                                 <Svg Path="{Binding Icon}"
                                      DockPanel.Dock="Left"
                                      Margin="10, 0, 0, 0"

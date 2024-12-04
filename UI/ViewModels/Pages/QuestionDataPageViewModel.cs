@@ -5,7 +5,7 @@ using ReactiveUI;
 using UI.Services;
 using UI.ViewModels.QuestionForms;
 
-namespace UI.ViewModels;
+namespace UI.ViewModels.Pages;
 
 public class QuestionDataPageViewModel(IServiceProvider services) : PageViewModelBase(services) {
 
