@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions;
@@ -118,7 +117,7 @@ public class WordTests {
     [TestCase("WrongName", "Heading 1", "Calibri", null, 255, 0, 0, null, false)]
     public void WordCreateStyleQuestion_TestCase(string styleName, string? baseStyleName, string? fontName, int? fontSize, int? r, int? g, int? b, string? alignment, bool expectedRes) {
         Color? rgb = r is null || g is null || b is null ? null : Color.FromArgb((int) r, (int) g, (int) b);
-        var q = new CreateStyleQuestion("", "Name", "Description", Convert.ToBase64String(_ogFile), styleName, baseStyleName, fontName, fontSize, rgb, alignment);
+        var q = new CreateStyleQuestion("", "Name", "Description", _ogFile, styleName, baseStyleName, fontName, fontSize, rgb, alignment);
         
         _evaluator.AddQuestion(q, new WordFile(_wordFile.Name, _wordFile));
         var res = _evaluator.Evaluate().First();
@@ -133,7 +132,7 @@ public class WordTests {
 
     [Test]
     public void WordCreateStyleQuestion_polymorphic_serialization() {
-        AbstractQuestion q = new CreateStyleQuestion("", "Name", "Description", Convert.ToBase64String(_ogFile), "styleName", 
+        AbstractQuestion q = new CreateStyleQuestion("", "Name", "Description", _ogFile, "styleName", 
             "baseStyleName", "fontName", 12, Color.Blue, "alignment");
         var json = JsonSerializer.Serialize(q);
         var deserialized = JsonSerializer.Deserialize<AbstractQuestion>(json);

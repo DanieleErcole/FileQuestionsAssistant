@@ -38,11 +38,11 @@ public abstract class AbstractQuestion : IQuestion {
         this.Params = Params;
     }
 
-    protected AbstractQuestion(string path, string name, string? desc, string ogFile) {
+    protected AbstractQuestion(string path, string name, string? desc, byte[] ogFile) {
         Name = name;
         Desc = desc;
         Path = path;
-        OgFile = Convert.FromBase64String(ogFile);
+        OgFile = ogFile;
     }
 
     public abstract IEnumerable<Result> Evaluate(IEnumerable<IFile> files);
