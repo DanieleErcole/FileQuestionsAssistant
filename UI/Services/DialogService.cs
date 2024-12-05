@@ -1,29 +1,29 @@
-﻿using System.Threading.Tasks;
-using UI.ViewModels.Dialogs;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using FluentAvalonia.UI.Controls;
 using UI.Views;
-using UI.Views.Dialogs;
 
 namespace UI.Services;
 
-public class DialogService {
-
-    private readonly MainWindow _mainWindow;
-
-    public DialogService(MainWindow mainWindow) {
-        _mainWindow = mainWindow;
-    }
-
-    public Task<bool> ShowYesNoDialog() {
-        return Task.FromResult(true);
-    }
+public class DialogService(MainWindow mainWindow) {
     
-    /*public async void ShowMessageDialog(string message, string title = "") {
-        //TODO: notifications exists, delete this it's useless now
-        if (title == "") title = Lang.Lang.ErrorDialogTitle;
-        var dialog = new Dialog {
-            DataContext = new DialogViewModel(new MessageBoxViewModel(title, message))
+    public async Task<bool> ShowYesNoDialog(string title, string message) {
+        var yesBtn = TaskDialogButton.YesButton;
+        yesBtn.Text = Lang.Lang.YesText;
+        var noBtn = TaskDialogButton.NoButton;
+        noBtn.Text = Lang.Lang.NoText;
+        
+        var td = new TaskDialog {
+            Title = title,
+            Content = message,
+            Buttons = { yesBtn, noBtn },
+            XamlRoot = mainWindow
         };
-        await dialog.ShowDialog(_mainWindow);
-    }*/
+        return await td.ShowAsync() switch {
+            TaskDialogStandardResult.Yes => true,
+            TaskDialogStandardResult.No => false,
+            _ => throw new UnreachableException()
+        };
+    }
 
 }

@@ -114,4 +114,16 @@
     <data name="FontSizeLabel" xml:space="preserve">
         <value>Font size</value>
     </data>
+    <data name="YesText" xml:space="preserve">
+        <value>Yes</value>
+    </data>
+    <data name="NoText" xml:space="preserve">
+        <value>No</value>
+    </data>
+    <data name="DeleteDialogTitle" xml:space="preserve">
+        <value>Delete file</value>
+    </data>
+    <data name="DeleteDialogMessage" xml:space="preserve">
+        <value>Are you sure you want to delete the file?</value>
+    </data>
 </root>

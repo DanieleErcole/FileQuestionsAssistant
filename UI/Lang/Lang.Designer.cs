@@ -132,6 +132,24 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the file?.
+        /// </summary>
+        public static string DeleteDialogMessage {
+            get {
+                return ResourceManager.GetString("DeleteDialogMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete file.
+        /// </summary>
+        public static string DeleteDialogTitle {
+            get {
+                return ResourceManager.GetString("DeleteDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error opening file.
         /// </summary>
         public static string ErrorOpeningFilename {
@@ -218,6 +236,15 @@ namespace UI.Lang {
         public static string NoPermissionDesc {
             get {
                 return ResourceManager.GetString("NoPermissionDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string NoText {
+            get {
+                return ResourceManager.GetString("NoText", resourceCulture);
             }
         }
         
@@ -344,6 +371,15 @@ namespace UI.Lang {
         public static string UnknownError {
             get {
                 return ResourceManager.GetString("UnknownError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string YesText {
+            get {
+                return ResourceManager.GetString("YesText", resourceCulture);
             }
         }
     }

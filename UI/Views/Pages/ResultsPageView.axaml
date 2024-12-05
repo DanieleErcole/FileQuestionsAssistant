@@ -2,7 +2,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pages="clr-namespace:UI.ViewModels.Pages"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:lang="clr-namespace:UI.Lang"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="pages:ResultsPageViewModel"
              x:Class="UI.Views.ResultsPageView">
-    Welcome to Avalonia!
+    <UserControl.Styles>
+        <Style Selector="Button">
+            <Setter Property="Cursor" Value="Hand"></Setter>
+        </Style>
+    </UserControl.Styles>
+    <DockPanel x:Name="PageContainer"
+               Height="{Binding $parent[StackPanel].Height}">
+        <StackPanel DockPanel.Dock="Top" 
+                    Orientation="Horizontal">
+            <Button Margin="20, 10, 0, 20"
+                    HorizontalAlignment="Left"
+                    Theme="{StaticResource TransparentButton}"
+                    Command="{Binding ToQuestionPage}">
+                <controls:SymbolIcon Symbol="Back" FontSize="20"/>
+            </Button>
+            <TextBlock Margin="20, 10, 0, 20"
+                       HorizontalAlignment="Left"
+                       Theme="{StaticResource SubtitleTextBlockStyle}"
+                       Text="{Binding QuestionVM.Name}"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Top"></StackPanel>
+    </DockPanel>
 </UserControl>

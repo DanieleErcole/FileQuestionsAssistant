@@ -4,6 +4,7 @@ using Core.Evaluation;
 using ReactiveUI;
 using UI.Services;
 using UI.ViewModels.QuestionForms;
+using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
@@ -27,7 +28,7 @@ public class QuestionDataPageViewModel(IServiceProvider services) : PageViewMode
         set => this.RaiseAndSetIfChanged(ref _content, value);
     }
 
-    public override void OnNavigatedTo() {
+    public override void OnNavigatedTo(object? param = null) {
         SelectedIndex = 0;
     }
 
@@ -42,12 +43,10 @@ public class QuestionDataPageViewModel(IServiceProvider services) : PageViewMode
             var q = await Content.CreateQuestion();
             if (q is null) return;
             _services.Get<Evaluator>().AddQuestion(q);
+            _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, q);
         } catch (Exception e) {
             _services.Get<ErrorHandler>().ShowError(e);
-            return;
         }
-        // Test: I should navigate to the results page
-        _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
     }
     
 }

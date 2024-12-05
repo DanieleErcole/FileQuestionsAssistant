@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Core.Evaluation;
-using Microsoft.Extensions.DependencyInjection;
+using Core.Questions;
+using Core.Questions.Word;
 
 namespace UI.ViewModels.Questions;
 
-public abstract class SingleQuestionViewModel : ViewModelBase {
+public static class QuestionExtensions {
+    public static SingleQuestionViewModel ToViewModel(this IQuestion q, IServiceProvider services) {
+        return q switch {
+            CreateStyleQuestion csq => new CreateStyleQuestionVM(csq, services)
+        };
+    }
+}
+
+public abstract class SingleQuestionViewModel(string name, string desc, IServiceProvider services) : ViewModelBase {
     
-    protected readonly IServiceProvider _services;
+    protected readonly IServiceProvider _services = services;
     
     public int Index { get; set; }
-    public string Name { get; }
-    public string Description { get; }
-    public abstract string Path { get; }
+    public string Name { get; } = name;
+    public string Description { get; } = desc;
+    public string Path => _services.Get<Evaluator>().Questions[Index].Path;
     public abstract string Icon { get; }
 
-    protected SingleQuestionViewModel(string name, string desc, IServiceProvider services) {
-        _services = services;
-        Name = name;
-        Description = desc;
-    }
-    
     public abstract Task UploadFiles();
-    
-    public void ClearFiles() {
-        _services.GetRequiredService<Evaluator>().SetFiles(Index);
-    }
 
 }

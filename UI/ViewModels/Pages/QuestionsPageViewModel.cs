@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Controls.Notifications;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
-using Core.Questions;
-using Core.Questions.Word;
 using Core.Utils.Errors;
 using FluentAvalonia.UI.Data;
 using ReactiveUI;
 using UI.Services;
 using UI.ViewModels.Questions;
-using Notification = Avalonia.Controls.Notifications.Notification;
 
 namespace UI.ViewModels.Pages;
 
@@ -29,13 +24,6 @@ public class QuestionsPageViewModel : PageViewModelBase {
     }
     
     public IterableCollectionView QuestionsSearch { get; }
-    
-    private SingleQuestionViewModel FromTypeToViewModel(IQuestion question) {
-        return question switch {
-            CreateStyleQuestion csq => new CreateStyleQuestionVM(csq, _services),
-            _ => throw new UnreachableException()
-        };
-    }
 
     public QuestionsPageViewModel(IServiceProvider services) : base(services) {
         var ev = _services.Get<Evaluator>();
@@ -44,7 +32,7 @@ public class QuestionsPageViewModel : PageViewModelBase {
         foreach (var q in loadedQuestions)
             ev.AddQuestion(q);
         
-        QuestionsSearch = new IterableCollectionView(ev.Questions.Select(FromTypeToViewModel), o => {
+        QuestionsSearch = new IterableCollectionView(ev.Questions.Select(q => q.ToViewModel(_services)), o => {
             var q = (o as SingleQuestionViewModel)!;
             return string.IsNullOrWhiteSpace(SearchText) ||
                    q.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
@@ -52,7 +40,7 @@ public class QuestionsPageViewModel : PageViewModelBase {
         });
     }
 
-    public override void OnNavigatedTo() {
+    public override void OnNavigatedTo(object? param = null) {
         QuestionsSearch.Refresh();
     }
     
@@ -71,16 +59,11 @@ public class QuestionsPageViewModel : PageViewModelBase {
                 if (await serializer.Load(filePath) is { } q) {
                     await serializer.AddTrackedQuestion(filePath);
                     _services.Get<Evaluator>().AddQuestion(q);
-                    
-                    QuestionsSearch.Refresh();
-                    // Test
-                    _services.Get<WindowNotificationManager>()
-                        .Show(new Notification("Opened a question", $"Opened question file: {files[0].Name} and added to the tracked files"));
+                    _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, q);
                 }
             } catch (Exception e) {
                 _services.Get<ErrorHandler>().ShowError(e);
             }
-            //_services.GetRequiredService<NavigatorService>().NavigateTo(NavigatorService.Results);
         }
 
         public void AddQuestionBtn() {
@@ -89,12 +72,14 @@ public class QuestionsPageViewModel : PageViewModelBase {
 
         public async Task DeleteQuestion(object param) {
             var question = (param as SingleQuestionViewModel)!;
+            if (!await _services.Get<DialogService>().ShowYesNoDialog(Lang.Lang.DeleteDialogTitle, Lang.Lang.DeleteDialogMessage + $"\n{question.Path}")) 
+                return;
+            
             try {
                 await _services.Get<QuestionSerializer>().RemoveTrackedQuestion(question);
                 _services.Get<Evaluator>().RemoveQuestion(question.Index);
             } catch (FileError e) {
                 //TODO: handle the case where the tracked questions file is deleted while running the application
-                //TODO: add exceptions matching the current implemented error cases
                 _services.Get<ErrorHandler>().ShowError(e);
             }
             QuestionsSearch.Refresh();
@@ -103,8 +88,7 @@ public class QuestionsPageViewModel : PageViewModelBase {
         public void OnSelectedQuestion(SelectionChangedEventArgs e) {
             if (e.AddedItems.Count != 1) return;
             var selected = e.AddedItems[0] as SingleQuestionViewModel;
-            _services.Get<WindowNotificationManager>()
-                .Show(new Notification("Selected a question", $"Selected question: {selected!.Name}"));
+            _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, _services.Get<Evaluator>().Questions[selected!.Index]);
         }
     
     #endregion

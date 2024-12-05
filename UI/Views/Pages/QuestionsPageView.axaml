@@ -103,7 +103,9 @@
                          ItemsSource="{Binding QuestionsSearch}" 
                          SelectionMode="Single"
                          SelectionChanged="OnSelectionChanged"
-                         Margin="10, 20, 0, 0">
+                         Margin="10, 20, 0, 0"
+                         CornerRadius="4"
+                         Background="{DynamicResource SolidBackgroundFillColorTertiaryBrush}">
                     <ListBox.Resources>
                         <input:XamlUICommand x:Key="DeleteQuestion"
                                              Command="{Binding DeleteQuestion}"/>

@@ -42,8 +42,8 @@ public class NavigatorService {
         NavigateTo(Questions);
     }
 
-    public void NavigateTo(int index) {
-        _pages[index].OnNavigatedTo();
+    public void NavigateTo(int index, object? param = null) {
+        _pages[index].OnNavigatedTo(param);
         _windowFrame.NavigateFromObject(_pages[index]);
     }
     
