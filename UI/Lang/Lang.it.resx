@@ -119,4 +119,10 @@
     <data name="DeleteDialogTitle" xml:space="preserve">
         <value>Elimina file</value>
     </data>
+    <data name="CreateBtnText" xml:space="preserve">
+        <value>Crea</value>
+    </data>
+    <data name="AnyText" xml:space="preserve">
+        <value>Qualsiasi</value>
+    </data>
 </root>

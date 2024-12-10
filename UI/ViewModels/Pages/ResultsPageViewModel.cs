@@ -1,17 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using Core.Questions;
+using ReactiveUI;
 using UI.Services;
 using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
-public class ResultsPageViewModel(IServiceProvider services) : PageViewModelBase(services) {
+public class ResultsPageViewModel : PageViewModelBase {
     
-    private readonly IServiceProvider _services = services;
-    public SingleQuestionViewModel QuestionVM { get; private set; }
+    private readonly IServiceProvider _services;
+    
+    private SingleQuestionViewModel _questionVm;
+    public SingleQuestionViewModel QuestionVM {
+        get => _questionVm;
+        private set => this.RaiseAndSetIfChanged(ref _questionVm, value);
+    }
 
-    public void ToQuestionPage() {
-        _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
+    private Dictionary<string, object?> _correctParams;
+    public Dictionary<string, object?> CorrectParams {
+        get => _correctParams;
+        private set => this.RaiseAndSetIfChanged(ref _correctParams, value);
+    }
+
+    public ResultsPageViewModel(IServiceProvider services) : base(services) {
+        _services = services;
+        //TODO: review this huge question refactor + try to find a way to better represent results (with localized field names) in the result list
     }
 
     public override void OnNavigatedTo(object? param = null) {
@@ -20,6 +34,9 @@ public class ResultsPageViewModel(IServiceProvider services) : PageViewModelBase
             return;
         }
         QuestionVM = question.ToViewModel(_services);
+        CorrectParams = QuestionVM.GetLocalizedQuestionParams();
     }
+    
+    public void ToQuestionPage() => _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
     
 }

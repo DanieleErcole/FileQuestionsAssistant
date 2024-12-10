@@ -96,7 +96,7 @@
                          Margin="10, 0, 0, 0"
                          HorizontalAlignment="Left"
                          Text="{Binding SearchText}"
-                         Watermark="Search"/>
+                         Watermark="{x:Static lang:Lang.SearchPlaceholder}"/>
                 
                 <ListBox x:Name="QuestionsList"
                          DockPanel.Dock="Top"
@@ -104,8 +104,7 @@
                          SelectionMode="Single"
                          SelectionChanged="OnSelectionChanged"
                          Margin="10, 20, 0, 0"
-                         CornerRadius="4"
-                         Background="{DynamicResource SolidBackgroundFillColorTertiaryBrush}">
+                         CornerRadius="4">
                     <ListBox.Resources>
                         <input:XamlUICommand x:Key="DeleteQuestion"
                                              Command="{Binding DeleteQuestion}"/>

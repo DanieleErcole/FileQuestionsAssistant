@@ -15,7 +15,7 @@ public abstract class WordQuestionViewModel(string name, string desc, IServicePr
     
     public override string Icon => "/Assets/docx.svg";
     
-    public override async Task UploadFiles() {
+    public override async Task AddFiles() {
         try {
             var pickerFiles =  await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
                 AllowMultiple = true,

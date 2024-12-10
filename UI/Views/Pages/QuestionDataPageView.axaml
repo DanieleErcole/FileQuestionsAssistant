@@ -51,7 +51,7 @@
                Margin="0, 0, 20, 20">
             <Button HorizontalAlignment="Right" 
                     Classes="accent" 
-                    Content="Create"
+                    Content="{x:Static lang:Lang.CreateBtnText}"
                     Command="{Binding NewQuestion}"/>
         </Panel>
         

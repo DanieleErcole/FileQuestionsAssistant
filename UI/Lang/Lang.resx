@@ -126,4 +126,10 @@
     <data name="DeleteDialogMessage" xml:space="preserve">
         <value>Are you sure you want to delete the file?</value>
     </data>
+    <data name="CreateBtnText" xml:space="preserve">
+        <value>Create</value>
+    </data>
+    <data name="AnyText" xml:space="preserve">
+        <value>Any</value>
+    </data>
 </root>

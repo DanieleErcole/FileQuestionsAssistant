@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using Core.Questions;
-using Core.Questions.Word;
 using Core.Utils.Errors;
 using UI.ViewModels.Questions;
+using ColorConverter = Core.Utils.ColorConverter;
 
 namespace UI.Services;
 
 public class QuestionSerializer {
-    
+
     private static readonly string TrackedDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "FileQuestionAssistant");
     private static string TrackedFilePath => Path.Combine(TrackedDirectoryPath, TrackedFileName);
     private const string TrackedFileName = "TrackedQuestions.txt";
@@ -27,6 +26,7 @@ public class QuestionSerializer {
     private readonly JsonSerializerOptions? _options = new() {
         IncludeFields = true,
         WriteIndented = true,
+        Converters = { new ColorConverter() }
     };
 
     public async Task AddTrackedQuestion(string filePath) {
@@ -73,6 +73,7 @@ public class QuestionSerializer {
         try {
             var paths = File.ReadAllLines(TrackedFilePath);
             return paths.Select(p => {
+                if (string.IsNullOrWhiteSpace(p)) return null;
                 try {
                     using var stream = File.OpenRead(p);
                     using var streamReader = new StreamReader(stream);

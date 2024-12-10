@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Evaluation;
 using Core.Questions;
@@ -24,6 +25,7 @@ public abstract class SingleQuestionViewModel(string name, string desc, IService
     public string Path => _services.Get<Evaluator>().Questions[Index].Path;
     public abstract string Icon { get; }
 
-    public abstract Task UploadFiles();
+    public abstract Task AddFiles();
+    public abstract Dictionary<string, object?> GetLocalizedQuestionParams();
 
 }

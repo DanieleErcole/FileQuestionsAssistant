@@ -4,7 +4,6 @@ using Core.Evaluation;
 using ReactiveUI;
 using UI.Services;
 using UI.ViewModels.QuestionForms;
-using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
@@ -28,13 +27,9 @@ public class QuestionDataPageViewModel(IServiceProvider services) : PageViewMode
         set => this.RaiseAndSetIfChanged(ref _content, value);
     }
 
-    public override void OnNavigatedTo(object? param = null) {
-        SelectedIndex = 0;
-    }
+    public override void OnNavigatedTo(object? param = null) => SelectedIndex = 0;
 
-    public void ToQuestionPage() {
-        _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
-    }
+    public void ToQuestionPage() => _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
 
     public async Task NewQuestion() {
         if (Content is null) 

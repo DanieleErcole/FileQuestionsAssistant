@@ -88,11 +88,8 @@
                 <TextBlock Margin="2, 0, 0, 5" 
                            Text="{x:Static lang:Lang.AlignmentLabel}"/>
                 <ComboBox Width="200"
-                          SelectedItem="{Binding AlignmentSelected}">
-                    <ComboBoxItem Content="left"/>
-                    <ComboBoxItem Content="right"/>
-                    <ComboBoxItem Content="center"/>
-                </ComboBox>
+                          ItemsSource="{x:Static questionForms:CreateStyleQuestionFormViewModel.Alignments}"
+                          SelectedItem="{Binding AlignmentSelected}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="1" 
                         HorizontalAlignment="Center"

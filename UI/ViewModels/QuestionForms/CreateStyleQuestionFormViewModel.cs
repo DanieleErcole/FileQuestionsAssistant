@@ -16,6 +16,8 @@ using UI.Utils;
 namespace UI.ViewModels.QuestionForms;
 
 public class CreateStyleQuestionFormViewModel(IServiceProvider services) : QuestionFormBaseVM(services) {
+    
+    public static string[] Alignments = ["left", "center", "right"]; 
 
     private string? _errMsg;
     public string? ErrorMsg {
@@ -71,12 +73,12 @@ public class CreateStyleQuestionFormViewModel(IServiceProvider services) : Quest
         get => _fontNames;
         set => this.RaiseAndSetIfChanged(ref _fontNames, value);
     }
-    public string? FontNamesSelected{ get; set; }
+    public string? FontNamesSelected { get; set; }
     
     public string? AlignmentSelected { get; set; }
     
-    private Color? _color;
-    public Color? Color { 
+    private Avalonia.Media.Color? _color;
+    public Avalonia.Media.Color? Color { 
         get => _color;
         set => this.RaiseAndSetIfChanged(ref _color, value);
     }
@@ -120,9 +122,9 @@ public class CreateStyleQuestionFormViewModel(IServiceProvider services) : Quest
             );
             FontNames = new ObservableCollection<string>(file.Fonts.Select(s => s.Name!.Value!));
             
+            stream.Position = 0;
             using var memStream = new MemoryStream();
             await stream.CopyToAsync(memStream);
-            
             _ogFile = memStream.ToArray();
             Filename = file.Name;
         } catch (Exception e) {
@@ -143,12 +145,14 @@ public class CreateStyleQuestionFormViewModel(IServiceProvider services) : Quest
             ErrorMsg = Lang.Lang.MissingRequiredFields;
             return null;
         }
-        
+
+        Color? c = Color is { } color ? System.Drawing.Color.FromArgb((int) color.ToUInt32()) : null;
         var q = new CreateStyleQuestion(Path, Name, Desc, _ogFile, StyleName, BasedOnSelected, FontNamesSelected, _fontSize == 0 ? null : _fontSize, 
-            Color, FontSize);
+            c, AlignmentSelected);
         if (await _services.Get<QuestionSerializer>().Create(Path, q)) {
             var ev = _services.Get<Evaluator>();
-            ev.RemoveQuestion(ev.Questions.FindIndex(x => x.Path == q.Path)); ;
+            var index = ev.Questions.FindIndex(x => x.Path == q.Path);
+            if (index != -1) ev.RemoveQuestion(index);
         }
         return q;
     }

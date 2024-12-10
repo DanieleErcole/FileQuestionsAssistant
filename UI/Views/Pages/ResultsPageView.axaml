@@ -28,6 +28,33 @@
                        Theme="{StaticResource SubtitleTextBlockStyle}"
                        Text="{Binding QuestionVM.Name}"/>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Top"></StackPanel>
+        <StackPanel DockPanel.Dock="Top" Margin="20, 10, 20, 20">
+            <TextBlock Margin="0, 30, 0, 0"
+                     Height="160"
+                     Text="{Binding QuestionVM.Description}"/>
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding CorrectParams}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Panel>
+                                <TextBlock HorizontalAlignment="Left" 
+                                           Text="{Binding Key}"/>
+                                <TextBlock HorizontalAlignment="Right" 
+                                           Text="{Binding Value}"/>
+                            </Panel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </StackPanel>
+        <Panel DockPanel.Dock="Bottom" 
+               Margin="0, 20, 20, 20">
+            <Button Content="Add File" HorizontalAlignment="Right" />
+        </Panel>
+        <ScrollViewer DockPanel.Dock="Top">
+            <ItemsControl>
+                
+            </ItemsControl>
+        </ScrollViewer>
     </DockPanel>
 </UserControl>

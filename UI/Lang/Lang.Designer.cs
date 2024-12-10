@@ -87,6 +87,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any.
+        /// </summary>
+        public static string AnyText {
+            get {
+                return ResourceManager.GetString("AnyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Based on.
         /// </summary>
         public static string BasedOnLabel {
@@ -110,6 +119,15 @@ namespace UI.Lang {
         public static string ColorLabel {
             get {
                 return ResourceManager.GetString("ColorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string CreateBtnText {
+            get {
+                return ResourceManager.GetString("CreateBtnText", resourceCulture);
             }
         }
         
