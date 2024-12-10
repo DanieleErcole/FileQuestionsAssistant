@@ -27,7 +27,7 @@ public abstract class AbstractQuestion : IQuestion {
     public byte[] OgFile { get; set; }
     
     [JsonInclude]
-    protected Dictionary<string, object?> Params = new();
+    public Dictionary<string, object?> Params = new();
 
     [JsonConstructor]
     public AbstractQuestion(string name, string desc, string path, byte[] ogFile, Dictionary<string, object?> Params) {
@@ -36,6 +36,9 @@ public abstract class AbstractQuestion : IQuestion {
         Path = path;
         OgFile = ogFile;
         this.Params = Params;
+        // The virtual method changes the Params initialised above,
+        // ìgnore the warning
+        DeserializeParams();
     }
 
     protected AbstractQuestion(string path, string name, string? desc, byte[] ogFile) {
@@ -46,5 +49,6 @@ public abstract class AbstractQuestion : IQuestion {
     }
 
     public abstract IEnumerable<Result> Evaluate(IEnumerable<IFile> files);
+    protected abstract void DeserializeParams();
 
 }

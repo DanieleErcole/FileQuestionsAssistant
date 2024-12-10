@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Core.Evaluation;
 using Core.FileHandling;
 using Core.Utils;
@@ -23,13 +24,32 @@ public class CreateStyleQuestion : AbstractQuestion {
     public CreateStyleQuestion(string name, string desc, string path, byte[] ogFile, Dictionary<string, object?> Params) 
         : base(name, desc, path, ogFile, Params) {}
     
+    protected override void DeserializeParams() {
+        foreach (var (k, v) in Params) {
+            var jsonEl = (JsonElement?) v;
+            Params[k] = k switch {
+                "styleName" => jsonEl?.Deserialize<string>(),
+                "baseStyleName" => jsonEl?.Deserialize<string?>(),
+                "fontName" => jsonEl?.Deserialize<string?>(),
+                "fontSize" => jsonEl?.Deserialize<int?>(),
+                "color" => jsonEl?.Deserialize<Color?>(new JsonSerializerOptions {
+                    IncludeFields = true,
+                    WriteIndented = true,
+                    Converters = { new ColorConverter() }
+                }),
+                "alignment" => jsonEl?.Deserialize<string?>(),
+                _ => throw new JsonException()
+            };
+        }
+    }
+    
     public override IEnumerable<Result> Evaluate(IEnumerable<IFile> files) => 
         files.OfType<WordFile>().Select(file => {
-            var baseStyleName = Params.Get<string>("baseStyleName");
-            var fontName = Params.Get<string>("fontName");
+            var baseStyleName = Params.Get<string?>("baseStyleName");
+            var fontName = Params.Get<string?>("fontName");
             var fontSize = Params.Get<int?>("fontSize");
             var color = Params.Get<Color?>("color");
-            var alignment = Params.Get<string>("alignment");
+            var alignment = Params.Get<string?>("alignment");
             
             var matchedStyle = file.Styles.FirstOrDefault(s => {
                 if (s.StyleRunProperties is null) return false;
@@ -78,5 +98,4 @@ public class CreateStyleQuestion : AbstractQuestion {
                 ));
             return new Result(Params, diff.ToList(), false);
         });
-
 }

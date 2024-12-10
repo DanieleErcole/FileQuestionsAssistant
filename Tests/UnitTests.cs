@@ -63,6 +63,13 @@ public class EvaluatorTests {
         _evaluator.AddQuestion(new MyQuestion());
         Assert.That(_evaluator.Files, Has.Count.EqualTo(_evaluator.Questions.Count));
     }
+    
+    [Test]
+    public void Evaluate_RemoveQuestion() {
+        _evaluator.AddQuestion(new MyQuestion());
+        _evaluator.RemoveQuestion(0);
+        Assert.That(_evaluator.Files, Has.Count.EqualTo(0));
+    }
 
 }
 
@@ -74,7 +81,8 @@ public class WordTests {
 #elif OS_LINUX
     private const string WordFileDirectory = @"/home/daniele/RiderProjects/FileQuestionsAssistant/Tests/Files/";
 #endif
-    
+
+    private static JsonSerializerOptions _options = new() { Converters = { new ColorConverter() } };
     private static FileStream _wordFile;
     private static byte[] _ogFile;
 
@@ -134,8 +142,8 @@ public class WordTests {
     public void WordCreateStyleQuestion_polymorphic_serialization() {
         AbstractQuestion q = new CreateStyleQuestion("", "Name", "Description", _ogFile, "styleName", 
             "baseStyleName", "fontName", 12, Color.Blue, "alignment");
-        var json = JsonSerializer.Serialize(q);
-        var deserialized = JsonSerializer.Deserialize<AbstractQuestion>(json);
+        var json = JsonSerializer.Serialize(q, _options);
+        var deserialized = JsonSerializer.Deserialize<AbstractQuestion>(json, _options);
         Assert.That(deserialized is CreateStyleQuestion, Is.EqualTo(true));
     }
 
