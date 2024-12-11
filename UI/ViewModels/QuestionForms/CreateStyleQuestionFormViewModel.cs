@@ -140,21 +140,15 @@ public class CreateStyleQuestionFormViewModel(IServiceProvider services) : Quest
         Path = Uri.UnescapeDataString(file.Path.AbsolutePath);
     }
 
-    public override async Task<AbstractQuestion?> CreateQuestion() {
+    public override AbstractQuestion? CreateQuestion() {
         if (string.IsNullOrWhiteSpace(Name) || _ogFile is null || string.IsNullOrWhiteSpace(Path) || string.IsNullOrWhiteSpace(StyleName)) {
             ErrorMsg = Lang.Lang.MissingRequiredFields;
             return null;
         }
 
         Color? c = Color is { } color ? System.Drawing.Color.FromArgb((int) color.ToUInt32()) : null;
-        var q = new CreateStyleQuestion(Path, Name, Desc, _ogFile, StyleName, BasedOnSelected, FontNamesSelected, _fontSize == 0 ? null : _fontSize, 
-            c, AlignmentSelected);
-        if (await _services.Get<QuestionSerializer>().Create(Path, q)) {
-            var ev = _services.Get<Evaluator>();
-            var index = ev.Questions.FindIndex(x => x.Path == q.Path);
-            if (index != -1) ev.RemoveQuestion(index);
-        }
-        return q;
+        return new CreateStyleQuestion(Path, Name, Desc, _ogFile, StyleName, BasedOnSelected, 
+            FontNamesSelected, _fontSize == 0 ? null : _fontSize, c, AlignmentSelected);
     }
     
 }

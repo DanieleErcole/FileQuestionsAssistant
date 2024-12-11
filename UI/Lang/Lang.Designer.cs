@@ -267,7 +267,7 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Original file*.
+        ///   Looks up a localized string similar to Original file.
         /// </summary>
         public static string OGFileLabel {
             get {
@@ -276,7 +276,7 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Location*.
+        ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string PathLabel {
             get {
@@ -294,7 +294,7 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Question name*.
+        ///   Looks up a localized string similar to Question name.
         /// </summary>
         public static string QuestionNameLabel {
             get {
@@ -339,7 +339,7 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Style name*.
+        ///   Looks up a localized string similar to Style name.
         /// </summary>
         public static string StyleNameLabel {
             get {

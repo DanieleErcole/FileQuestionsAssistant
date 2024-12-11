@@ -28,18 +28,22 @@
                        Theme="{StaticResource SubtitleTextBlockStyle}"
                        Text="{Binding QuestionVM.Name}"/>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Top" Margin="20, 10, 20, 20">
-            <TextBlock Margin="0, 30, 0, 0"
-                     Height="160"
-                     Text="{Binding QuestionVM.Description}"/>
-            <ScrollViewer>
+        <StackPanel DockPanel.Dock="Top" Margin="20, 0, 20, 20">
+            <TextBlock Margin="0, 0, 0, 20" Text="{Binding QuestionVM.Description}"/>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl ItemsSource="{Binding CorrectParams}">
+                    <ItemsControl.Styles>
+                        <Style Selector="ContentPresenter:nth-child(2n+1)">
+                            <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorTertiary}"></Setter>
+                        </Style>
+                    </ItemsControl.Styles>
+                    
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Panel>
-                                <TextBlock HorizontalAlignment="Left" 
+                            <Panel Margin="0, 5, 0, 5">
+                                <TextBlock HorizontalAlignment="Left" Margin="10, 0, 0, 0"
                                            Text="{Binding Key}"/>
-                                <TextBlock HorizontalAlignment="Right" 
+                                <TextBlock HorizontalAlignment="Right" Margin="0, 0, 10, 0"
                                            Text="{Binding Value}"/>
                             </Panel>
                         </DataTemplate>

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using Core.Evaluation;
 using Core.Questions;
 using Core.Utils.Errors;
-using UI.ViewModels.Questions;
 using ColorConverter = Core.Utils.ColorConverter;
 
 namespace UI.Services;
@@ -23,42 +22,26 @@ public class QuestionSerializer {
         AppleUniformTypeIdentifiers = ["public.json"],
         MimeTypes = ["application/json"]
     };
+
+    private IServiceProvider _services;
     private readonly JsonSerializerOptions? _options = new() {
         IncludeFields = true,
         WriteIndented = true,
         Converters = { new ColorConverter() }
     };
 
-    public async Task AddTrackedQuestion(string filePath) {
-        try {
-            var paths = new List<string>(await File.ReadAllLinesAsync(TrackedFilePath));
-
-            if (paths.Any(line => line == filePath)) 
-                throw new UnableToOpenQuestion();
-            paths.Add(filePath); 
-            
-            await using var stream = File.Open(TrackedFilePath, FileMode.Create);
-            await using var streamWriter = new StreamWriter(stream);
-            foreach (var p in paths)
-                await streamWriter.WriteLineAsync(p);
-        } catch (Exception e) when (e is not UIException) {
-            throw new FileError(filePath, e);
-        }
+    public void Init(IServiceProvider services) {
+        _services = services;
     }
 
-    public async Task RemoveTrackedQuestion(SingleQuestionViewModel vm) {
+    public async Task UpdateTrackingFile() {
         try {
-            var paths = new List<string>(await File.ReadAllLinesAsync(TrackedFilePath));
-            if (paths.Count == 0)
-                return;
-            paths.RemoveAt(vm.Index);
-        
             await using var stream = File.Open(TrackedFilePath, FileMode.Create);
             await using var streamWriter = new StreamWriter(stream);
-            foreach (var p in paths)
-                await streamWriter.WriteLineAsync(p);
+            foreach (var q in _services.Get<Evaluator>().Questions)
+                await streamWriter.WriteLineAsync(q.Path);
         } catch (Exception e) {
-            throw new FileError(TrackedFileName, e);
+            throw new FileError(TrackedFilePath, e);
         }
     }
 
@@ -86,16 +69,6 @@ public class QuestionSerializer {
         } catch (Exception e) {
             Console.WriteLine(e);
             return null;
-        }
-    }
-
-    public async Task<bool> Create(string path, AbstractQuestion question) {
-        await Save(path, question);
-        try {
-            await AddTrackedQuestion(path);
-            return false;
-        } catch (Exception _) {
-            return true;
         }
     }
     

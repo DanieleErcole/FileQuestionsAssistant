@@ -78,19 +78,19 @@
         <value>Non sono stati compilati tutti i campi obbligatori.</value>
     </data>
     <data name="QuestionNameLabel" xml:space="preserve">
-        <value>Nome domanda*</value>
+        <value>Nome domanda</value>
     </data>
     <data name="OGFileLabel" xml:space="preserve">
-        <value>File originale*</value>
+        <value>File originale</value>
     </data>
     <data name="QuestionDescLabel" xml:space="preserve">
         <value>Descrizione domanda</value>
     </data>
     <data name="PathLabel" xml:space="preserve">
-        <value>Percorso*</value>
+        <value>Percorso</value>
     </data>
     <data name="StyleNameLabel" xml:space="preserve">
-        <value>Nome stile*</value>
+        <value>Nome stile</value>
     </data>
     <data name="BasedOnLabel" xml:space="preserve">
         <value>Basato su</value>

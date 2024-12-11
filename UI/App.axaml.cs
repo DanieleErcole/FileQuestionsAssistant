@@ -62,6 +62,7 @@ public partial class App : Application {
                 .BuildServiceProvider();
             
             desktop.MainWindow = mw;
+            services.Get<QuestionSerializer>().Init(services);
             services.Get<ErrorHandler>().Init(services);
             services.Get<NavigatorService>().Init(mw.MainFrame, services);
         }

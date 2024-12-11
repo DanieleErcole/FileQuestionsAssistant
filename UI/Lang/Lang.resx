@@ -85,19 +85,19 @@
         <value>The required fields are missing.</value>
     </data>
     <data name="QuestionNameLabel" xml:space="preserve">
-        <value>Question name*</value>
+        <value>Question name</value>
     </data>
     <data name="OGFileLabel" xml:space="preserve">
-        <value>Original file*</value>
+        <value>Original file</value>
     </data>
     <data name="QuestionDescLabel" xml:space="preserve">
         <value>Question description</value>
     </data>
     <data name="PathLabel" xml:space="preserve">
-        <value>Location*</value>
+        <value>Location</value>
     </data>
     <data name="StyleNameLabel" xml:space="preserve">
-        <value>Style name*</value>
+        <value>Style name</value>
     </data>
     <data name="BasedOnLabel" xml:space="preserve">
         <value>Based on</value>

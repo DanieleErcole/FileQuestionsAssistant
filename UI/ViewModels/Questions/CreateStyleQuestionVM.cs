@@ -4,7 +4,7 @@ using System.Drawing;
 using Core.Evaluation;
 using Core.Questions;
 using Core.Questions.Word;
-using UI.Utils;
+using Core.Utils;
 
 namespace UI.ViewModels.Questions;
 
@@ -21,7 +21,7 @@ public class CreateStyleQuestionVM : WordQuestionViewModel {
             [Lang.Lang.BasedOnLabel] = qParams.Get<string?>("baseStyleName") ?? Lang.Lang.AnyText,
             [Lang.Lang.FontNameLabel] = qParams.Get<string?>("fontName") ?? Lang.Lang.AnyText,
             [Lang.Lang.FontSizeLabel] = qParams.Get<int?>("fontSize")?.ToString() ?? Lang.Lang.AnyText,
-            [Lang.Lang.ColorLabel] = qParams.Get<Color?>("color")?.ToString() ?? Lang.Lang.AnyText,
+            [Lang.Lang.ColorLabel] = qParams.Get<Color?>("color")?.ToHexString() ?? Lang.Lang.AnyText,
             [Lang.Lang.AlignmentLabel] = qParams.Get<string?>("alignment") ?? Lang.Lang.AnyText,
         };
     }

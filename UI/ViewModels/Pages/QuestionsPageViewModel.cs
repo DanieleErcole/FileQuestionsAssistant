@@ -57,8 +57,10 @@ public class QuestionsPageViewModel : PageViewModelBase {
             try {
                 var serializer = _services.Get<QuestionSerializer>();
                 if (await serializer.Load(filePath) is { } q) {
-                    await serializer.AddTrackedQuestion(filePath);
+                    if (_services.Get<Evaluator>().Questions.Any(e => e.Path == q.Path))
+                        throw new UnableToOpenQuestion();
                     _services.Get<Evaluator>().AddQuestion(q);
+                    await serializer.UpdateTrackingFile();
                     _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, q);
                 }
             } catch (Exception e) {
@@ -76,10 +78,9 @@ public class QuestionsPageViewModel : PageViewModelBase {
                 return;
             
             try {
-                await _services.Get<QuestionSerializer>().RemoveTrackedQuestion(question);
                 _services.Get<Evaluator>().RemoveQuestion(question.Index);
+                await _services.Get<QuestionSerializer>().UpdateTrackingFile();
             } catch (FileError e) {
-                //TODO: handle the case where the tracked questions file is deleted while running the application
                 _services.Get<ErrorHandler>().ShowError(e);
             }
             QuestionsSearch.Refresh();

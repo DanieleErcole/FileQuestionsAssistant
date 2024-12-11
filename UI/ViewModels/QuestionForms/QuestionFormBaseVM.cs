@@ -10,6 +10,6 @@ public abstract class QuestionFormBaseVM(IServiceProvider services) : ViewModelB
 
     protected IServiceProvider _services = services;
     
-    public abstract Task<AbstractQuestion?> CreateQuestion();
+    public abstract AbstractQuestion? CreateQuestion();
 
 }

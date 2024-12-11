@@ -35,9 +35,19 @@ public class QuestionDataPageViewModel(IServiceProvider services) : PageViewMode
         if (Content is null) 
             return;
         try {
-            var q = await Content.CreateQuestion();
+            var q = Content.CreateQuestion();
             if (q is null) return;
-            _services.Get<Evaluator>().AddQuestion(q);
+
+            var ev = _services.Get<Evaluator>();
+            var index = ev.Questions.FindIndex(x => x.Path == q.Path);
+            var serializer = _services.Get<QuestionSerializer>();
+            
+            await serializer.Save(q.Path, q);
+            if (index != -1) 
+                ev.RemoveQuestion(index);
+            ev.AddQuestion(q);
+            
+            await serializer.UpdateTrackingFile();
             _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, q);
         } catch (Exception e) {
             _services.Get<ErrorHandler>().ShowError(e);
