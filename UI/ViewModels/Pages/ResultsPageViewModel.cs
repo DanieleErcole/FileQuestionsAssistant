@@ -25,7 +25,6 @@ public class ResultsPageViewModel : PageViewModelBase {
 
     public ResultsPageViewModel(IServiceProvider services) : base(services) {
         _services = services;
-        //TODO: review this huge question refactor + try to find a way to better represent results (with localized field names) in the result list
     }
 
     public override void OnNavigatedTo(object? param = null) {
