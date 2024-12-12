@@ -1,13 +1,13 @@
 using System;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Evaluation;
-using ReactiveUI;
 using UI.Services;
 using UI.ViewModels.QuestionForms;
 
 namespace UI.ViewModels.Pages;
 
-public class QuestionDataPageViewModel(IServiceProvider services) : PageViewModelBase(services) {
+public partial class QuestionDataPageViewModel(IServiceProvider services) : PageViewModelBase(services) {
 
     private int _selectedIndex;
     public int SelectedIndex {
@@ -21,11 +21,8 @@ public class QuestionDataPageViewModel(IServiceProvider services) : PageViewMode
         }
     }
     
+    [ObservableProperty]
     private QuestionFormBaseVM? _content;
-    public QuestionFormBaseVM? Content {
-        get => _content;
-        set => this.RaiseAndSetIfChanged(ref _content, value);
-    }
 
     public override void OnNavigatedTo(object? param = null) => SelectedIndex = 0;
 

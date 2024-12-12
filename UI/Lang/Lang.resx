@@ -132,4 +132,13 @@
     <data name="AnyText" xml:space="preserve">
         <value>Any</value>
     </data>
+    <data name="FilesLabel" xml:space="preserve">
+        <value>Files</value>
+    </data>
+    <data name="EvaluateBtnText" xml:space="preserve">
+        <value>Evaluate</value>
+    </data>
+    <data name="AddFilesBtnText" xml:space="preserve">
+        <value>Add files</value>
+    </data>
 </root>

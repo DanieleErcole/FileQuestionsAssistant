@@ -22,6 +22,14 @@ public static class NotificationExtensions {
             Type = NotificationType.Error,
         });
     }
+    
+    public static void ShowSuccess(this WindowNotificationManager nm, string title, string message) {
+        nm.Show(new Notification {
+            Title = title,
+            Message = message,
+            Type = NotificationType.Success,
+        });
+    }
 }
 
 public static class ServicesExtensions {

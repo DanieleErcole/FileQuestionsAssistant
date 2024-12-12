@@ -60,6 +60,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add files.
+        /// </summary>
+        public static string AddFilesBtnText {
+            get {
+                return ResourceManager.GetString("AddFilesBtnText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose a question template and create a question.
         /// </summary>
         public static string AddQuestionBtnDesc {
@@ -173,6 +182,24 @@ namespace UI.Lang {
         public static string ErrorOpeningFilename {
             get {
                 return ResourceManager.GetString("ErrorOpeningFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evaluate.
+        /// </summary>
+        public static string EvaluateBtnText {
+            get {
+                return ResourceManager.GetString("EvaluateBtnText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string FilesLabel {
+            get {
+                return ResourceManager.GetString("FilesLabel", resourceCulture);
             }
         }
         

@@ -1,27 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Core.Evaluation;
 using Core.Questions;
-using ReactiveUI;
+using FluentAvalonia.UI.Data;
 using UI.Services;
 using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
-public class ResultsPageViewModel : PageViewModelBase {
+public partial class ResultsPageViewModel : PageViewModelBase {
     
     private readonly IServiceProvider _services;
     
-    private SingleQuestionViewModel _questionVm;
-    public SingleQuestionViewModel QuestionVM {
-        get => _questionVm;
-        private set => this.RaiseAndSetIfChanged(ref _questionVm, value);
-    }
+    [ObservableProperty]
+    private SingleQuestionViewModel _questionVM;
 
+    [ObservableProperty]
     private Dictionary<string, object?> _correctParams;
-    public Dictionary<string, object?> CorrectParams {
-        get => _correctParams;
-        private set => this.RaiseAndSetIfChanged(ref _correctParams, value);
-    }
+    
+    [ObservableProperty]
+    private IterableCollectionView? _filesResult;
+
+    private List<Result> _results = [];
 
     public ResultsPageViewModel(IServiceProvider services) : base(services) {
         _services = services;
@@ -32,10 +36,39 @@ public class ResultsPageViewModel : PageViewModelBase {
             _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
             return;
         }
+        _results.Clear();
         QuestionVM = question.ToViewModel(_services);
         CorrectParams = QuestionVM.GetLocalizedQuestionParams();
+        
+        var ev = _services.Get<Evaluator>();
+        var files = ev.Files[QuestionVM.Index];
+        FilesResult = new IterableCollectionView(files.Select(f => {
+            var index = files.IndexOf(f);
+            return new FileResultViewModel(index, f.Name, _results.ElementAtOrDefault(index));
+        }), _ => true);
     }
     
-    public void ToQuestionPage() => _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
+    public void ToQuestionPage() {
+        _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
+    }
+
+    public void RemoveFile(object param) {
+        var vm = (param as FileResultViewModel)!;
+        _services.Get<Evaluator>().Files[QuestionVM.Index].RemoveAt(vm.Index);
+        if (vm.Result is not null)
+            _results.RemoveAt(vm.Index);
+        FilesResult?.Refresh();
+    }
+
+    public async Task AddFiles() {
+        await QuestionVM.AddFiles();
+        FilesResult?.Refresh();
+    }
+
+    public void EvaluateButton() {
+        _results.AddRange(_services.Get<Evaluator>().Evaluate(QuestionVM.Index));
+        _services.Get<WindowNotificationManager>().ShowSuccess("Evaluation success", "Finished evaluating the files");
+        FilesResult?.Refresh();
+    }
     
 }

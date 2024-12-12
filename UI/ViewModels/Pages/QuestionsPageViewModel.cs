@@ -3,25 +3,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Evaluation;
 using Core.Utils.Errors;
 using FluentAvalonia.UI.Data;
-using ReactiveUI;
 using UI.Services;
 using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
-public class QuestionsPageViewModel : PageViewModelBase {
+public partial class QuestionsPageViewModel : PageViewModelBase {
 
+    [ObservableProperty]
     private string? _searchText;
-    public string? SearchText {
-        get => _searchText;
-        set {
-            this.RaiseAndSetIfChanged(ref _searchText, value);
-            QuestionsSearch.Refresh();
-        }
-    }
     
     public IterableCollectionView QuestionsSearch { get; }
 

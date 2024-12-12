@@ -5,96 +5,78 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
-using Core.Evaluation;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Core.FileHandling;
 using Core.Questions;
 using Core.Questions.Word;
-using ReactiveUI;
 using UI.Services;
 using UI.Utils;
 
 namespace UI.ViewModels.QuestionForms;
 
-public class CreateStyleQuestionFormViewModel(IServiceProvider services) : QuestionFormBaseVM(services) {
+public partial class CreateStyleQuestionFormViewModel(IServiceProvider services) : QuestionFormBaseVM(services) {
     
     public static string[] Alignments = ["left", "center", "right"]; 
-
-    private string? _errMsg;
-    public string? ErrorMsg {
-        get => _errMsg;
-        set {
-            this.RaiseAndSetIfChanged(ref _errMsg, value);
-            this.RaisePropertyChanged(nameof(IsError));
-        }
-    }
-    public bool IsError => ErrorMsg is not null;
-
-    private string _name;
-    public string Name { 
-        get => _name;
-        set => this.RaiseAndSetIfChanged(ref _name, value);
-    }
-
-    private string? _desc;
-    public string? Desc { 
-        get => _desc;
-        set => this.RaiseAndSetIfChanged(ref _desc, value);
-    }
     
     private byte[]? _ogFile;
-    private string _filename = Lang.Lang.NoFilesSelected;
-    public string Filename { 
-        get => _filename;
-        set => this.RaiseAndSetIfChanged(ref _filename, value);
-    }
     
-    private string? _path;
-    public string Path { 
-        get => _path;
-        set => this.RaiseAndSetIfChanged(ref _path, value);
-    }
-    
-    private string? _styleName;
-    public string? StyleName { 
-        get => _styleName;
-        set => this.RaiseAndSetIfChanged(ref _styleName, value);
-    }
-    
-    private ObservableCollection<string> _basedOnStyles = [];
-    public ObservableCollection<string> BasedOnStyles { 
-        get => _basedOnStyles;
-        set => this.RaiseAndSetIfChanged(ref _basedOnStyles, value);
-    }
-
-    public string? BasedOnSelected { get; set; }
-    
-    private ObservableCollection<string> _fontNames = [];
-    public ObservableCollection<string> FontNames { 
-        get => _fontNames;
-        set => this.RaiseAndSetIfChanged(ref _fontNames, value);
-    }
     public string? FontNamesSelected { get; set; }
     
     public string? AlignmentSelected { get; set; }
+    public string? BasedOnSelected { get; set; }
     
-    private Avalonia.Media.Color? _color;
-    public Avalonia.Media.Color? Color { 
-        get => _color;
-        set => this.RaiseAndSetIfChanged(ref _color, value);
+    public bool IsError => ErrorMsg is not null;
+
+    #region Observable properties
+    
+    private string? _errorMsg;
+    public string? ErrorMsg {
+        get => _errorMsg;
+        set {
+            _errorMsg = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsError));
+        }
     }
+    
+    [ObservableProperty]
+    private string _name;
+    
+    [ObservableProperty]
+    private string? _desc;
+    
+    [ObservableProperty]
+    private string _filename = Lang.Lang.NoFilesSelected;
+    
+    [ObservableProperty]
+    private string? _path;
+    
+    [ObservableProperty]
+    private string? _styleName;
+    
+    [ObservableProperty]
+    private ObservableCollection<string> _basedOnStyles = [];
+    
+    [ObservableProperty]
+    private ObservableCollection<string> _fontNames = [];
+    
+    [ObservableProperty]
+    private Avalonia.Media.Color? _color;
     
     private int _fontSize;
     public string FontSize {
         get => _fontSize.ToString();
         set {
             try {
-                var val = int.Parse(value);
-                this.RaiseAndSetIfChanged(ref _fontSize, val);
+                _fontSize = int.Parse(value);
             } catch (Exception _) {
-                this.RaiseAndSetIfChanged(ref _fontSize, 0);
+                _fontSize = 0;
             }
+            OnPropertyChanged(nameof(_fontSize));
         }
     }
+
+    #endregion
 
     public void CloseErr() {
         ErrorMsg = null;
