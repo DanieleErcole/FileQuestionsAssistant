@@ -141,4 +141,7 @@
     <data name="AddFilesBtnText" xml:space="preserve">
         <value>Add files</value>
     </data>
+    <data name="NoneText" xml:space="preserve">
+        <value>None</value>
+    </data>
 </root>

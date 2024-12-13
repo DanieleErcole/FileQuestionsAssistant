@@ -9,7 +9,7 @@
              xmlns:input="clr-namespace:FluentAvalonia.UI.Input;assembly=FluentAvalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="pages:ResultsPageViewModel"
-             x:Class="UI.Views.ResultsPageView">
+             x:Class="UI.Views.Pages.ResultsPageView">
     <UserControl.Styles>
         <Style Selector="Button">
             <Setter Property="Cursor" Value="Hand"></Setter>
@@ -85,27 +85,19 @@
                 </ItemsControl.Resources>
                 
                 <ItemsControl.Styles>
-                    <Style Selector="Expander.success">
-                        <Setter Property="Background" Value="{DynamicResource SystemFillColorSuccessBackground}"></Setter>
-                    </Style>
                     <Style Selector="Expander.success > StackPanel > controls|SymbolIcon">
                         <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}"></Setter>
                     </Style>
-                    <Style Selector="Expander.failure">
-                        <Setter Property="Background" Value="{DynamicResource SystemFillColorCriticalBackground}"></Setter>
-                    </Style>
                     <Style Selector="Expander.failure > StackPanel > controls|SymbolIcon">
                         <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}"></Setter>
-                    </Style>
-                    <Style Selector="Expander:not(.success), Expander:not(.failure)">
-                        
                     </Style>
                 </ItemsControl.Styles>
                 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type questions:FileResultViewModel}">
                         <Panel>
-                            <Expander Classes.success="{Binding IsSuccess}"
+                            <Expander Expanding="OnExpanding"
+                                      Classes.success="{Binding IsSuccess}"
                                       Classes.failure="{Binding IsFailed}">
                                 <Expander.Header>
                                     <StackPanel Orientation="Horizontal"
@@ -126,6 +118,62 @@
                                         </Button>
                                     </StackPanel>
                                 </Expander.Header>
+                                <TreeView ItemsSource="{Binding FileParams}"
+                                          SelectionChanged="OnSelectionChanged">
+                                    <TreeView.Styles>
+                                        <Style Selector="TreeViewItem">
+                                            <Style Selector="^ /template/ Border#PART_LayoutRoot:pointerover">
+                                               <Setter Property="Background" Value="Transparent" />
+                                               <Setter Property="BorderBrush" Value="Transparent" />
+                                            </Style>           
+                                            <Style Selector="^:pressed /template/ Border#PART_LayoutRoot:pointerover">
+                                               <Setter Property="Background" Value="Transparent" />
+                                               <Setter Property="BorderBrush" Value="Transparent" />
+                                            </Style>
+                                            <Style Selector="^:disabled /template/ Border#PART_LayoutRoot">
+                                               <Setter Property="Background" Value="Transparent" />
+                                               <Setter Property="BorderBrush" Value="Transparent" />
+                                            </Style>
+                                            <Style Selector="^:selected /template/ Border#PART_LayoutRoot">
+                                               <Setter Property="Background" Value="Transparent" />
+                                               <Setter Property="BorderBrush" Value="Transparent" />
+                                            </Style>
+                                            <Style Selector="^:selected /template/ Border#PART_LayoutRoot:pointerover">
+                                               <Setter Property="Background" Value="Transparent" />
+                                               <Setter Property="BorderBrush" Value="Transparent" />
+                                            </Style>
+                                            <Style Selector="^:pressed:selected /template/ Border#PART_LayoutRoot:pointerover">
+                                               <Setter Property="Background" Value="Transparent" />
+                                               <Setter Property="BorderBrush" Value="Transparent" />
+                                            </Style>
+                                            <Style Selector="^:disabled:selected /template/ Border#PART_LayoutRoot">
+                                               <Setter Property="Background" Value="Transparent" />
+                                               <Setter Property="BorderBrush" Value="Transparent" />
+                                            </Style>            
+                                        </Style>
+                                        <Style Selector="Panel.success > controls|SymbolIcon">
+                                            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}"></Setter>
+                                        </Style>
+                                        <Style Selector="Panel.failure > controls|SymbolIcon">
+                                            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}"></Setter>
+                                        </Style>
+                                    </TreeView.Styles>
+                                    <TreeView.ItemTemplate>
+                                        <TreeDataTemplate ItemsSource="{Binding SubNodes}">
+                                            <Panel Classes.success="{Binding IsCorrect}"
+                                                   Classes.failure="{Binding !IsCorrect}"
+                                                   Margin="0, 5, 0, 5">
+                                                <controls:SymbolIcon HorizontalAlignment="Left"
+                                                                     Symbol="{Binding ResIcon}" 
+                                                                     FontSize="18"/>
+                                                <TextBlock HorizontalAlignment="Left" Margin="20, 0, 0, 0"
+                                                           Text="{Binding Title}"/>
+                                                <TextBlock HorizontalAlignment="Right" Margin="0, 0, 10, 0"
+                                                           Text="{Binding Value}"/>
+                                            </Panel>
+                                        </TreeDataTemplate>
+                                    </TreeView.ItemTemplate>
+                                </TreeView>
                             </Expander>
                         </Panel>
                     </DataTemplate>

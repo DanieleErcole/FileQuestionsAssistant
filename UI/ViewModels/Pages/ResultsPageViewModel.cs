@@ -25,7 +25,7 @@ public partial class ResultsPageViewModel : PageViewModelBase {
     [ObservableProperty]
     private IterableCollectionView? _filesResult;
 
-    private List<Result> _results = [];
+    private readonly List<Result> _results = [];
 
     public ResultsPageViewModel(IServiceProvider services) : base(services) {
         _services = services;
@@ -44,7 +44,7 @@ public partial class ResultsPageViewModel : PageViewModelBase {
         var files = ev.Files[QuestionVM.Index];
         FilesResult = new IterableCollectionView(files.Select(f => {
             var index = files.IndexOf(f);
-            return new FileResultViewModel(index, f.Name, _results.ElementAtOrDefault(index));
+            return new FileResultViewModel(QuestionVM, index, f.Name, _results.ElementAtOrDefault(index));
         }), _ => true);
     }
     

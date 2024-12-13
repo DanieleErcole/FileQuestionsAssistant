@@ -3,6 +3,7 @@ using FluentAvalonia.UI.Controls;
 using UI.ViewModels.Pages;
 using UI.Views;
 using Control = Avalonia.Controls.Control;
+using ResultsPageView = UI.Views.Pages.ResultsPageView;
 
 namespace UI.Services;
 

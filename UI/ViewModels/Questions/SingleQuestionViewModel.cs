@@ -27,5 +27,6 @@ public abstract class SingleQuestionViewModel(string name, string desc, IService
 
     public abstract Task AddFiles();
     public abstract Dictionary<string, object?> GetLocalizedQuestionParams();
+    public abstract List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res);
 
 }

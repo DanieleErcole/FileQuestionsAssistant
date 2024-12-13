@@ -276,6 +276,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string NoneText {
+            get {
+                return ResourceManager.GetString("NoneText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You do not have permission to access this file.
         /// </summary>
         public static string NoPermissionDesc {
