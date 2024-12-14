@@ -8,16 +8,16 @@ namespace Core.FileHandling;
 public class WordFile : IFile {
 
     private readonly WordprocessingDocument _doc;
+    private readonly MainDocumentPart _mainDoc;
     
     public string Name { get; }
-    public MainDocumentPart MainDoc { get; }
 
     public IEnumerable<Style> Styles {
         get {
             try {
-                if (MainDoc.StylesWithEffectsPart is { } s)
+                if (_mainDoc.StylesWithEffectsPart is { } s)
                     return s.Styles?.Elements<Style>() ?? throw new InvalidFileFormat(Name);
-                return MainDoc.StyleDefinitionsPart?.Styles?.Elements<Style>() ?? throw new InvalidFileFormat(Name);
+                return _mainDoc.StyleDefinitionsPart?.Styles?.Elements<Style>() ?? throw new InvalidFileFormat(Name);
             } catch (Exception e) when (e is not ApplicationException) {
                 throw new FileError(Name, e);
             }
@@ -27,7 +27,17 @@ public class WordFile : IFile {
     public IEnumerable<Font> Fonts {
         get {
             try {
-                return MainDoc.FontTablePart?.Fonts.Elements<Font>() ?? throw new InvalidFileFormat(Name);
+                return _mainDoc.FontTablePart?.Fonts.Elements<Font>() ?? throw new InvalidFileFormat(Name);
+            } catch (Exception e) when (e is not ApplicationException) {
+                throw new FileError(Name, e);
+            }
+        }
+    }
+
+    public IEnumerable<Paragraph> Paragraphs {
+        get {
+            try {
+                return _mainDoc.Document.Body?.Elements<Paragraph>() ?? throw new InvalidFileFormat(Name);
             } catch (Exception e) when (e is not ApplicationException) {
                 throw new FileError(Name, e);
             }
@@ -38,7 +48,7 @@ public class WordFile : IFile {
         Name = name;
         try {
             _doc = WordprocessingDocument.Open(file, false);
-            MainDoc = _doc.MainDocumentPart ?? throw new InvalidFileFormat(Name);
+            _mainDoc = _doc.MainDocumentPart ?? throw new InvalidFileFormat(Name);
         } catch (Exception e) when (e is not ApplicationException) {
             throw new FileError(Name, e);
         }
