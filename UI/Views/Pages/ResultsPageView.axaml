@@ -94,6 +94,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type questions:FileResultViewModel}">
                         <Expander Expanding="OnExpanding"
+                                  Margin="0, 0, 0, 5"
                                   Classes.success="{Binding IsSuccess}"
                                   Classes.failure="{Binding IsFailed}">
                             <Expander.Header>

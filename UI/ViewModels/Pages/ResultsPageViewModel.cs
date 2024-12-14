@@ -54,6 +54,7 @@ public partial class ResultsPageViewModel : PageViewModelBase {
 
     public void RemoveFile(object param) {
         var vm = (param as FileResultViewModel)!;
+        _services.Get<Evaluator>().Files[QuestionVM.Index][vm.Index].Dispose();
         _services.Get<Evaluator>().Files[QuestionVM.Index].RemoveAt(vm.Index);
         if (vm.Result is not null)
             _results.RemoveAt(vm.Index);
