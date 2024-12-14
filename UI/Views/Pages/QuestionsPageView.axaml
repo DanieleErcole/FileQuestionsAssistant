@@ -11,19 +11,8 @@
              x:Class="UI.Views.QuestionsPageView"
              x:DataType="pages:QuestionsPageViewModel">
     <UserControl.Styles>
-        <Style Selector="Button">
-            <Setter Property="Cursor" Value="Hand"></Setter>
-        </Style>
-        <Style Selector="ListBoxItem">
-            <Setter Property="Cursor" Value="Hand"></Setter>
-        </Style>
+        <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
     </UserControl.Styles>
-    
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <pages:QuestionsPageViewModel/>
-    </Design.DataContext>
     
     <DockPanel x:Name="PageContainer"
                Height="{Binding $parent[StackPanel].Height}">
@@ -43,26 +32,8 @@
         <DockPanel DockPanel.Dock="Top">
             <StackPanel DockPanel.Dock="Right"
                         Width="400">
-                <StackPanel.Styles>
-                    <Style Selector="Button">
-                        <Setter Property="Width" Value="300"></Setter>
-                        <Setter Property="Height" Value="75"></Setter>
-                        <Setter Property="Padding" Value="10"></Setter>
-                        <Setter Property="VerticalAlignment" Value="Center"></Setter>
-                        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-                        <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
-                    </Style>
-                    <Style Selector="Button > StackPanel">
-                        <Setter Property="Orientation" Value="Horizontal"></Setter>
-                        <Setter Property="VerticalAlignment" Value="Center"></Setter>
-                        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-                    </Style>
-                    <Style Selector="Button controls|SymbolIcon">
-                        <Setter Property="Foreground" Value="{DynamicResource AccentTextFillColorTertiaryBrush}"></Setter>
-                    </Style>
-                </StackPanel.Styles>
-                
-                <Button Margin="0, 20, 0, 20"
+                <Button Classes="big-button" 
+                        Margin="0, 20, 0, 20"
                         Command="{Binding OpenQuestion}">
                     <StackPanel>
                         <controls:SymbolIcon Symbol="OpenLocal"
@@ -74,7 +45,8 @@
                         </StackPanel>
                     </StackPanel>
                 </Button>
-                <Button Command="{Binding AddQuestionBtn}">
+                <Button Classes="big-button" 
+                        Command="{Binding AddQuestionBtn}">
                     <StackPanel>
                         <controls:SymbolIcon Symbol="Add"
                                              FontSize="30"/>

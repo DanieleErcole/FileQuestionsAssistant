@@ -18,38 +18,12 @@ public partial class CreateStyleQuestionFormViewModel(IServiceProvider services)
     
     public static string[] Alignments = ["left", "center", "right"]; 
     
-    private byte[]? _ogFile;
-    
     public string? FontNamesSelected { get; set; }
     
     public string? AlignmentSelected { get; set; }
     public string? BasedOnSelected { get; set; }
-    
-    public bool IsError => ErrorMsg is not null;
 
     #region Observable properties
-    
-    private string? _errorMsg;
-    public string? ErrorMsg {
-        get => _errorMsg;
-        set {
-            _errorMsg = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(IsError));
-        }
-    }
-    
-    [ObservableProperty]
-    private string _name;
-    
-    [ObservableProperty]
-    private string? _desc;
-    
-    [ObservableProperty]
-    private string _filename = Lang.Lang.NoFilesSelected;
-    
-    [ObservableProperty]
-    private string? _path;
     
     [ObservableProperty]
     private string? _styleName;

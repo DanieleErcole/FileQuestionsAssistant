@@ -3,22 +3,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:viewModels="clr-namespace:UI.ViewModels"
              xmlns:lang="clr-namespace:UI.Lang"
              xmlns:pages="clr-namespace:UI.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="UI.Views.QuestionDataPageView"
              x:DataType="pages:QuestionDataPageViewModel">
     <UserControl.Styles>
-        <Style Selector="Button">
-            <Setter Property="Cursor" Value="Hand"></Setter>
-        </Style>
-        <Style Selector="ComboBox">
-            <Setter Property="Cursor" Value="Hand"></Setter>
-        </Style>
-        <Style Selector="ListBoxItem">
-            <Setter Property="Cursor" Value="Hand"></Setter>
-        </Style>
+        <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
     </UserControl.Styles>
     
     <DockPanel x:Name="PageContainer"

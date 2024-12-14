@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Evaluation;
 using Core.Utils.Errors;
 using FluentAvalonia.UI.Data;
@@ -12,10 +11,16 @@ using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
-public partial class QuestionsPageViewModel : PageViewModelBase {
-
-    [ObservableProperty]
+public class QuestionsPageViewModel : PageViewModelBase {
+    
     private string? _searchText;
+    public string? SearchText {
+        get => _searchText;
+        set {
+            SetProperty(ref _searchText, value);
+            QuestionsSearch.Refresh();
+        }
+    }
     
     public IterableCollectionView QuestionsSearch { get; }
 
@@ -39,7 +44,6 @@ public partial class QuestionsPageViewModel : PageViewModelBase {
     }
     
     #region Button commands
-
         public async Task OpenQuestion() {
             var files = await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
                 AllowMultiple = false,
@@ -85,6 +89,5 @@ public partial class QuestionsPageViewModel : PageViewModelBase {
             var selected = e.AddedItems[0] as SingleQuestionViewModel;
             _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, _services.Get<Evaluator>().Questions[selected!.Index]);
         }
-    
     #endregion
 }
