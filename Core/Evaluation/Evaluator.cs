@@ -28,6 +28,7 @@ public class Evaluator {
             throw new ArgumentOutOfRangeException();
 
         Questions.RemoveAt(index);
+        DisposeFiles(index);
         Files.RemoveAt(index);
     }
 

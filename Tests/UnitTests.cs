@@ -147,4 +147,20 @@ public class WordTests {
         Assert.That(deserialized is CreateStyleQuestion, Is.EqualTo(true));
     }
 
+    [TestCase("CustomStyle", true)]
+    [TestCase("Wow", true)]
+    [TestCase("Heading 1", false)]
+    public void ParagraphApplyStyleQuestion_TestCase(string styleName, bool expectedRes) {
+        var q = new ParagraphApplyStyleQuestion("", "Name", "Description", _ogFile, styleName);
+        _evaluator.AddQuestion(q, new WordFile(_wordFile.Name, _wordFile));
+        var res = _evaluator.Evaluate().First();
+        
+        foreach (var p in res.EachParamsWithRes()) {
+            foreach (var (key, value) in p)
+                Console.WriteLine($"{key}: {value}");
+            Console.WriteLine("---------------");
+        }
+        Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));
+    }
+
 }
