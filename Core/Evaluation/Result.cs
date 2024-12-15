@@ -14,7 +14,7 @@ public class Result {
 
     public IEnumerable<Dictionary<string, (object?, bool)>> EachParamsWithRes() => _paramsFromFile
         .Select(styleParams => styleParams
-            .Select(p => new KeyValuePair<string, (object?, bool)>(p.Key, (p.Value, p.Value == _correctParams[p.Key])))
+            .Select(p => new KeyValuePair<string, (object?, bool)>(p.Key, (p.Value, _correctParams[p.Key] is null || p.Value == _correctParams[p.Key])))
             .ToDictionary()
         );
 
