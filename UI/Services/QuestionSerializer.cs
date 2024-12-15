@@ -60,7 +60,9 @@ public class QuestionSerializer {
                 try {
                     using var stream = File.OpenRead(p);
                     using var streamReader = new StreamReader(stream);
-                    return JsonSerializer.Deserialize<AbstractQuestion>(streamReader.ReadToEnd(), _options);
+                    var q = JsonSerializer.Deserialize<AbstractQuestion>(streamReader.ReadToEnd(), _options);
+                    if (q is not null) q.Path = p;
+                    return q;
                 } catch (Exception e) {
                     Console.WriteLine(e);
                     return null;
@@ -86,7 +88,10 @@ public class QuestionSerializer {
         try {
             await using var stream = File.OpenRead(path);
             using var streamReader = new StreamReader(stream);
-            return JsonSerializer.Deserialize<AbstractQuestion>(await streamReader.ReadToEndAsync(), _options);
+            
+            var q = JsonSerializer.Deserialize<AbstractQuestion>(streamReader.ReadToEnd(), _options);
+            if (q is not null) q.Path = path;
+            return q;
         } catch (JsonException _) {
             throw new InvalidFileFormat(path);
         } catch (Exception e) {
