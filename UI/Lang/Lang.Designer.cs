@@ -195,6 +195,24 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The evaluation of the selected files has been completed..
+        /// </summary>
+        public static string EvaluationSuccessDesc {
+            get {
+                return ResourceManager.GetString("EvaluationSuccessDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evaluation success.
+        /// </summary>
+        public static string EvaluationSuccessTitle {
+            get {
+                return ResourceManager.GetString("EvaluationSuccessTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Files.
         /// </summary>
         public static string FilesLabel {

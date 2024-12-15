@@ -68,7 +68,7 @@ public partial class ResultsPageViewModel : PageViewModelBase {
 
     public void EvaluateButton() {
         _results.AddRange(_services.Get<Evaluator>().Evaluate(QuestionVM.Index));
-        _services.Get<WindowNotificationManager>().ShowSuccess("Evaluation success", "Finished evaluating the files");
+        _services.Get<WindowNotificationManager>().ShowNotification(Lang.Lang.EvaluationSuccessTitle, Lang.Lang.EvaluationSuccessDesc, NotificationType.Success);
         FilesResult?.Refresh();
     }
     

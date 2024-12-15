@@ -137,4 +137,10 @@
     <data name="NoneText" xml:space="preserve">
         <value>Nessuno</value>
     </data>
+    <data name="EvaluationSuccessTitle" xml:space="preserve">
+        <value>Valutazione completata</value>
+    </data>
+    <data name="EvaluationSuccessDesc" xml:space="preserve">
+        <value>Tutti i file selezionati sono stati valutati con successo.</value>
+    </data>
 </root>

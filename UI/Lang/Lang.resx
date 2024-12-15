@@ -144,4 +144,10 @@
     <data name="NoneText" xml:space="preserve">
         <value>None</value>
     </data>
+    <data name="EvaluationSuccessTitle" xml:space="preserve">
+        <value>Evaluation success</value>
+    </data>
+    <data name="EvaluationSuccessDesc" xml:space="preserve">
+        <value>The evaluation of the selected files has been completed.</value>
+    </data>
 </root>

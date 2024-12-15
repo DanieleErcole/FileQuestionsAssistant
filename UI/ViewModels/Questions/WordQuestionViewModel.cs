@@ -7,6 +7,7 @@ using Core.Evaluation;
 using Core.FileHandling;
 using Core.Utils.Errors;
 using Microsoft.Extensions.DependencyInjection;
+using UI.Services;
 using UI.Utils;
 
 namespace UI.ViewModels.Questions;
@@ -36,7 +37,7 @@ public abstract class WordQuestionViewModel(string name, string desc, IServicePr
             _services.GetRequiredService<Evaluator>().AddFiles(Index, files);
         } catch (FileError e) {
             UIException ex = e;
-            _services.GetRequiredService<WindowNotificationManager>().ShowError($"Error opening file: {e.Filename}", ex.ToString());
+            _services.Get<ErrorHandler>().ShowError(e);
         }
     }
     

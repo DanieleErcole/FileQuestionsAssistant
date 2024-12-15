@@ -9,25 +9,17 @@ using Core.Evaluation;
 using Microsoft.Extensions.DependencyInjection;
 using UI.Services;
 using UI.ViewModels;
-using UI.ViewModels.Questions;
 using UI.Views;
 
 namespace UI;
 
 public static class NotificationExtensions {
-    public static void ShowError(this WindowNotificationManager nm, string title, string message) {
+    public static void ShowNotification(this WindowNotificationManager nm, string title, string message,
+        NotificationType type = NotificationType.Information) {
         nm.Show(new Notification {
             Title = title,
             Message = message,
-            Type = NotificationType.Error,
-        });
-    }
-    
-    public static void ShowSuccess(this WindowNotificationManager nm, string title, string message) {
-        nm.Show(new Notification {
-            Title = title,
-            Message = message,
-            Type = NotificationType.Success,
+            Type = type,
         });
     }
 }
