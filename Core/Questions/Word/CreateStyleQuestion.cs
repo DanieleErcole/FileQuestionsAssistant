@@ -21,8 +21,8 @@ public class CreateStyleQuestion : AbstractQuestion {
     }
     
     [JsonConstructor]
-    public CreateStyleQuestion(string name, string desc, string path, byte[] ogFile, Dictionary<string, object?> Params) 
-        : base(name, desc, path, ogFile, Params) {}
+    public CreateStyleQuestion(string name, string desc, byte[] ogFile, Dictionary<string, object?> Params) 
+        : base(name, desc, ogFile, Params) {}
     
     protected override void DeserializeParams() {
         foreach (var (k, v) in Params) {

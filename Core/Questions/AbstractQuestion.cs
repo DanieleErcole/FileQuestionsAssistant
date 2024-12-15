@@ -23,17 +23,18 @@ public abstract class AbstractQuestion : IQuestion {
     
     public string Name { get; set; }
     public string? Desc { get; set; }
-    public string Path { get; set; }
     public byte[] OgFile { get; set; }
     
+    [JsonIgnore]
+    public string Path { get; set; } // The path will be initialized when creating the question from code and after deserializing it, it will be always initialized
+
     [JsonInclude]
     public Dictionary<string, object?> Params = new();
 
     [JsonConstructor]
-    public AbstractQuestion(string name, string desc, string path, byte[] ogFile, Dictionary<string, object?> Params) {
+    public AbstractQuestion(string name, string desc, byte[] ogFile, Dictionary<string, object?> Params) {
         Name = name;
         Desc = desc;
-        Path = path;
         OgFile = ogFile;
         this.Params = Params;
         // The virtual method changes the Params initialised above,

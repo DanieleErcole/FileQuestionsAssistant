@@ -14,7 +14,7 @@ public class ParagraphApplyStyleQuestion : AbstractQuestion {
     
     [JsonConstructor]
     public ParagraphApplyStyleQuestion(string name, string desc, string path, byte[] ogFile, Dictionary<string, object?> Params) 
-        : base(name, desc, path, ogFile, Params) {}
+        : base(name, desc, ogFile, Params) {}
 
     protected override void DeserializeParams() {
         foreach (var (k, v) in Params) {
