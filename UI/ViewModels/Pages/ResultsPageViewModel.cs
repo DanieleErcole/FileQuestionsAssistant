@@ -18,10 +18,8 @@ public partial class ResultsPageViewModel : PageViewModelBase {
     
     [ObservableProperty]
     private SingleQuestionViewModel _questionVM;
-
     [ObservableProperty]
     private Dictionary<string, object?> _correctParams;
-    
     [ObservableProperty]
     private IterableCollectionView? _filesResult;
 
@@ -36,7 +34,6 @@ public partial class ResultsPageViewModel : PageViewModelBase {
             _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
             return;
         }
-        _results.Clear();
         QuestionVM = question.ToViewModel(_services);
         CorrectParams = QuestionVM.GetLocalizedQuestionParams();
         
@@ -49,6 +46,7 @@ public partial class ResultsPageViewModel : PageViewModelBase {
     }
     
     public void ToQuestionPage() {
+        _results.Clear();
         _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
     }
 

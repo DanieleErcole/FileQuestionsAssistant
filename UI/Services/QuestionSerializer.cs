@@ -13,7 +13,7 @@ namespace UI.Services;
 
 public class QuestionSerializer {
 
-    private static readonly string TrackedDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "FileQuestionAssistant");
+    private static readonly string TrackedDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FileQuestionAssistant");
     private static string TrackedFilePath => Path.Combine(TrackedDirectoryPath, TrackedFileName);
     private const string TrackedFileName = "TrackedQuestions.txt";
     
@@ -89,7 +89,7 @@ public class QuestionSerializer {
             await using var stream = File.OpenRead(path);
             using var streamReader = new StreamReader(stream);
             
-            var q = JsonSerializer.Deserialize<AbstractQuestion>(streamReader.ReadToEnd(), _options);
+            var q = JsonSerializer.Deserialize<AbstractQuestion>(await streamReader.ReadToEndAsync(), _options);
             if (q is not null) q.Path = path;
             return q;
         } catch (JsonException _) {
