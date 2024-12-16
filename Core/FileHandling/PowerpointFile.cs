@@ -42,4 +42,8 @@ public class PowerpointFile : IFile {
         GC.SuppressFinalize(this);
     }
     
+    ~PowerpointFile() {
+        Dispose();
+    }
+    
 }

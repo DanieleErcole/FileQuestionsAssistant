@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <Folder Include="Questions\Excel\" />
-    <Folder Include="Questions\Powerpoint\" />
     <Folder Include="Utils\Errors\" />
   </ItemGroup>
 

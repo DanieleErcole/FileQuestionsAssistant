@@ -26,16 +26,8 @@ public class EvaluatorTests {
     
     private Evaluator _evaluator;
 
-    internal class MyFile : IFile {
-        public string Name { get; } = "MyFile";
-        public void Dispose() {}
-    }
-
-    internal class MyQuestion : IQuestion {
-        public string Name { get; set; }
-        public string? Desc { get; set; }
+    private class MyQuestion : IQuestion {
         public string Path { get; set; }
-        public byte[] OgFile { get; set; }
 
         public IEnumerable<Result> Evaluate(IEnumerable<IFile> files) {
             var d = new Dictionary<string, object?>();
@@ -93,7 +85,6 @@ public class WordTests {
 
     [TearDown]
     public void TearDown() => _evaluator.DisposeAllFiles();
-    
 
     [OneTimeSetUp]
     public void SetupBeforeAll() {

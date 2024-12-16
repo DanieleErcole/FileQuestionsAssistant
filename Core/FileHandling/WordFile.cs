@@ -63,4 +63,8 @@ public class WordFile : IFile {
         GC.SuppressFinalize(this);
     }
     
+    ~WordFile() {
+        Dispose();
+    }
+    
 }
