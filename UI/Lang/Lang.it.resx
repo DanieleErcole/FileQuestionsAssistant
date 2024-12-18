@@ -161,4 +161,7 @@
     <data name="EditQuestionPageTitle" xml:space="preserve">
         <value>Modifica domanda</value>
     </data>
+    <data name="ToolTipEditButton" xml:space="preserve">
+        <value>Modifica i parametri della domanda</value>
+    </data>
 </root>

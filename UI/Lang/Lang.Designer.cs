@@ -456,6 +456,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit question parameters.
+        /// </summary>
+        public static string ToolTipEditButton {
+            get {
+                return ResourceManager.GetString("ToolTipEditButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove question from the list.
         /// </summary>
         public static string ToolTipRemoveButton {

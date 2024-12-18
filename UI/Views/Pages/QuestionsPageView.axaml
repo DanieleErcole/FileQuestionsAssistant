@@ -119,6 +119,7 @@
                                         VerticalContentAlignment="Center"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right"
+                                        ToolTip.Tip="{x:Static lang:Lang.ToolTipEditButton}"
                                         Command="{DynamicResource EditQuestion}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
                                     <controls:SymbolIcon Symbol="Edit" FontSize="20"/>

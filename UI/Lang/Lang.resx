@@ -168,4 +168,7 @@
     <data name="EditQuestionPageTitle" xml:space="preserve">
         <value>Edit question</value>
     </data>
+    <data name="ToolTipEditButton" xml:space="preserve">
+        <value>Edit question parameters</value>
+    </data>
 </root>

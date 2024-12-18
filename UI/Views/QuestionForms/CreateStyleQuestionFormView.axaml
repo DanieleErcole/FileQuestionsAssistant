@@ -13,25 +13,22 @@
                           IsOpen="{Binding IsError}" 
                           Severity="Error" 
                           Message="{Binding ErrorMsg}"/>
-        <Grid ColumnDefinitions="*, *, *"
-              Margin="20, 20, 20, 0">
-            <StackPanel Grid.Row="0" Grid.Column="0" 
-                        HorizontalAlignment="Left">
+        <Panel Margin="20, 20, 20, 0">
+            <StackPanel HorizontalAlignment="Left">
                 <StackPanel Orientation="Horizontal"
                             Margin="2, 0, 0, 3">
                     <TextBlock Text="{x:Static lang:Lang.QuestionNameLabel}"/>
                     <TextBlock Text="*"/>
                 </StackPanel>
-                <TextBox Width="200" Text="{Binding Name}"/>
+                <TextBox Width="300" Text="{Binding Name}"/>
             </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="1" 
-                        HorizontalAlignment="Center">
+            <StackPanel HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal"
                             Margin="2, 0, 0, 3">
                     <TextBlock Text="{x:Static lang:Lang.OGFileLabel}"/>
                     <TextBlock Text="*"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Margin="0, 0, 40, 0" Orientation="Horizontal">
                     <Button Content="Upload"
                             Command="{Binding UploadOgFile}"/>
                     <TextBlock VerticalAlignment="Center"
@@ -39,16 +36,15 @@
                                Text="{Binding Filename}" />
                 </StackPanel>
             </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="2" 
-                        HorizontalAlignment="Right">
-                <TextBlock Margin="2, 0, 0, 3"
-                           Text="{x:Static lang:Lang.QuestionDescLabel}"/>
-                <TextBox Width="230" 
-                         TextWrapping="Wrap"
-                         Text="{Binding Desc}"/>
-            </StackPanel>
-        </Grid>
+        </Panel>
         <StackPanel Margin="20">
+            <TextBlock Margin="2, 0, 0, 3"
+                       Text="{x:Static lang:Lang.QuestionDescLabel}"/>
+            <TextBox Margin="0, 0, 20, 0"
+                     TextWrapping="Wrap"
+                     Text="{Binding Desc}"/>
+        </StackPanel>
+        <StackPanel Margin="20, 0, 20, 20">
             <StackPanel Orientation="Horizontal"
                         Margin="2, 0, 0, 3">
                 <TextBlock Text="{x:Static lang:Lang.PathLabel}"/>
@@ -58,8 +54,7 @@
                 <Panel Grid.Column="0">
                     <TextBox Text="{Binding Path}"/>
                 </Panel>
-                <Button Grid.Column="1" 
-                        DockPanel.Dock="Left" 
+                <Button Grid.Column="1"
                         Margin="15 0, 0, 0"
                         Command="{Binding LoadLocation}">
                     <controls:SymbolIcon Symbol="More"/>
