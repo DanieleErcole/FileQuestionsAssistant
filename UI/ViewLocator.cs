@@ -2,22 +2,23 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using UI.ViewModels;
+using UI.ViewModels.Pages;
 
 namespace UI;
 
-public class ViewLocator : IDataTemplate
-{
+public class ViewLocator : IDataTemplate {
 
-    public Control? Build(object? data)
-    {
+    public Control? Build(object? data) {
         if (data is null)
             return null;
         
-        var name = data.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+        var name = data switch {
+            QuestionDataPageViewModel => nameof(QuestionDataPageViewModel),
+            _ => data.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal)
+        };
         var type = Type.GetType(name);
 
-        if (type != null)
-        {
+        if (type != null) {
             var control = (Control)Activator.CreateInstance(type)!;
             control.DataContext = data;
             return control;
@@ -26,8 +27,6 @@ public class ViewLocator : IDataTemplate
         return new TextBlock { Text = "Not Found: " + name };
     }
 
-    public bool Match(object? data)
-    {
-        return data is ViewModelBase;
-    }
+    public bool Match(object? data) => data is ViewModelBase;
+    
 }

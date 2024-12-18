@@ -42,11 +42,8 @@ public class Evaluator {
         if (index >= Files.Count)
             throw new ArgumentOutOfRangeException();
 
-        if (Files[index].Count != 0) {
-            foreach (var f in Files[index])
-                f.Dispose();
-            Files[index].Clear();
-        }
+        if (Files[index].Count != 0) 
+            DisposeFiles(index);
         Files[index] = files.ToList();
     }
 

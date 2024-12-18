@@ -25,7 +25,7 @@
             <TextBlock Margin="20, 10, 0, 20"
                        HorizontalAlignment="Left"
                        Theme="{StaticResource SubtitleTextBlockStyle}"
-                       Text="{x:Static lang:Lang.NewQuestionTab}"/>
+                       Text="{Binding PageTitle}"/>
         </StackPanel>
         <TextBlock DockPanel.Dock="Top"
                    Margin="30, 0, 0, 0"
@@ -36,14 +36,16 @@
                   MaxDropDownHeight="200"
                   SelectedIndex="{Binding SelectedIndex}">
             <ComboBoxItem Content="{x:Static lang:Lang.CreateStyleQuestionName}"/>
+            <ComboBoxItem Content="{x:Static lang:Lang.ParagraphApplyStyleQuestionName}"/>
+            <ComboBoxItem Content="{x:Static lang:Lang.PptxImageInsertQuestionName}"/>
         </ComboBox>
         
         <Panel DockPanel.Dock="Bottom"
                Margin="0, 0, 20, 20">
             <Button HorizontalAlignment="Right" 
                     Classes="accent" 
-                    Content="{x:Static lang:Lang.CreateBtnText}"
-                    Command="{Binding NewQuestion}"/>
+                    Content="{Binding SaveButtonText}"
+                    Command="{Binding ProcessQuestion}"/>
         </Panel>
         
         <ScrollViewer DockPanel.Dock="Top" 

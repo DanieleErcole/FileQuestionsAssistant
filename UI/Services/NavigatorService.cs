@@ -25,8 +25,9 @@ public class NavigatorService {
     }
 
     public const int Questions = 0;
-    public const int QuestionForm = 1;
-    public const int Results = 2;
+    public const int QuestionAddForm = 1;
+    public const int QuestionEditForm = 2;
+    public const int Results = 3;
     
     private Frame _windowFrame;
     private PageViewModelBase[] _pages;
@@ -36,7 +37,8 @@ public class NavigatorService {
         _windowFrame.NavigationPageFactory = new AppNavFactory();
         _pages = [
             new QuestionsPageViewModel(services),
-            new QuestionDataPageViewModel(services),
+            new QuestionAddPageViewModel(services),
+            new QuestionEditPageViewModel(services),
             new ResultsPageViewModel(services)
         ];
         NavigateTo(Questions);

@@ -177,6 +177,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit question.
+        /// </summary>
+        public static string EditQuestionPageTitle {
+            get {
+                return ResourceManager.GetString("EditQuestionPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error opening file.
         /// </summary>
         public static string ErrorOpeningFilename {
@@ -278,9 +287,9 @@ namespace UI.Lang {
         /// <summary>
         ///   Looks up a localized string similar to New question.
         /// </summary>
-        public static string NewQuestionTab {
+        public static string NewQuestionPageTitle {
             get {
-                return ResourceManager.GetString("NewQuestionTab", resourceCulture);
+                return ResourceManager.GetString("NewQuestionPageTitle", resourceCulture);
             }
         }
         
@@ -330,11 +339,47 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checks if a specific style has been applied to a paragraph in a Word document.
+        /// </summary>
+        public static string ParagraphApplyStyleQuestionDesc {
+            get {
+                return ResourceManager.GetString("ParagraphApplyStyleQuestionDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply Word style.
+        /// </summary>
+        public static string ParagraphApplyStyleQuestionName {
+            get {
+                return ResourceManager.GetString("ParagraphApplyStyleQuestionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string PathLabel {
             get {
                 return ResourceManager.GetString("PathLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checks if an image has been inserted in a PowerPoint document with specific position and dimensions.
+        /// </summary>
+        public static string PptxImageInsertQuestionDesc {
+            get {
+                return ResourceManager.GetString("PptxImageInsertQuestionDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert Powepoint image.
+        /// </summary>
+        public static string PptxImageInsertQuestionName {
+            get {
+                return ResourceManager.GetString("PptxImageInsertQuestionName", resourceCulture);
             }
         }
         
@@ -380,6 +425,15 @@ namespace UI.Lang {
         public static string ResultsTab {
             get {
                 return ResourceManager.GetString("ResultsTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string SaveBtnText {
+            get {
+                return ResourceManager.GetString("SaveBtnText", resourceCulture);
             }
         }
         

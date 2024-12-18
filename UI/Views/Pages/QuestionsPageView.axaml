@@ -80,6 +80,8 @@
                     <ListBox.Resources>
                         <input:XamlUICommand x:Key="DeleteQuestion"
                                              Command="{Binding DeleteQuestion}"/>
+                        <input:XamlUICommand x:Key="EditQuestion"
+                                             Command="{Binding EditQuestionBtn}"/>
                     </ListBox.Resources>
                     
                     <ListBox.Styles>
@@ -100,18 +102,6 @@
                                      Margin="10, 0, 0, 0"
                                      Width="30" Height="30"
                                      VerticalAlignment="Center"/>
-                                <StackPanel DockPanel.Dock="Left"
-                                            Margin="10"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Margin="0, 0, 0, 5"
-                                               TextTrimming="CharacterEllipsis"
-                                               Foreground="{DynamicResource AccentTextFillColorTertiaryBrush}"
-                                               Text="{Binding Name}"/>
-                                    <TextBlock Theme="{StaticResource CaptionTextBlockStyle}"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               TextTrimming="CharacterEllipsis"
-                                               Text="{Binding Description}"/>
-                                </StackPanel>
                                 <Button DockPanel.Dock="Right"
                                         Margin="0, 0, 10, 0"
                                         Theme="{StaticResource TransparentButton}"
@@ -123,6 +113,28 @@
                                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
                                     <controls:SymbolIcon Symbol="Delete" FontSize="20"/>
                                 </Button>
+                                <Button DockPanel.Dock="Right"
+                                        Margin="0, 0, 10, 0"
+                                        Theme="{StaticResource TransparentButton}"
+                                        VerticalContentAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Right"
+                                        Command="{DynamicResource EditQuestion}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
+                                    <controls:SymbolIcon Symbol="Edit" FontSize="20"/>
+                                </Button>
+                                <StackPanel DockPanel.Dock="Left"
+                                            Margin="10"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Margin="0, 0, 0, 5"
+                                               TextTrimming="CharacterEllipsis"
+                                               Foreground="{DynamicResource AccentTextFillColorTertiaryBrush}"
+                                               Text="{Binding Name}"/>
+                                    <TextBlock Theme="{StaticResource CaptionTextBlockStyle}"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding Description}"/>
+                                </StackPanel>
                             </DockPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

@@ -66,8 +66,11 @@ public class QuestionsPageViewModel : PageViewModelBase {
             }
         }
 
-        public void AddQuestionBtn() {
-            _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionForm);
+        public void AddQuestionBtn() => _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionAddForm);
+
+        public void EditQuestionBtn(object param) {
+            var index = (param as SingleQuestionViewModel)!.Index;
+            _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionEditForm, _services.Get<Evaluator>().Questions[index]);
         }
 
         public async Task DeleteQuestion(object param) {

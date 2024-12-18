@@ -47,7 +47,7 @@
     <data name="ImportQuestionBtnDesc" xml:space="preserve">
         <value>Importa una domanda da file</value>
     </data>
-    <data name="NewQuestionTab" xml:space="preserve">
+    <data name="NewQuestionPageTitle" xml:space="preserve">
         <value>Crea domanda</value>
     </data>
     <data name="ErrorOpeningFilename" xml:space="preserve">
@@ -142,5 +142,23 @@
     </data>
     <data name="EvaluationSuccessDesc" xml:space="preserve">
         <value>Tutti i file selezionati sono stati valutati con successo.</value>
+    </data>
+    <data name="ParagraphApplyStyleQuestionName" xml:space="preserve">
+        <value>Applica stile Word</value>
+    </data>
+    <data name="ParagraphApplyStyleQuestionDesc" xml:space="preserve">
+        <value>Verifica che in un documento Word sia stato applicato uno stile specifico a un paragrafo qualsiasi</value>
+    </data>
+    <data name="PptxImageInsertQuestionName" xml:space="preserve">
+        <value>Inserisci immagine Powerpoint</value>
+    </data>
+    <data name="PptxImageInsertQuestionDesc" xml:space="preserve">
+        <value>Verifica che nella presentazione PowerPoint sia stata inserita un'immagine con la posizione e le dimensioni corrette</value>
+    </data>
+    <data name="SaveBtnText" xml:space="preserve">
+        <value>Salva</value>
+    </data>
+    <data name="EditQuestionPageTitle" xml:space="preserve">
+        <value>Modifica domanda</value>
     </data>
 </root>

@@ -54,7 +54,7 @@
     <data name="ImportQuestionBtnDesc" xml:space="preserve">
         <value>Import a local question file</value>
     </data>
-    <data name="NewQuestionTab" xml:space="preserve">
+    <data name="NewQuestionPageTitle" xml:space="preserve">
         <value>New question</value>
     </data>
     <data name="ErrorOpeningFilename" xml:space="preserve">
@@ -149,5 +149,23 @@
     </data>
     <data name="EvaluationSuccessDesc" xml:space="preserve">
         <value>The evaluation of the selected files has been completed.</value>
+    </data>
+    <data name="ParagraphApplyStyleQuestionName" xml:space="preserve">
+        <value>Apply Word style</value>
+    </data>
+    <data name="ParagraphApplyStyleQuestionDesc" xml:space="preserve">
+        <value>Checks if a specific style has been applied to a paragraph in a Word document</value>
+    </data>
+    <data name="PptxImageInsertQuestionName" xml:space="preserve">
+        <value>Insert Powepoint image</value>
+    </data>
+    <data name="PptxImageInsertQuestionDesc" xml:space="preserve">
+        <value>Checks if an image has been inserted in a PowerPoint document with specific position and dimensions</value>
+    </data>
+    <data name="SaveBtnText" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="EditQuestionPageTitle" xml:space="preserve">
+        <value>Edit question</value>
     </data>
 </root>

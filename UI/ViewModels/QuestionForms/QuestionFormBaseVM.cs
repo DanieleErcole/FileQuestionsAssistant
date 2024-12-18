@@ -4,11 +4,11 @@ using Core.Questions;
 
 namespace UI.ViewModels.QuestionForms;
 
-public abstract partial class QuestionFormBaseVM(IServiceProvider services) : ViewModelBase {
+public abstract partial class QuestionFormBaseVM : ViewModelBase {
     
     public static readonly Func<double, string> IntFormat = input => Math.Max(0, (int) input).ToString();
 
-    protected IServiceProvider _services = services;
+    protected IServiceProvider _services;
     
     private string? _errorMsg;
     public string? ErrorMsg {
@@ -19,7 +19,7 @@ public abstract partial class QuestionFormBaseVM(IServiceProvider services) : Vi
         }
     }
     public bool IsError => ErrorMsg is not null;
-    
+
     protected byte[]? _ogFile;
     
     [ObservableProperty]
@@ -33,6 +33,16 @@ public abstract partial class QuestionFormBaseVM(IServiceProvider services) : Vi
     
     [ObservableProperty]
     private string? _path;
+
+    public QuestionFormBaseVM(IServiceProvider services, AbstractQuestion? q = null) {
+        _services = services;
+        if (q is null) return;
+        
+        _ogFile = q.OgFile;
+        Name = q.Name;
+        Desc = q.Desc;
+        Path = q.Path;
+    }
     
     public abstract AbstractQuestion? CreateQuestion();
 
