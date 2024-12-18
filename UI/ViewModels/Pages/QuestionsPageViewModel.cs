@@ -43,54 +43,53 @@ public class QuestionsPageViewModel : PageViewModelBase {
         QuestionsSearch.Refresh();
     }
     
-    #region Button commands
-        public async Task OpenQuestion() {
-            var files = await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
-                AllowMultiple = false,
-                FileTypeFilter = [QuestionSerializer.FileType]
-            });
-            if (!files.Any()) return;
+    public async Task OpenQuestion() {
+        var files = await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
+            AllowMultiple = false,
+            FileTypeFilter = [QuestionSerializer.FileType]
+        });
+        if (!files.Any()) return;
             
-            var filePath = Uri.UnescapeDataString(files[0].Path.AbsolutePath);
-            try {
-                var serializer = _services.Get<QuestionSerializer>();
-                if (await serializer.Load(filePath) is { } q) {
-                    if (_services.Get<Evaluator>().Questions.Any(e => e.Path == q.Path))
-                        throw new UnableToOpenQuestion();
-                    _services.Get<Evaluator>().AddQuestion(q);
-                    await serializer.UpdateTrackingFile();
-                    _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, q);
-                }
-            } catch (Exception e) {
-                _services.Get<ErrorHandler>().ShowError(e);
+        var filePath = Uri.UnescapeDataString(files[0].Path.AbsolutePath);
+        try {
+            var serializer = _services.Get<QuestionSerializer>();
+            if (await serializer.Load(filePath) is { } q) {
+                if (_services.Get<Evaluator>().Questions.Any(e => e.Path == q.Path))
+                    throw new UnableToOpenQuestion();
+                _services.Get<Evaluator>().AddQuestion(q);
+                await serializer.UpdateTrackingFile();
+                _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, q);
             }
+        } catch (Exception e) {
+            _services.Get<ErrorHandler>().ShowError(e);
         }
+    }
 
-        public void AddQuestionBtn() => _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionAddForm);
+    public void AddQuestionBtn() => _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionAddForm);
 
-        public void EditQuestionBtn(object param) {
-            var index = (param as SingleQuestionViewModel)!.Index;
-            _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionEditForm, _services.Get<Evaluator>().Questions[index]);
-        }
+    public void EditQuestionBtn(object param) {
+        var index = (param as SingleQuestionViewModel)!.Index;
+        _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionEditForm, _services.Get<Evaluator>().Questions[index]);
+    }
 
-        public async Task DeleteQuestion(object param) {
-            var question = (param as SingleQuestionViewModel)!;
-            if (!await _services.Get<DialogService>().ShowYesNoDialog(Lang.Lang.DeleteDialogTitle, Lang.Lang.DeleteDialogMessage + $"\n{question.Path}")) 
-                return;
+    public async Task DeleteQuestion(object param) {
+        var question = (param as SingleQuestionViewModel)!;
+        if (!await _services.Get<DialogService>().ShowYesNoDialog(Lang.Lang.DeleteDialogTitle, Lang.Lang.DeleteDialogMessage + $"\n{question.Path}")) 
+            return;
             
-            try {
-                _services.Get<Evaluator>().RemoveQuestion(question.Index);
-                await _services.Get<QuestionSerializer>().UpdateTrackingFile();
-            } catch (FileError e) {
-                _services.Get<ErrorHandler>().ShowError(e);
-            }
-            QuestionsSearch.Refresh();
+        try {
+            _services.Get<Evaluator>().RemoveQuestion(question.Index);
+            await _services.Get<QuestionSerializer>().UpdateTrackingFile();
+        } catch (FileError e) {
+            _services.Get<ErrorHandler>().ShowError(e);
         }
+        QuestionsSearch.Refresh();
+    }
 
-        public void OnSelectedQuestion(SelectionChangedEventArgs e) {
-            if (e.AddedItems.Count != 1) return;
-            var selected = e.AddedItems[0] as SingleQuestionViewModel;
-            _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, _services.Get<Evaluator>().Questions[selected!.Index]);
-        }
-    #endregion
+    public void OnSelectedQuestion(SelectionChangedEventArgs e) {
+        if (e.AddedItems.Count != 1) return;
+        var selected = e.AddedItems[0] as SingleQuestionViewModel;
+        _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, _services.Get<Evaluator>().Questions[selected!.Index]);
+    }
+    
 }

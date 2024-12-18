@@ -28,7 +28,7 @@ public class PowerpointFile : IFile {
         try {
             _doc = PresentationDocument.Open(file, false);
             _mainDoc = _doc.PresentationPart ?? throw new InvalidFileFormat(Name);
-        } catch (Exception e) when (e is not ApplicationException) {
+        } catch (Exception e) when (e is not FileError or ApplicationException) {
             throw new FileError(Name, e);
         }
     }

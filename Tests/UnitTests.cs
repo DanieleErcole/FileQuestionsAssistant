@@ -9,6 +9,16 @@ using Color = System.Drawing.Color;
 
 namespace Tests;
 
+public class ResHelper {
+    public static void LogResult(Result res) {
+        foreach (var p in res.EachParamsWithRes()) {
+            foreach (var (key, value) in p)
+                Console.WriteLine($"{key}: {value}");
+            Console.WriteLine("---------------");
+        }
+    }
+}
+
 [TestFixture]
 public class UtilsTests {
          
@@ -74,7 +84,7 @@ public class WordTests {
     private const string WordFileDirectory = @"/home/daniele/RiderProjects/FileQuestionsAssistant/Tests/Files/";
 #endif
 
-    private static JsonSerializerOptions _options = new() { Converters = { new ColorConverter() } };
+    private static readonly JsonSerializerOptions Options = new() { Converters = { new ColorConverter() } };
     private static FileStream _wordFile;
     private static byte[] _ogFile;
 
@@ -96,13 +106,11 @@ public class WordTests {
     public void TearDownAfterAll() => _wordFile.Close();
 
     [Test]
-    public void File_NotPresent() {
-        Assert.Throws<FileError>(() => {
-            var f = new WordFile(_wordFile.Name, _wordFile);
-            f.Dispose();
-            Console.WriteLine($"{f.Styles}");
-        });
-    }
+    public void File_NotPresent() => Assert.Throws<FileError>(() => {
+        var f = new WordFile(_wordFile.Name, _wordFile);
+        f.Dispose();
+        Console.WriteLine($"{f.Styles}");
+    });
 
     [Test]
     public void File_InvalidFormat() => Assert.Throws<InvalidFileFormat>(() => {
@@ -120,12 +128,6 @@ public class WordTests {
         
         _evaluator.AddQuestion(q, new WordFile(_wordFile.Name, _wordFile));
         var res = _evaluator.Evaluate().First();
-        
-        foreach (var p in res.EachParamsWithRes()) {
-            foreach (var (key, value) in p)
-                Console.WriteLine($"{key}: {value}");
-            Console.WriteLine("---------------");
-        }
         Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));
     }
 
@@ -133,8 +135,8 @@ public class WordTests {
     public void WordCreateStyleQuestion_polymorphic_serialization() {
         AbstractQuestion q = new CreateStyleQuestion("", "Name", "Description", _ogFile, "styleName", 
             "baseStyleName", "fontName", 12, Color.Blue, "alignment");
-        var json = JsonSerializer.Serialize(q, _options);
-        var deserialized = JsonSerializer.Deserialize<AbstractQuestion>(json, _options);
+        var json = JsonSerializer.Serialize(q, Options);
+        var deserialized = JsonSerializer.Deserialize<AbstractQuestion>(json, Options);
         Assert.That(deserialized is CreateStyleQuestion, Is.EqualTo(true));
     }
 
@@ -146,12 +148,53 @@ public class WordTests {
         _evaluator.AddQuestion(q, new WordFile(_wordFile.Name, _wordFile));
         var res = _evaluator.Evaluate().First();
         
-        foreach (var p in res.EachParamsWithRes()) {
-            foreach (var (key, value) in p)
-                Console.WriteLine($"{key}: {value}");
-            Console.WriteLine("---------------");
-        }
+        ResHelper.LogResult(res);
         Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));
     }
+
+}
+
+[TestFixture]
+public class PowerpointTests {
+    
+#if OS_WINDOWS
+    private const string PowerpointFileDirectory = @"C:\Users\User\Documents\Documenti e lavori\Lavori\C#\FileQuestionsAssistant\Tests\Files\";
+#elif OS_LINUX
+    private const string PowerpointFileDirectory = @"/home/daniele/RiderProjects/FileQuestionsAssistant/Tests/Files/";
+#endif
+
+    private static readonly JsonSerializerOptions Options = new() { Converters = { new ColorConverter() } };
+    private static FileStream _powerpointFile;
+    private static byte[] _ogFile;
+
+    private Evaluator _evaluator;
+
+    [SetUp]
+    public void Setup() => _evaluator = new Evaluator();
+
+    [TearDown]
+    public void TearDown() => _evaluator.DisposeAllFiles();
+
+    [OneTimeSetUp]
+    public void SetupBeforeAll() {
+        _powerpointFile = File.Open(PowerpointFileDirectory + "Presentation1.pptx", FileMode.Open);
+        _ogFile = File.ReadAllBytes(PowerpointFileDirectory + "OgPresentation.pptx");
+    }
+
+    [OneTimeTearDown]
+    public void TearDownAfterAll() => _powerpointFile.Close();
+
+    [Test]
+    public void File_NotPresent() => Assert.Throws<FileError>(() => {
+        var f = new PowerpointFile(_powerpointFile.Name, _powerpointFile);
+        f.Dispose();
+        Console.WriteLine($"{f.Pictures}");
+    });
+
+    [Test]
+    public void File_InvalidFormat() => Assert.Throws<InvalidFileFormat>(() => {
+        var f = File.Open(PowerpointFileDirectory + "InvalidFormat.pptx", FileMode.Open);
+        _ = new PowerpointFile(f.Name, f);
+    });
 
 }
