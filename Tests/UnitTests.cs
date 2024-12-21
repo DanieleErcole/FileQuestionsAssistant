@@ -50,13 +50,14 @@ public class EvaluatorTests {
 
     [Test]
     public void Evaluate_ThrowsArgumentOutOfRangeException() {
-        Assert.Throws<ArgumentOutOfRangeException>(() => _evaluator.Evaluate());
+        Assert.Throws<ArgumentOutOfRangeException>(() => _evaluator.Evaluate(new MyQuestion()));
     }
 
     [Test]
     public void Evaluate_NoFiles() {
-        _evaluator.AddQuestion(new MyQuestion());
-        Assert.Throws<InvalidOperationException>(() => _evaluator.Evaluate());
+        var q = new MyQuestion();
+        _evaluator.AddQuestion(q);
+        Assert.Throws<InvalidOperationException>(() => _evaluator.Evaluate(q));
     }
 
     [Test]
@@ -68,8 +69,9 @@ public class EvaluatorTests {
     
     [Test]
     public void Evaluate_RemoveQuestion() {
-        _evaluator.AddQuestion(new MyQuestion());
-        _evaluator.RemoveQuestion(0);
+        var q = new MyQuestion();
+        _evaluator.AddQuestion(q);
+        _evaluator.RemoveQuestion(q);
         Assert.That(_evaluator.Files, Has.Count.EqualTo(0));
     }
 
@@ -127,7 +129,7 @@ public class WordTests {
         var q = new CreateStyleQuestion("", "Name", "Description", _ogFile, styleName, baseStyleName, fontName, fontSize, rgb, alignment);
         
         _evaluator.AddQuestion(q, new WordFile(_wordFile.Name, _wordFile));
-        var res = _evaluator.Evaluate().First();
+        var res = _evaluator.Evaluate(q).First();
         Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));
     }
 
@@ -146,7 +148,7 @@ public class WordTests {
     public void ParagraphApplyStyleQuestion_TestCase(string styleName, bool expectedRes) {
         var q = new ParagraphApplyStyleQuestion("", "Name", "Description", _ogFile, styleName);
         _evaluator.AddQuestion(q, new WordFile(_wordFile.Name, _wordFile));
-        var res = _evaluator.Evaluate().First();
+        var res = _evaluator.Evaluate(q).First();
         
         ResHelper.LogResult(res);
         Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));

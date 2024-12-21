@@ -19,17 +19,18 @@ public static class ParamsExtensions {
 
 //TODO: add other question types
 [JsonDerivedType(typeof(CreateStyleQuestion), typeDiscriminator: 0)]
+[JsonDerivedType(typeof(ParagraphApplyStyleQuestion), typeDiscriminator: 1)]
 public abstract class AbstractQuestion : IQuestion {
     
-    public string Name { get; set; }
-    public string? Desc { get; set; }
-    public byte[] OgFile { get; set; }
+    public string Name { get; }
+    public string? Desc { get; }
+    public byte[] OgFile { get; }
+
+    [JsonInclude]
+    public readonly Dictionary<string, object?> Params = new();
     
     [JsonIgnore]
     public string Path { get; set; } // The path will be initialized when creating the question from code and after deserializing it, it will be always initialized
-
-    [JsonInclude]
-    public Dictionary<string, object?> Params = new();
 
     [JsonConstructor]
     public AbstractQuestion(string name, string desc, byte[] ogFile, Dictionary<string, object?> Params) {
@@ -52,4 +53,18 @@ public abstract class AbstractQuestion : IQuestion {
     public abstract IEnumerable<Result> Evaluate(IEnumerable<IFile> files);
     protected abstract void DeserializeParams();
 
+    private bool Equals(AbstractQuestion? other) {
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return other.Name == Name;
+    }
+    
+    public override bool Equals(object? obj) {
+        return Equals(obj as AbstractQuestion);
+    }
+
+    public override int GetHashCode() {
+        return HashCode.Combine(Name);
+    }
+    
 }

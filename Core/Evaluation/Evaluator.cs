@@ -1,62 +1,69 @@
 ﻿using Core.FileHandling;
 using Core.Questions;
 
-namespace Core.Evaluation; 
+namespace Core.Evaluation;
 
 public class Evaluator {
 
-    public List<IQuestion> Questions { get; } = [];
-    public List<List<IFile>> Files { get; } = [];
+    public IReadOnlyCollection<IQuestion> Questions => _filesByQuestion.Keys;
+    public IReadOnlyCollection<IReadOnlyCollection<IFile>> Files => _filesByQuestion.Values;
 
-    public IEnumerable<Result> Evaluate(int index = 0) {
-        if (index >= Questions.Count) 
+    private readonly Dictionary<IQuestion, List<IFile>> _filesByQuestion = new();
+
+    public IEnumerable<Result> Evaluate(IQuestion question, Func<IFile, int, bool>? fileFilter = null) {
+        if (!_filesByQuestion.TryGetValue(question, out var files))
             throw new ArgumentOutOfRangeException();
 
-        if (Files[index].Count == 0)
+        if (files.Count == 0)
             throw new InvalidOperationException();
 
-        return Questions[index].Evaluate(Files[index]);
+        fileFilter ??= (_, _) => true;
+        return question.Evaluate(files.Where(fileFilter));
     }
 
-    public void AddQuestion(IQuestion question, params IFile[] files) {
-        Questions.Add(question);
-        Files.Add(files.Length != 0 ? files.ToList() : []);
+    public List<IFile> QuestionFiles(IQuestion question) => _filesByQuestion[question];
+
+    public void AddQuestion(IQuestion question, params IFile[] files) => _filesByQuestion.Add(question, [..files]);
+
+    public void RemoveQuestion(IQuestion question) {
+        if (!_filesByQuestion.ContainsKey(question))
+            throw new ArgumentException();
+        
+        DisposeFiles(question);
+        _filesByQuestion.Remove(question);
     }
 
-    public void RemoveQuestion(int index) {
-        if (index >= Questions.Count)
-            throw new ArgumentOutOfRangeException();
-
-        Questions.RemoveAt(index);
-        DisposeFiles(index);
-        Files.RemoveAt(index);
+    public void ReplaceQuestion(IQuestion oldQuestion, IQuestion newQuestion) {
+        var files = _filesByQuestion[oldQuestion];
+        _filesByQuestion.Remove(oldQuestion);
+        AddQuestion(newQuestion, files.ToArray());
     }
 
-    public void AddFiles(int index = 0, params IFile[] files) {
-        if (index >= Files.Count)
-            throw new ArgumentOutOfRangeException();
-        Files[index].AddRange(files);
+    public void AddFiles(IQuestion question, params IFile[] files) {
+        if (!_filesByQuestion.TryGetValue(question, out var qFiles))
+            throw new ArgumentException();
+        qFiles.AddRange(files);
     }
 
-    public void SetFiles(int index = 0, params IFile[] files) {
-        if (index >= Files.Count)
-            throw new ArgumentOutOfRangeException();
+    public void SetFiles(IQuestion question, params IFile[] files) {
+        if (!_filesByQuestion.TryGetValue(question, out var qFiles))
+            throw new ArgumentException();
 
-        if (Files[index].Count != 0) 
-            DisposeFiles(index);
-        Files[index] = files.ToList();
+        if (qFiles.Count != 0) 
+            DisposeFiles(question);
+        _filesByQuestion[question] = files.ToList();
     }
 
-    public void DisposeFiles(int index = 0) {
-        if (index >= Files.Count)
-            throw new ArgumentOutOfRangeException();
-        foreach (var f in Files[index])
+    public void DisposeFiles(IQuestion question) {
+        if (!_filesByQuestion.TryGetValue(question, out var files))
+            throw new ArgumentException();
+        foreach (var f in files)
             f.Dispose();
-        Files[index].Clear();
+        _filesByQuestion.Clear();
     }
     
     public void DisposeAllFiles() {
-        foreach (var f in Files.SelectMany(f => f))
+        foreach (var f in _filesByQuestion.Values.SelectMany(f => f))
             f.Dispose();
     }
 
