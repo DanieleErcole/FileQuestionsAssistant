@@ -1,81 +1,14 @@
+﻿using System.Drawing;
 using System.Text.Json;
 using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions;
 using Core.Questions.Word;
-using Core.Utils;
 using Core.Utils.Errors;
-using Color = System.Drawing.Color;
+using Tests.Utils;
+using ColorConverter = Core.Utils.ColorConverter;
 
 namespace Tests;
-
-public class ResHelper {
-    public static void LogResult(Result res) {
-        foreach (var p in res.EachParamsWithRes()) {
-            foreach (var (key, value) in p)
-                Console.WriteLine($"{key}: {value}");
-            Console.WriteLine("---------------");
-        }
-    }
-}
-
-[TestFixture]
-public class UtilsTests {
-         
-    [TestCase("FFFFFF", 255, 255, 255)]
-    [TestCase("000000", 0, 0, 0)]
-    [TestCase("FF0000", 255, 0, 0)]
-    [TestCase("00FF00", 0, 255, 0)]
-    [TestCase("0000FF", 0, 0, 255)]
-    public void HexStringToRgb_TestCase(string hex, int r, int g, int b) => Assert.That((r, g, b), Is.EqualTo(hex.HexStringToRgb()));
-
-}
-
-[TestFixture]
-public class EvaluatorTests {
-    
-    private Evaluator _evaluator;
-
-    private class MyQuestion : IQuestion {
-        public string Path { get; set; }
-
-        public IEnumerable<Result> Evaluate(IEnumerable<IFile> files) {
-            var d = new Dictionary<string, object?>();
-            return files.Select(_ => new Result(d, [], true));
-        }
-    }
-    
-    [SetUp]
-    public void Setup() => _evaluator = new Evaluator();
-
-    [Test]
-    public void Evaluate_ThrowsArgumentOutOfRangeException() {
-        Assert.Throws<ArgumentOutOfRangeException>(() => _evaluator.Evaluate(new MyQuestion()));
-    }
-
-    [Test]
-    public void Evaluate_NoFiles() {
-        var q = new MyQuestion();
-        _evaluator.AddQuestion(q);
-        Assert.Throws<InvalidOperationException>(() => _evaluator.Evaluate(q));
-    }
-
-    [Test]
-    public void Evaluate_AddQuestion() {
-        _evaluator.AddQuestion(new MyQuestion());
-        _evaluator.AddQuestion(new MyQuestion());
-        Assert.That(_evaluator.Files, Has.Count.EqualTo(_evaluator.Questions.Count));
-    }
-    
-    [Test]
-    public void Evaluate_RemoveQuestion() {
-        var q = new MyQuestion();
-        _evaluator.AddQuestion(q);
-        _evaluator.RemoveQuestion(q);
-        Assert.That(_evaluator.Files, Has.Count.EqualTo(0));
-    }
-
-}
 
 [TestFixture]
 public class WordTests {
@@ -153,50 +86,5 @@ public class WordTests {
         ResHelper.LogResult(res);
         Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));
     }
-
-}
-
-[TestFixture]
-public class PowerpointTests {
-    
-#if OS_WINDOWS
-    private const string PowerpointFileDirectory = @"C:\Users\User\Documents\Documenti e lavori\Lavori\C#\FileQuestionsAssistant\Tests\Files\";
-#elif OS_LINUX
-    private const string PowerpointFileDirectory = @"/home/daniele/RiderProjects/FileQuestionsAssistant/Tests/Files/";
-#endif
-
-    private static readonly JsonSerializerOptions Options = new() { Converters = { new ColorConverter() } };
-    private static FileStream _powerpointFile;
-    private static byte[] _ogFile;
-
-    private Evaluator _evaluator;
-
-    [SetUp]
-    public void Setup() => _evaluator = new Evaluator();
-
-    [TearDown]
-    public void TearDown() => _evaluator.DisposeAllFiles();
-
-    [OneTimeSetUp]
-    public void SetupBeforeAll() {
-        _powerpointFile = File.Open(PowerpointFileDirectory + "Presentation1.pptx", FileMode.Open);
-        _ogFile = File.ReadAllBytes(PowerpointFileDirectory + "OgPresentation.pptx");
-    }
-
-    [OneTimeTearDown]
-    public void TearDownAfterAll() => _powerpointFile.Close();
-
-    [Test]
-    public void File_NotPresent() => Assert.Throws<FileError>(() => {
-        var f = new PowerpointFile(_powerpointFile.Name, _powerpointFile);
-        f.Dispose();
-        Console.WriteLine($"{f.Pictures}");
-    });
-
-    [Test]
-    public void File_InvalidFormat() => Assert.Throws<InvalidFileFormat>(() => {
-        var f = File.Open(PowerpointFileDirectory + "InvalidFormat.pptx", FileMode.Open);
-        _ = new PowerpointFile(f.Name, f);
-    });
 
 }
