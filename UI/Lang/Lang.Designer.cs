@@ -303,6 +303,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No file to evaluate.
+        /// </summary>
+        public static string NoFilesToEvaluateTitle {
+            get {
+                return ResourceManager.GetString("NoFilesToEvaluateTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to None.
         /// </summary>
         public static string NoneText {
@@ -465,11 +474,29 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Evaluate selected questions or everything if nothing is selected.
+        /// </summary>
+        public static string ToolTipEvaluateButton {
+            get {
+                return ResourceManager.GetString("ToolTipEvaluateButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove question from the list.
         /// </summary>
         public static string ToolTipRemoveButton {
             get {
                 return ResourceManager.GetString("ToolTipRemoveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove selection.
+        /// </summary>
+        public static string ToolTipRemoveSelection {
+            get {
+                return ResourceManager.GetString("ToolTipRemoveSelection", resourceCulture);
             }
         }
         

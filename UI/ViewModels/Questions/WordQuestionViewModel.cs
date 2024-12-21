@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Controls.Notifications;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.FileHandling;
+using Core.Questions;
 using Core.Utils.Errors;
 using Microsoft.Extensions.DependencyInjection;
 using UI.Services;
@@ -12,7 +12,7 @@ using UI.Utils;
 
 namespace UI.ViewModels.Questions;
 
-public abstract class WordQuestionViewModel(string name, string desc, IServiceProvider services) : SingleQuestionViewModel(name, desc, services) {
+public abstract class WordQuestionViewModel(AbstractQuestion q, IServiceProvider services) : SingleQuestionViewModel(q, services) {
     
     public override string Icon => "/Assets/docx.svg";
     
@@ -34,10 +34,10 @@ public abstract class WordQuestionViewModel(string name, string desc, IServicePr
             
             if (files.Length == 0)
                 return;
-            _services.GetRequiredService<Evaluator>().AddFiles(Index, files);
+            _services.GetRequiredService<Evaluator>().AddFiles(Question, files);
         } catch (FileError e) {
             UIException ex = e;
-            _services.Get<ErrorHandler>().ShowError(e);
+            _services.Get<ErrorHandler>().ShowError(ex);
         }
     }
     

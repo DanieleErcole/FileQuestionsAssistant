@@ -11,7 +11,7 @@ using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
-public class QuestionsPageViewModel : PageViewModelBase {
+public class QuestionsPageViewModel : PageViewModel {
     
     private string? _searchText;
     public string? SearchText {
@@ -39,9 +39,7 @@ public class QuestionsPageViewModel : PageViewModelBase {
         });
     }
 
-    public override void OnNavigatedTo(object? param = null) {
-        QuestionsSearch.Refresh();
-    }
+    public override void OnNavigatedTo(object? param = null) => QuestionsSearch.Refresh();
     
     public async Task OpenQuestion() {
         var files = await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
@@ -68,8 +66,8 @@ public class QuestionsPageViewModel : PageViewModelBase {
     public void AddQuestionBtn() => _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionAddForm);
 
     public void EditQuestionBtn(object param) {
-        var index = (param as SingleQuestionViewModel)!.Index;
-        _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionEditForm, _services.Get<Evaluator>().Questions[index]);
+        var vm = (param as SingleQuestionViewModel)!;
+        _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionEditForm, vm.Question);
     }
 
     public async Task DeleteQuestion(object param) {
@@ -78,7 +76,7 @@ public class QuestionsPageViewModel : PageViewModelBase {
             return;
             
         try {
-            _services.Get<Evaluator>().RemoveQuestion(question.Index);
+            _services.Get<Evaluator>().RemoveQuestion(question.Question);
             await _services.Get<QuestionSerializer>().UpdateTrackingFile();
         } catch (FileError e) {
             _services.Get<ErrorHandler>().ShowError(e);
@@ -89,7 +87,7 @@ public class QuestionsPageViewModel : PageViewModelBase {
     public void OnSelectedQuestion(SelectionChangedEventArgs e) {
         if (e.AddedItems.Count != 1) return;
         var selected = e.AddedItems[0] as SingleQuestionViewModel;
-        _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, _services.Get<Evaluator>().Questions[selected!.Index]);
+        _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, selected!.Question);
     }
     
 }

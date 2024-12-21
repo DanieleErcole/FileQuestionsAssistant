@@ -14,7 +14,7 @@ using UI.Views;
 namespace UI;
 
 public static class NotificationExtensions {
-    public static void ShowNotification(this WindowNotificationManager nm, string title, string message,
+    public static void ShowNotification(this WindowNotificationManager nm, string title, string? message,
         NotificationType type = NotificationType.Information) {
         nm.Show(new Notification {
             Title = title,

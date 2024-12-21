@@ -9,14 +9,12 @@ using Core.Utils;
 
 namespace UI.ViewModels.Questions;
 
-public class CreateStyleQuestionVM : WordQuestionViewModel {
-    public CreateStyleQuestionVM(CreateStyleQuestion question, IServiceProvider services) 
-        : base(question.Name, question.Desc ?? Lang.Lang.CreateStyleQuestionDesc, services) {
-        Index = _services.Get<Evaluator>().Questions.IndexOf(question);
-    }
+public class CreateStyleQuestionVM(CreateStyleQuestion q, IServiceProvider services) : WordQuestionViewModel(q, services) {
+    
+    public override string Description => Question.Desc ?? Lang.Lang.CreateStyleQuestionDesc;
 
     public override Dictionary<string, object?> GetLocalizedQuestionParams() {
-        var qParams = (_services.Get<Evaluator>().Questions[Index] as CreateStyleQuestion)!.Params;
+        var qParams = (Question as CreateStyleQuestion)!.Params;
         return new Dictionary<string, object?> {
             [Lang.Lang.StyleNameLabel] = qParams.Get<string>("styleName"),
             [Lang.Lang.BasedOnLabel] = qParams.Get<string?>("baseStyleName") ?? Lang.Lang.AnyText,
@@ -37,4 +35,5 @@ public class CreateStyleQuestionVM : WordQuestionViewModel {
             [Lang.Lang.AlignmentLabel] = (d["alignment"].Item1 ?? Lang.Lang.NoneText, d["alignment"].Item2),
         }).ToList();
     }
+    
 }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions.Word;
@@ -32,6 +33,12 @@ public abstract class AbstractQuestion : IQuestion {
     [JsonIgnore]
     public string Path { get; set; } // The path will be initialized when creating the question from code and after deserializing it, it will be always initialized
 
+    public static AbstractQuestion? DeserializeWithPath(string path, string json, JsonSerializerOptions options) {
+        var q = JsonSerializer.Deserialize<AbstractQuestion>(json, options);
+        if (q is not null) q.Path = path;
+        return q;
+    }
+    
     [JsonConstructor]
     public AbstractQuestion(string name, string desc, byte[] ogFile, Dictionary<string, object?> Params) {
         Name = name;
@@ -52,11 +59,11 @@ public abstract class AbstractQuestion : IQuestion {
 
     public abstract IEnumerable<Result> Evaluate(IEnumerable<IFile> files);
     protected abstract void DeserializeParams();
-
+    
     private bool Equals(AbstractQuestion? other) {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
-        return other.Name == Name;
+        return other.Name == Name && other.Path == Path;
     }
     
     public override bool Equals(object? obj) {
@@ -64,7 +71,7 @@ public abstract class AbstractQuestion : IQuestion {
     }
 
     public override int GetHashCode() {
-        return HashCode.Combine(Name);
+        return HashCode.Combine(Name, Path);
     }
     
 }

@@ -30,7 +30,7 @@ public class NavigatorService {
     public const int Results = 3;
     
     private Frame _windowFrame;
-    private PageViewModelBase[] _pages;
+    private PageViewModel[] _pages;
 
     public void Init(Frame windowFrame, IServiceProvider services) {
         _windowFrame = windowFrame;

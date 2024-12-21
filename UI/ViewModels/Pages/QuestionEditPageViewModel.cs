@@ -19,20 +19,20 @@ public class QuestionEditPageViewModel(IServiceProvider services) : QuestionData
         };
     }
 
-    private int? _index;
+    private AbstractQuestion? _question;
 
     public override void OnNavigatedTo(object? param = null) {
         var question = param as AbstractQuestion;
-        if (question is null) 
+        if (question is null)
             _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
         
-        _index = _services.Get<Evaluator>().Questions.IndexOf(question!);
+        _question = question;
         SelectedIndex = QuestionToIndex(question);
         Content = IndexToFormViewModel(SelectedIndex, question);
     }
 
     public override async Task ProcessQuestion() {
-        if (_index is null) return;
+        if (_question is null) return;
         try {
             var q = Content?.CreateQuestion();
             if (q is null) return;
@@ -40,9 +40,9 @@ public class QuestionEditPageViewModel(IServiceProvider services) : QuestionData
             var ev = _services.Get<Evaluator>();
             var serializer = _services.Get<QuestionSerializer>();
 
-            await serializer.Save(q.Path, q);
-            ev.SetFiles((int) _index);
-            ev.Questions[(int) _index] = q;
+            await serializer.Save(q);
+            ev.SetFiles(_question);
+            ev.ReplaceQuestion(_question, q);
             
             await serializer.UpdateTrackingFile();
             _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions, q);

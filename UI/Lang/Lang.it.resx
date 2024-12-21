@@ -164,4 +164,13 @@
     <data name="ToolTipEditButton" xml:space="preserve">
         <value>Modifica i parametri della domanda</value>
     </data>
+    <data name="ToolTipEvaluateButton" xml:space="preserve">
+        <value>Valuta le domande selezionate o tutto se nulla è selezionato</value>
+    </data>
+    <data name="ToolTipRemoveSelection" xml:space="preserve">
+        <value>Rimuovi selezione</value>
+    </data>
+    <data name="NoFilesToEvaluateTitle" xml:space="preserve">
+        <value>Nessun file da valutare</value>
+    </data>
 </root>

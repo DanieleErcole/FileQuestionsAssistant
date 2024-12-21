@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Evaluation;
 
 namespace UI.ViewModels.Questions;
 
-public class FileResultViewModel : ViewModelBase {
+public partial class FileResultViewModel : ViewModelBase {
 
     public class Node(string title, object? value, bool res, List<(string, object?, bool)>? sub, bool isFirst = false) {
         public string? Title { get; } = isFirst ? value?.ToString() : title;
@@ -14,11 +15,12 @@ public class FileResultViewModel : ViewModelBase {
         public List<Node>? SubNodes { get; } = sub?.Select(e => new Node(e.Item1, e.Item2, e.Item3, null)).ToList();
     }
     
-    //TODO: review this implementation and error handling during the file upload
-    
     public int Index { get; }
     public string Filename { get; }
     public Result? Result { get; }
+
+    [ObservableProperty]
+    private bool _isSelected;
 
     private readonly SingleQuestionViewModel _vm;
     

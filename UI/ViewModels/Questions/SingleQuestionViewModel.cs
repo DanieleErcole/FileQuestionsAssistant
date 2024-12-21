@@ -15,14 +15,14 @@ public static class QuestionExtensions {
     }
 }
 
-public abstract class SingleQuestionViewModel(string name, string desc, IServiceProvider services) : ViewModelBase {
+public abstract class SingleQuestionViewModel(AbstractQuestion q, IServiceProvider services) : ViewModelBase {
     
     protected readonly IServiceProvider _services = services;
-    
-    public int Index { get; set; }
-    public string Name { get; } = name;
-    public string Description { get; } = desc;
-    public string Path => _services.Get<Evaluator>().Questions[Index].Path;
+
+    public AbstractQuestion Question { get; } = q;
+    public string Name => Question.Name;
+    public abstract string Description { get; }
+    public string Path => Question.Path;
     public abstract string Icon { get; }
 
     public abstract Task AddFiles();

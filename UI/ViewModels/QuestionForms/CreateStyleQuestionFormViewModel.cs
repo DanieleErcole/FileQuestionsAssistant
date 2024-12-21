@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions;
 using Core.Questions.Word;
@@ -71,49 +72,21 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
         FontNamesSelected = q.Params.Get<string?>("fontName");
         AlignmentSelected = q.Params.Get<string?>("alignment");
     }
-    
-    public void CloseErr() {
-        ErrorMsg = null;
-    }
 
-    public async Task UploadOgFile() {
-        var files = await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
-            Title = "Select the original question file",
-            AllowMultiple = false,
-            FileTypeFilter = [FileTypesHelper.Word],
-        });
-        
-        if (files.Count == 0)
-            return;
-
+    public override async Task UploadOgFile() {
         try {
-            using var f = files[0];
-            await using var stream = await f.OpenReadAsync();
-            using var file = new WordFile(f.Name, stream);
-        
+            await base.UploadOgFile();
+            using WordFile file = _ogFile!;
+            
             BasedOnStyles = new ObservableCollection<string>(
                 file.Styles
                     .Where(s => s.Type?.InnerText == "paragraph" && s.StyleName is not null)
                     .Select(s => s.StyleName!.Val!.Value!)
             );
             FontNames = new ObservableCollection<string>(file.Fonts.Select(s => s.Name!.Value!));
-            
-            stream.Position = 0;
-            using var memStream = new MemoryStream();
-            await stream.CopyToAsync(memStream);
-            _ogFile = memStream.ToArray();
-            Filename = file.Name;
         } catch (Exception e) {
             _services.Get<ErrorHandler>().ShowError(e);
         }
-    }
-
-    public async Task LoadLocation() {
-        using var file = await _services.Get<IStorageProvider>().SaveFilePickerAsync(new FilePickerSaveOptions {
-            FileTypeChoices = [QuestionSerializer.FileType],
-        });
-        if (file is null) return;
-        Path = Uri.UnescapeDataString(file.Path.AbsolutePath);
     }
 
     public override AbstractQuestion? CreateQuestion() {

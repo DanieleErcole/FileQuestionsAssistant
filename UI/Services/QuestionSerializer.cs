@@ -24,7 +24,7 @@ public class QuestionSerializer {
     };
 
     private IServiceProvider _services;
-    private readonly JsonSerializerOptions? _options = new() {
+    private readonly JsonSerializerOptions _options = new() {
         IncludeFields = true,
         WriteIndented = true,
         Converters = { new ColorConverter() }
@@ -60,9 +60,7 @@ public class QuestionSerializer {
                 try {
                     using var stream = File.OpenRead(p);
                     using var streamReader = new StreamReader(stream);
-                    var q = JsonSerializer.Deserialize<AbstractQuestion>(streamReader.ReadToEnd(), _options);
-                    if (q is not null) q.Path = p;
-                    return q;
+                    return AbstractQuestion.DeserializeWithPath(p, streamReader.ReadToEnd(), _options);
                 } catch (Exception e) {
                     Console.WriteLine(e);
                     return null;
@@ -74,13 +72,13 @@ public class QuestionSerializer {
         }
     }
     
-    public async Task Save(string path, AbstractQuestion question) {
+    public async Task Save(AbstractQuestion question) {
         try {
-            await using var stream = File.Open(path, FileMode.Create);
+            await using var stream = File.Open(question.Path, FileMode.Create);
             await using var streamWriter = new StreamWriter(stream);
             await streamWriter.WriteLineAsync(JsonSerializer.Serialize(question, _options));
         } catch (Exception e) {
-            throw new FileError(path, e);
+            throw new FileError(question.Path, e);
         }
     }
     
@@ -88,10 +86,7 @@ public class QuestionSerializer {
         try {
             await using var stream = File.OpenRead(path);
             using var streamReader = new StreamReader(stream);
-            
-            var q = JsonSerializer.Deserialize<AbstractQuestion>(await streamReader.ReadToEndAsync(), _options);
-            if (q is not null) q.Path = path;
-            return q;
+            return AbstractQuestion.DeserializeWithPath(path, await streamReader.ReadToEndAsync(), _options);
         } catch (JsonException _) {
             throw new InvalidFileFormat(path);
         } catch (Exception e) {

@@ -7,7 +7,7 @@ using UI.ViewModels.QuestionForms;
 
 namespace UI.ViewModels.Pages;
 
-public abstract partial class QuestionDataPageViewModel : PageViewModelBase {
+public abstract partial class QuestionDataPageViewModel : PageViewModel {
     
     private int _selectedIndex;
     public int SelectedIndex {

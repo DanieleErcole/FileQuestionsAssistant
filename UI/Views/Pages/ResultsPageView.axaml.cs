@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
+using UI.ViewModels.Pages;
 using UI.ViewModels.Questions;
 
 namespace UI.Views.Pages;

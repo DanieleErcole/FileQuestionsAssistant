@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Core.Evaluation;
 using UI.Services;
@@ -15,12 +16,12 @@ public class QuestionAddPageViewModel(IServiceProvider services) : QuestionDataP
             if (q is null) return;
 
             var ev = _services.Get<Evaluator>();
-            var index = ev.Questions.FindIndex(x => x.Path == q.Path);
+            var index = ev.Questions.ToList().FindIndex(x => x.Path == q.Path);
             var serializer = _services.Get<QuestionSerializer>();
             
-            await serializer.Save(q.Path, q);
+            await serializer.Save(q);
             if (index != -1) 
-                ev.RemoveQuestion(index);
+                ev.RemoveQuestion(q);
             ev.AddQuestion(q);
             
             await serializer.UpdateTrackingFile();

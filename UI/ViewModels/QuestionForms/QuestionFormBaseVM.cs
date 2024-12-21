@@ -1,6 +1,14 @@
 using System;
+using System.Data.SqlTypes;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Core.Evaluation;
 using Core.Questions;
+using UI.Services;
+using UI.Utils;
 
 namespace UI.ViewModels.QuestionForms;
 
@@ -42,6 +50,36 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
         Name = q.Name;
         Desc = q.Desc;
         Path = q.Path;
+    }
+    
+    public void CloseErr() {
+        ErrorMsg = null;
+    }
+
+    public virtual async Task UploadOgFile() {
+        var files = await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
+            AllowMultiple = false,
+            FileTypeFilter = [FileTypesHelper.Word],
+        });
+        
+        if (files.Count == 0)
+            return;
+        
+        using var f = files[0];
+        await using var stream = await f.OpenReadAsync();
+        using var memStream = new MemoryStream();
+        await stream.CopyToAsync(memStream);
+            
+        _ogFile = memStream.ToArray();
+        Filename = f.Name;
+    }
+
+    public async Task LoadLocation() {
+        using var file = await _services.Get<IStorageProvider>().SaveFilePickerAsync(new FilePickerSaveOptions {
+            FileTypeChoices = [QuestionSerializer.FileType],
+        });
+        if (file is null) return;
+        Path = Uri.UnescapeDataString(file.Path.AbsolutePath);
     }
     
     public abstract AbstractQuestion? CreateQuestion();
