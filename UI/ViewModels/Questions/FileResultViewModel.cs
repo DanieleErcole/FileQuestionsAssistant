@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Evaluation;
 
 namespace UI.ViewModels.Questions;
@@ -15,12 +15,20 @@ public partial class FileResultViewModel : ViewModelBase {
         public List<Node>? SubNodes { get; } = sub?.Select(e => new Node(e.Item1, e.Item2, e.Item3, null)).ToList();
     }
     
-    public int Index { get; }
+    private event EventHandler FileSelected; 
+    
+    public int Index { get; set; }
     public string Filename { get; }
     public Result? Result { get; }
-
-    [ObservableProperty]
+    
     private bool _isSelected;
+    public bool IsSelected {
+        get => _isSelected;
+        set {
+            SetProperty(ref _isSelected, value);
+            FileSelected.Invoke(this, EventArgs.Empty);
+        }
+    }
 
     private readonly SingleQuestionViewModel _vm;
     
@@ -42,11 +50,12 @@ public partial class FileResultViewModel : ViewModelBase {
         _ => "Document"
     };
 
-    public FileResultViewModel(SingleQuestionViewModel vm, int index, string filename, Result? result) {
+    public FileResultViewModel(SingleQuestionViewModel vm, int index, string filename, Result? result, EventHandler fileSelected) {
         Index = index;
         Filename = filename;
         Result = result;
         _vm = vm;
+        FileSelected = fileSelected;
     }
     
 }

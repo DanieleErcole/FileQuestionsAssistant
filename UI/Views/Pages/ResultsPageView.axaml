@@ -66,7 +66,9 @@
                            FontSize="16"
                            Text="{x:Static lang:Lang.FilesLabel}"/>
                 <CheckBox VerticalAlignment="Center"
-                          IsThreeState="True"/>
+                          IsThreeState="True"
+                          IsChecked="{Binding CheckBoxState, Mode=OneWay}"
+                          Command="{Binding ToggleSelection}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">

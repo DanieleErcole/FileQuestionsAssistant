@@ -7,14 +7,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions;
-using DynamicData;
 using FluentAvalonia.UI.Data;
 using UI.Services;
 using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
-public partial class ResultsPageViewModel(IServiceProvider services) : PageViewModel(services) {
+public partial class ResultsPageViewModel : PageViewModel {
     
     [ObservableProperty]
     private SingleQuestionViewModel _questionVM;
@@ -23,10 +22,23 @@ public partial class ResultsPageViewModel(IServiceProvider services) : PageViewM
     [ObservableProperty]
     private IterableCollectionView? _filesResult;
     [ObservableProperty]
-    private bool? _checkBoxState;
+    private bool? _checkBoxState = false;
+    
+    private event EventHandler FileSelected;
     
     private IEnumerable<FileResultViewModel> SelectedFiles => FilesResult!.OfType<FileResultViewModel>().Where(vm => vm.IsSelected);
     private readonly List<Result> _results = [];
+
+    public ResultsPageViewModel(IServiceProvider services) : base(services) {
+        FileSelected = (_, _) => {
+            CheckBoxState = SelectedFiles.Count() switch {
+                0 => false,
+                _ => SelectedFiles.Count() == FilesResult!.Count ? true : null
+            };
+        };
+    }
+
+    private void RefreshCheckBoxState() => FileSelected.Invoke(this, EventArgs.Empty);
 
     public override void OnNavigatedTo(object? param = null) {
         if (param is not AbstractQuestion question) {
@@ -40,19 +52,8 @@ public partial class ResultsPageViewModel(IServiceProvider services) : PageViewM
         var files = ev.QuestionFiles(QuestionVM.Question);
         FilesResult = new IterableCollectionView(files.Select(f => {
             var index = files.IndexOf(f);
-            return new FileResultViewModel(QuestionVM, index, f.Name, _results.ElementAtOrDefault(index));
+            return new FileResultViewModel(QuestionVM, index, f.Name, _results.ElementAtOrDefault(index), FileSelected);
         }), _ => true);
-        
-        // TODO: non va, molto prob la classe deve essere un ReactiveObject
-        FilesResult.OfType<FileResultViewModel>()
-            .AsObservableChangeSet()
-            .WhenValueChanged(vm => vm.IsSelected)
-            .Subscribe(_ => {
-                CheckBoxState = SelectedFiles.Count() switch {
-                    0 => false,
-                    _ => SelectedFiles.Count() == FilesResult.Count ? true : null
-                };
-            });
     }
     
     public void ToQuestionPage() {
@@ -60,22 +61,36 @@ public partial class ResultsPageViewModel(IServiceProvider services) : PageViewM
         _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
     }
 
+    public void ToggleSelection() {
+        if (CheckBoxState is null or false) {
+            CheckBoxState = true;
+            foreach (var vm in FilesResult!.OfType<FileResultViewModel>())
+                vm.IsSelected = true;
+        } else {
+            CheckBoxState = false;
+            foreach (var vm in FilesResult!.OfType<FileResultViewModel>())
+                vm.IsSelected = false;
+        }
+    }
+
     public void RemoveSelection() {
         var ev = _services.Get<Evaluator>();
         foreach (var item in SelectedFiles) {
-            var files = ev.QuestionFiles(QuestionVM.Question);
-            
-            files.ElementAt(item.Index).Dispose();
-            files.RemoveAt(item.Index);
+            ev.RemoveFile(QuestionVM.Question, item.Index);
+            foreach (var next in FilesResult!.OfType<FileResultViewModel>())
+                if (next.Index > item.Index) next.Index--;
             
             if (item.Result is not null)
                 _results.RemoveAt(item.Index);
         }
+        FilesResult?.Refresh();
+        RefreshCheckBoxState();
     }
 
     public async Task AddFiles() {
         await QuestionVM.AddFiles();
         FilesResult?.Refresh();
+        RefreshCheckBoxState();
     }
 
     public void EvaluateButton() {
@@ -87,6 +102,7 @@ public partial class ResultsPageViewModel(IServiceProvider services) : PageViewM
             _services.Get<WindowNotificationManager>().ShowNotification(Lang.Lang.EvaluationSuccessTitle,
                 Lang.Lang.EvaluationSuccessDesc, NotificationType.Success);
             FilesResult?.Refresh();
+            RefreshCheckBoxState();
         } catch (Exception _) {
             _services.Get<WindowNotificationManager>().ShowNotification(Lang.Lang.NoFilesToEvaluateTitle,
                 null, NotificationType.Error);
