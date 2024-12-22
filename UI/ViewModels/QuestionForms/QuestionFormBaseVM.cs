@@ -16,7 +16,8 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     
     public static readonly Func<double, string> IntFormat = input => Math.Max(0, (int) input).ToString();
 
-    protected IServiceProvider _services;
+    protected readonly ErrorHandler ErrorHandler;
+    protected readonly IStorageProvider StorageProvider;
     
     private string? _errorMsg;
     public string? ErrorMsg {
@@ -42,8 +43,9 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     [ObservableProperty]
     private string? _path;
 
-    public QuestionFormBaseVM(IServiceProvider services, AbstractQuestion? q = null) {
-        _services = services;
+    public QuestionFormBaseVM(ErrorHandler errorHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) {
+        ErrorHandler = errorHandler;
+        StorageProvider = storageProvider;
         if (q is null) return;
         
         _ogFile = q.OgFile;
@@ -57,7 +59,7 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     }
 
     public virtual async Task UploadOgFile() {
-        var files = await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
+        var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
             AllowMultiple = false,
             FileTypeFilter = [FileTypesHelper.Word],
         });
@@ -75,7 +77,7 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     }
 
     public async Task LoadLocation() {
-        using var file = await _services.Get<IStorageProvider>().SaveFilePickerAsync(new FilePickerSaveOptions {
+        using var file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions {
             FileTypeChoices = [QuestionSerializer.FileType],
         });
         if (file is null) return;

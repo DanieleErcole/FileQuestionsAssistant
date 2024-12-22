@@ -1,4 +1,5 @@
-﻿using Core.FileHandling;
+﻿using System.Collections.ObjectModel;
+using Core.FileHandling;
 using Core.Questions;
 
 namespace Core.Evaluation;
@@ -6,9 +7,11 @@ namespace Core.Evaluation;
 public class Evaluator {
 
     public IReadOnlyCollection<IQuestion> Questions => _filesByQuestion.Keys;
-    public IReadOnlyCollection<IReadOnlyCollection<IFile>> Files => _filesByQuestion.Values;
-
-    private readonly Dictionary<IQuestion, List<IFile>> _filesByQuestion = new();
+    public IReadOnlyCollection<ObservableCollection<IFile>> Files => _filesByQuestion.Values;
+    
+    private readonly Dictionary<IQuestion, ObservableCollection<IFile>> _filesByQuestion = new();
+    
+    //TODO: implementare questo con le observablecollection, forse riesco a levarmi dai viewmodel delle domande con gli style trigger
 
     public IEnumerable<Result> Evaluate(IQuestion question, Func<IFile, int, bool>? fileFilter = null) {
         if (!_filesByQuestion.TryGetValue(question, out var files))
@@ -21,7 +24,7 @@ public class Evaluator {
         return question.Evaluate(files.Where(fileFilter));
     }
 
-    public List<IFile> QuestionFiles(IQuestion question) => _filesByQuestion[question];
+    public ObservableCollection<IFile> QuestionFiles(IQuestion question) => _filesByQuestion[question];
 
     public void AddQuestion(IQuestion question, params IFile[] files) => _filesByQuestion.Add(question, [..files]);
 
@@ -42,7 +45,8 @@ public class Evaluator {
     public void AddFiles(IQuestion question, params IFile[] files) {
         if (!_filesByQuestion.TryGetValue(question, out var qFiles))
             throw new ArgumentOutOfRangeException();
-        qFiles.AddRange(files);
+        foreach (var file in files) 
+            qFiles.Add(file);
     }
 
     public void SetFiles(IQuestion question, params IFile[] files) {
@@ -51,26 +55,26 @@ public class Evaluator {
 
         if (qFiles.Count != 0) 
             DisposeFiles(question);
-        _filesByQuestion[question] = files.ToList();
+        _filesByQuestion[question] = new ObservableCollection<IFile>(files);
     }
 
-    public void RemoveFile(IQuestion question, int index) {
+    public void RemoveFile(IQuestion question, IFile file) {
         if (!_filesByQuestion.TryGetValue(question, out var files))
             throw new ArgumentOutOfRangeException();
         
-        if (files.Count <= index)
+        if (!files.Contains(file))
             throw new ArgumentOutOfRangeException();
         
-        files[index].Dispose();
-        files.RemoveAt(index);
+        file.Dispose();
+        files.Remove(file);
     }
 
-    public void DisposeFiles(IQuestion question) {
+    private void DisposeFiles(IQuestion question) {
         if (!_filesByQuestion.TryGetValue(question, out var files))
             throw new ArgumentOutOfRangeException();
         foreach (var f in files)
             f.Dispose();
-        _filesByQuestion.Clear();
+        files.Clear();
     }
     
     public void DisposeAllFiles() {

@@ -4,18 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace UI.Services;
 
-public class ErrorHandler {
-
-    private IServiceProvider _services;
-
-    public void Init(IServiceProvider services) {
-        _services = services;
-    }
-
+public class ErrorHandler(WindowNotificationManager notificationManager) {
     public void ShowError(Exception ex) {
         Console.WriteLine(ex);
         var err = ex as UIException ?? UIException.FromException(ex);
-        _services.GetRequiredService<WindowNotificationManager>().ShowNotification(err.Title, err.Desc, NotificationType.Error);
+        notificationManager.ShowNotification(err.Title, err.Desc, NotificationType.Error);
     }
-    
 }

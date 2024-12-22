@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.Questions;
 using Core.Questions.Powerpoint;
@@ -8,7 +9,8 @@ using UI.Services;
 
 namespace UI.ViewModels.Pages;
 
-public class QuestionEditPageViewModel(IServiceProvider services) : QuestionDataPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, services) {
+public class QuestionEditPageViewModel(NavigatorService navService, ErrorHandler errorHandler, QuestionSerializer serializer, Evaluator evaluator, IStorageProvider sProvider) 
+    : QuestionDataPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sProvider) {
    
     private static int QuestionToIndex(AbstractQuestion? question = null) {
         return question switch {
@@ -24,7 +26,7 @@ public class QuestionEditPageViewModel(IServiceProvider services) : QuestionData
     public override void OnNavigatedTo(object? param = null) {
         var question = param as AbstractQuestion;
         if (question is null)
-            _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
+           NavigatorService.NavigateTo(NavigatorService.Questions);
         
         _question = question;
         SelectedIndex = QuestionToIndex(question);
@@ -37,17 +39,14 @@ public class QuestionEditPageViewModel(IServiceProvider services) : QuestionData
             var q = Content?.CreateQuestion();
             if (q is null) return;
 
-            var ev = _services.Get<Evaluator>();
-            var serializer = _services.Get<QuestionSerializer>();
-
-            await serializer.Save(q);
-            ev.SetFiles(_question);
-            ev.ReplaceQuestion(_question, q);
+            await Serializer.Save(q);
+            Evaluator.SetFiles(_question);
+            Evaluator.ReplaceQuestion(_question, q);
             
-            await serializer.UpdateTrackingFile();
-            _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions, q);
+            await Serializer.UpdateTrackingFile();
+            NavigatorService.NavigateTo(NavigatorService.Questions, q);
         } catch (Exception e) {
-            _services.Get<ErrorHandler>().ShowError(e);
+            ErrorHandler.ShowError(e);
         }
     }
     

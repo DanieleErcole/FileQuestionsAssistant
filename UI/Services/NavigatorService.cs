@@ -1,4 +1,7 @@
 ﻿using System;
+using Avalonia.Controls.Notifications;
+using Avalonia.Platform.Storage;
+using Core.Evaluation;
 using FluentAvalonia.UI.Controls;
 using UI.ViewModels.Pages;
 using UI.Views;
@@ -30,17 +33,21 @@ public class NavigatorService {
     public const int Results = 3;
     
     private Frame _windowFrame;
-    private PageViewModel[] _pages;
+    private readonly PageViewModel[] _pages;
 
-    public void Init(Frame windowFrame, IServiceProvider services) {
+    public NavigatorService(ErrorHandler errorHandler, QuestionSerializer serializer, Evaluator evaluator, DialogService dialogService, 
+        IStorageProvider storageProvider, WindowNotificationManager notificationManager) {
+        _pages = [
+            new QuestionsPageViewModel(this, errorHandler, serializer, evaluator,dialogService, storageProvider),
+            new QuestionAddPageViewModel(this, errorHandler, serializer, evaluator, storageProvider),
+            new QuestionEditPageViewModel(this, errorHandler, serializer, evaluator, storageProvider),
+            new ResultsPageViewModel(this, errorHandler, serializer, evaluator, storageProvider, notificationManager)
+        ];
+    }
+
+    public void Init(Frame windowFrame) {
         _windowFrame = windowFrame;
         _windowFrame.NavigationPageFactory = new AppNavFactory();
-        _pages = [
-            new QuestionsPageViewModel(services),
-            new QuestionAddPageViewModel(services),
-            new QuestionEditPageViewModel(services),
-            new ResultsPageViewModel(services)
-        ];
         NavigateTo(Questions);
     }
 

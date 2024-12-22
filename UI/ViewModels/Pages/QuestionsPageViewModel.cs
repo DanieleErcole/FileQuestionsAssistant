@@ -12,6 +12,9 @@ using UI.ViewModels.Questions;
 namespace UI.ViewModels.Pages;
 
 public class QuestionsPageViewModel : PageViewModel {
+
+    private readonly DialogService _dialogService;
+    private readonly IStorageProvider _storageProvider;
     
     private string? _searchText;
     public string? SearchText {
@@ -24,14 +27,17 @@ public class QuestionsPageViewModel : PageViewModel {
     
     public IterableCollectionView QuestionsSearch { get; }
 
-    public QuestionsPageViewModel(IServiceProvider services) : base(services) {
-        var ev = _services.Get<Evaluator>();
-        var loadedQuestions = _services.Get<QuestionSerializer>().LoadTrackedQuestions() ?? [];
+    public QuestionsPageViewModel(NavigatorService navService, ErrorHandler errorHandler, QuestionSerializer serializer, 
+        Evaluator evaluator, DialogService dialogService, IStorageProvider storageProvider) 
+        : base(navService, errorHandler, serializer, evaluator) {
+        _dialogService = dialogService;
+        _storageProvider = storageProvider;
+        var loadedQuestions = Serializer.LoadTrackedQuestions() ?? [];
         
         foreach (var q in loadedQuestions)
-            ev.AddQuestion(q);
+            Evaluator.AddQuestion(q);
         
-        QuestionsSearch = new IterableCollectionView(ev.Questions.Select(q => q.ToViewModel(_services)), o => {
+        QuestionsSearch = new IterableCollectionView(Evaluator.Questions.Select(q => q.ToViewModel(Evaluator, ErrorHandler, _storageProvider)), o => {
             var q = (o as SingleQuestionViewModel)!;
             return string.IsNullOrWhiteSpace(SearchText) ||
                    q.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
@@ -42,7 +48,7 @@ public class QuestionsPageViewModel : PageViewModel {
     public override void OnNavigatedTo(object? param = null) => QuestionsSearch.Refresh();
     
     public async Task OpenQuestion() {
-        var files = await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
+        var files = await _storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
             AllowMultiple = false,
             FileTypeFilter = [QuestionSerializer.FileType]
         });
@@ -50,36 +56,35 @@ public class QuestionsPageViewModel : PageViewModel {
             
         var filePath = Uri.UnescapeDataString(files[0].Path.AbsolutePath);
         try {
-            var serializer = _services.Get<QuestionSerializer>();
-            if (await serializer.Load(filePath) is { } q) {
-                if (_services.Get<Evaluator>().Questions.Any(e => e.Path == q.Path))
+            if (await Serializer.Load(filePath) is { } q) {
+                if (Evaluator.Questions.Any(e => e.Path == q.Path))
                     throw new UnableToOpenQuestion();
-                _services.Get<Evaluator>().AddQuestion(q);
-                await serializer.UpdateTrackingFile();
-                _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, q);
+                Evaluator.AddQuestion(q);
+                await Serializer.UpdateTrackingFile();
+                NavigatorService.NavigateTo(NavigatorService.Results, q);
             }
         } catch (Exception e) {
-            _services.Get<ErrorHandler>().ShowError(e);
+            ErrorHandler.ShowError(e);
         }
     }
 
-    public void AddQuestionBtn() => _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionAddForm);
+    public void AddQuestionBtn() => NavigatorService.NavigateTo(NavigatorService.QuestionAddForm);
 
     public void EditQuestionBtn(object param) {
         var vm = (param as SingleQuestionViewModel)!;
-        _services.Get<NavigatorService>().NavigateTo(NavigatorService.QuestionEditForm, vm.Question);
+        NavigatorService.NavigateTo(NavigatorService.QuestionEditForm, vm.Question);
     }
 
     public async Task DeleteQuestion(object param) {
         var question = (param as SingleQuestionViewModel)!;
-        if (!await _services.Get<DialogService>().ShowYesNoDialog(Lang.Lang.DeleteDialogTitle, Lang.Lang.DeleteDialogMessage + $"\n{question.Path}")) 
+        if (!await _dialogService.ShowYesNoDialog(Lang.Lang.DeleteDialogTitle, Lang.Lang.DeleteDialogMessage + $"\n{question.Path}")) 
             return;
             
         try {
-            _services.Get<Evaluator>().RemoveQuestion(question.Question);
-            await _services.Get<QuestionSerializer>().UpdateTrackingFile();
+            Evaluator.RemoveQuestion(question.Question);
+            await Serializer.UpdateTrackingFile();
         } catch (FileError e) {
-            _services.Get<ErrorHandler>().ShowError(e);
+            ErrorHandler.ShowError(e);
         }
         QuestionsSearch.Refresh();
     }
@@ -87,7 +92,7 @@ public class QuestionsPageViewModel : PageViewModel {
     public void OnSelectedQuestion(SelectionChangedEventArgs e) {
         if (e.AddedItems.Count != 1) return;
         var selected = e.AddedItems[0] as SingleQuestionViewModel;
-        _services.Get<NavigatorService>().NavigateTo(NavigatorService.Results, selected!.Question);
+        NavigatorService.NavigateTo(NavigatorService.Results, selected!.Question);
     }
     
 }

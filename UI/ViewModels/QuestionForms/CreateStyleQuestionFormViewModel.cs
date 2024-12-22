@@ -53,7 +53,7 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
 
     #endregion
 
-    public CreateStyleQuestionFormViewModel(IServiceProvider services, AbstractQuestion? q = null) : base(services, q) {
+    public CreateStyleQuestionFormViewModel(ErrorHandler errorHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) : base(errorHandler, storageProvider, q) {
         if (q is null) return;
         
         Filename = "Original file";
@@ -85,7 +85,7 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
             );
             FontNames = new ObservableCollection<string>(file.Fonts.Select(s => s.Name!.Value!));
         } catch (Exception e) {
-            _services.Get<ErrorHandler>().ShowError(e);
+            ErrorHandler.ShowError(e);
         }
     }
 

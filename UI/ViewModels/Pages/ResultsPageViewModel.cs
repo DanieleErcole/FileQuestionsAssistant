@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
+using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Evaluation;
 using Core.FileHandling;
@@ -14,6 +15,9 @@ using UI.ViewModels.Questions;
 namespace UI.ViewModels.Pages;
 
 public partial class ResultsPageViewModel : PageViewModel {
+    
+    private readonly IStorageProvider _storageProvider;
+    private readonly WindowNotificationManager _notification;
     
     [ObservableProperty]
     private SingleQuestionViewModel _questionVM;
@@ -27,9 +31,13 @@ public partial class ResultsPageViewModel : PageViewModel {
     private event EventHandler FileSelected;
     
     private IEnumerable<FileResultViewModel> SelectedFiles => FilesResult!.OfType<FileResultViewModel>().Where(vm => vm.IsSelected);
-    private readonly List<Result> _results = [];
+    private readonly Dictionary<IFile, Result> _results = [];
 
-    public ResultsPageViewModel(IServiceProvider services) : base(services) {
+    public ResultsPageViewModel(NavigatorService navService, ErrorHandler errorHandler, QuestionSerializer serializer,
+        Evaluator evaluator, IStorageProvider storageProvider, WindowNotificationManager notificationManager) : base(
+        navService, errorHandler, serializer, evaluator) {
+        _storageProvider = storageProvider;
+        _notification = notificationManager;
         FileSelected = (_, _) => {
             CheckBoxState = SelectedFiles.Count() switch {
                 0 => false,
@@ -42,23 +50,21 @@ public partial class ResultsPageViewModel : PageViewModel {
 
     public override void OnNavigatedTo(object? param = null) {
         if (param is not AbstractQuestion question) {
-            _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
+            NavigatorService.NavigateTo(NavigatorService.Questions);
             return;
         }
-        QuestionVM = question.ToViewModel(_services);
+        QuestionVM = question.ToViewModel(Evaluator, ErrorHandler, _storageProvider);
         CorrectParams = QuestionVM.GetLocalizedQuestionParams();
         
-        var ev = _services.Get<Evaluator>();
-        var files = ev.QuestionFiles(QuestionVM.Question);
-        FilesResult = new IterableCollectionView(files.Select(f => {
-            var index = files.IndexOf(f);
-            return new FileResultViewModel(QuestionVM, index, f.Name, _results.ElementAtOrDefault(index), FileSelected);
-        }), _ => true);
+        var files = Evaluator.QuestionFiles(QuestionVM.Question);
+        FilesResult = new IterableCollectionView(files.Select(f => 
+                new FileResultViewModel(QuestionVM, f, _results.GetValueOrDefault(f), FileSelected)
+        ), _ => true);
     }
     
     public void ToQuestionPage() {
         _results.Clear();
-        _services.Get<NavigatorService>().NavigateTo(NavigatorService.Questions);
+        NavigatorService.NavigateTo(NavigatorService.Questions);
     }
 
     public void ToggleSelection() {
@@ -74,14 +80,11 @@ public partial class ResultsPageViewModel : PageViewModel {
     }
 
     public void RemoveSelection() {
-        var ev = _services.Get<Evaluator>();
         foreach (var item in SelectedFiles) {
-            ev.RemoveFile(QuestionVM.Question, item.Index);
-            foreach (var next in FilesResult!.OfType<FileResultViewModel>())
-                if (next.Index > item.Index) next.Index--;
-            
+            Evaluator.RemoveFile(QuestionVM.Question, item.File);
+
             if (item.Result is not null)
-                _results.RemoveAt(item.Index);
+                _results.Remove(item.File);
         }
         FilesResult?.Refresh();
         RefreshCheckBoxState();
@@ -95,17 +98,29 @@ public partial class ResultsPageViewModel : PageViewModel {
 
     public void EvaluateButton() {
         try {
-            Func<IFile, int, bool>? filterOnlySelected = !SelectedFiles.Any() ? null : 
-                (_, index) => SelectedFiles.Any(vm => vm.Index == index);
+            var anySelected = SelectedFiles.Any();
+            var results =Evaluator.Evaluate(QuestionVM.Question, anySelected ? FilterOnlySelected : null).ToList();
             
-            _results.AddRange( _services.Get<Evaluator>().Evaluate(QuestionVM.Question, filterOnlySelected));
-            _services.Get<WindowNotificationManager>().ShowNotification(Lang.Lang.EvaluationSuccessTitle,
+            foreach (var result in results) {
+                var collection = anySelected ? SelectedFiles : FilesResult!.OfType<FileResultViewModel>();
+                var file = collection.ElementAt(results.IndexOf(result)).File;
+                if (!_results.TryAdd(file, result))
+                    _results[file] = result;
+            }
+            
+            _notification.ShowNotification(Lang.Lang.EvaluationSuccessTitle,
                 Lang.Lang.EvaluationSuccessDesc, NotificationType.Success);
+            
             FilesResult?.Refresh();
             RefreshCheckBoxState();
         } catch (Exception _) {
-            _services.Get<WindowNotificationManager>().ShowNotification(Lang.Lang.NoFilesToEvaluateTitle,
+            _notification.ShowNotification(Lang.Lang.NoFilesToEvaluateTitle,
                 null, NotificationType.Error);
+        }
+        
+        bool FilterOnlySelected(IFile f, int index) {
+            var vm = FilesResult!.OfType<FileResultViewModel>().ElementAtOrDefault(index);
+            return vm is not null && vm.File == f && vm.IsSelected;
         }
     }
     

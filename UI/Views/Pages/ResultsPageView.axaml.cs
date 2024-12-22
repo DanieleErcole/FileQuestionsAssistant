@@ -15,7 +15,7 @@ public partial class ResultsPageView : UserControl {
     public void OnExpanding(object sender, CancelRoutedEventArgs args) {
         var exp = (sender as Expander)!;
         var vm = (exp.DataContext as FileResultViewModel)!;
-        if (vm.Result is null || vm.IsSuccess)
+        if (!vm.IsExpandable)
             args.Cancel = true;
     }
 

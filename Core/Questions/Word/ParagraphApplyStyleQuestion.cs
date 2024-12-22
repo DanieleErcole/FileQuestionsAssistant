@@ -35,22 +35,8 @@ public class ParagraphApplyStyleQuestion : AbstractQuestion {
                 
                 return pProperties.ParagraphStyleId?.Val?.Value == styleName;
             });
-
-            if (matchedParagraph is not null)
-                return new Result(Params, [], true);
-
-            var parToDict = new Func<Paragraph, Dictionary<string, object?>>(p => new Dictionary<string, object?> {
-                ["styleName"] = p.ParagraphProperties?.ParagraphStyleId?.Val?.Value,
-            });
             
-            WordFile ogFile = OgFile;
-            var ogParagraphs = ogFile.Paragraphs.Select(parToDict);
-            var diff = file.Paragraphs
-                .Select(parToDict)
-                .Where(p => ogParagraphs.All(x =>
-                    p.Get<string>("styleName") != x.Get<string>("styleName")
-                ));
-            return new Result(Params, diff.ToList(), false);
+            return new Result(Params, [], matchedParagraph is not null);
         });
 
 }

@@ -12,13 +12,14 @@ using UI.Utils;
 
 namespace UI.ViewModels.Questions;
 
-public abstract class WordQuestionViewModel(AbstractQuestion q, IServiceProvider services) : SingleQuestionViewModel(q, services) {
+public abstract class WordQuestionViewModel(AbstractQuestion q, Evaluator evaluator, ErrorHandler errorHandler, IStorageProvider storageProvider) 
+    : SingleQuestionViewModel(q, evaluator, errorHandler, storageProvider) {
     
     public override string Icon => "/Assets/docx.svg";
     
     public override async Task AddFiles() {
         try {
-            var pickerFiles =  await _services.Get<IStorageProvider>().OpenFilePickerAsync(new FilePickerOpenOptions {
+            var pickerFiles =  await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
                 AllowMultiple = true,
                 FileTypeFilter = [FileTypesHelper.Word]
             });
@@ -34,10 +35,10 @@ public abstract class WordQuestionViewModel(AbstractQuestion q, IServiceProvider
             
             if (files.Length == 0)
                 return;
-            _services.GetRequiredService<Evaluator>().AddFiles(Question, files);
+            Evaluator.AddFiles(Question, files);
         } catch (FileError e) {
             UIException ex = e;
-            _services.Get<ErrorHandler>().ShowError(ex);
+            ErrorHandler.ShowError(ex);
         }
     }
     

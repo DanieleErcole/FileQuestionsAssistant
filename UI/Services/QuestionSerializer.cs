@@ -11,7 +11,7 @@ using ColorConverter = Core.Utils.ColorConverter;
 
 namespace UI.Services;
 
-public class QuestionSerializer {
+public class QuestionSerializer(Evaluator evaluator) {
 
     private static readonly string TrackedDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FileQuestionAssistant");
     private static string TrackedFilePath => Path.Combine(TrackedDirectoryPath, TrackedFileName);
@@ -23,22 +23,17 @@ public class QuestionSerializer {
         MimeTypes = ["application/json"]
     };
 
-    private IServiceProvider _services;
     private readonly JsonSerializerOptions _options = new() {
         IncludeFields = true,
         WriteIndented = true,
         Converters = { new ColorConverter() }
     };
 
-    public void Init(IServiceProvider services) {
-        _services = services;
-    }
-
     public async Task UpdateTrackingFile() {
         try {
             await using var stream = File.Open(TrackedFilePath, FileMode.Create);
             await using var streamWriter = new StreamWriter(stream);
-            foreach (var q in _services.Get<Evaluator>().Questions)
+            foreach (var q in evaluator.Questions)
                 await streamWriter.WriteLineAsync(q.Path);
         } catch (Exception e) {
             throw new FileError(TrackedFilePath, e);

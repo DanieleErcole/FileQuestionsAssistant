@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core.Evaluation;
+using Core.FileHandling;
 
 namespace UI.ViewModels.Questions;
 
@@ -17,8 +18,7 @@ public partial class FileResultViewModel : ViewModelBase {
     
     private event EventHandler FileSelected; 
     
-    public int Index { get; set; }
-    public string Filename { get; }
+    public IFile File { get; }
     public Result? Result { get; }
     
     private bool _isSelected;
@@ -33,7 +33,8 @@ public partial class FileResultViewModel : ViewModelBase {
     private readonly SingleQuestionViewModel _vm;
     
     public bool IsSuccess => Result is { IsSuccessful: true };
-    public bool IsFailed => Result is { IsSuccessful: false } && Result.EachParamsWithRes().Any();
+    public bool IsFailed => Result is { IsSuccessful: false };
+    public bool IsExpandable => Result is not null && Result.EachParamsWithRes().Any();
     public List<Node> FileParams => Result is not null ?  _vm
         .GetLocalizedResultParams(Result)
         .Select(d => {
@@ -50,9 +51,8 @@ public partial class FileResultViewModel : ViewModelBase {
         _ => "Document"
     };
 
-    public FileResultViewModel(SingleQuestionViewModel vm, int index, string filename, Result? result, EventHandler fileSelected) {
-        Index = index;
-        Filename = filename;
+    public FileResultViewModel(SingleQuestionViewModel vm, IFile file, Result? result, EventHandler fileSelected) {
+        File = file;
         Result = result;
         _vm = vm;
         FileSelected = fileSelected;
