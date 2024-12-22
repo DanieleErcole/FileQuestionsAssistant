@@ -27,7 +27,7 @@ public class Evaluator {
 
     public void RemoveQuestion(IQuestion question) {
         if (!_filesByQuestion.ContainsKey(question))
-            throw new ArgumentException();
+            throw new ArgumentOutOfRangeException();
         
         DisposeFiles(question);
         _filesByQuestion.Remove(question);
@@ -41,22 +41,33 @@ public class Evaluator {
 
     public void AddFiles(IQuestion question, params IFile[] files) {
         if (!_filesByQuestion.TryGetValue(question, out var qFiles))
-            throw new ArgumentException();
+            throw new ArgumentOutOfRangeException();
         qFiles.AddRange(files);
     }
 
     public void SetFiles(IQuestion question, params IFile[] files) {
         if (!_filesByQuestion.TryGetValue(question, out var qFiles))
-            throw new ArgumentException();
+            throw new ArgumentOutOfRangeException();
 
         if (qFiles.Count != 0) 
             DisposeFiles(question);
         _filesByQuestion[question] = files.ToList();
     }
 
+    public void RemoveFile(IQuestion question, int index) {
+        if (!_filesByQuestion.TryGetValue(question, out var files))
+            throw new ArgumentOutOfRangeException();
+        
+        if (files.Count <= index)
+            throw new ArgumentOutOfRangeException();
+        
+        files[index].Dispose();
+        files.RemoveAt(index);
+    }
+
     public void DisposeFiles(IQuestion question) {
         if (!_filesByQuestion.TryGetValue(question, out var files))
-            throw new ArgumentException();
+            throw new ArgumentOutOfRangeException();
         foreach (var f in files)
             f.Dispose();
         _filesByQuestion.Clear();
