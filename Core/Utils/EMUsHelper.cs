@@ -1,4 +1,4 @@
-﻿namespace UI.Utils;
+﻿namespace Core.Utils;
 
 public static class EMUsHelper {
 
@@ -10,23 +10,23 @@ public static class EMUsHelper {
         return (x * EMUPerCentimeter, y * EMUPerCentimeter);
     }
 
-    public static (double, double) ToCentimeters(int x, int y) {
+    public static (double, double) ToCentimeters(double x, double y) {
         return (x / EMUPerCentimeter, y / EMUPerCentimeter);
     }
     
-    public static (int, int) FromInches(int x, int y) {
+    public static (double, double) FromInches(double x, double y) {
         return (x * EMUPerInch, y * EMUPerInch);
     }
 
-    public static (int, int) ToInches(int x, int y) {
+    public static (double, double) ToInches(double x, double y) {
         return (x / EMUPerInch, y / EMUPerInch);
     }
     
-    public static (int, int) FromHalfPoints(int x, int y) {
+    public static (double, double) FromHalfPoints(double x, double y) {
         return (x * EMUPerHalfPoint, y * EMUPerHalfPoint);
     }
 
-    public static (int, int) ToHalfPoints(int x, int y) {
+    public static (double, double) ToHalfPoints(double x, double y) {
         return (x / EMUPerHalfPoint, y / EMUPerHalfPoint);
     }
 

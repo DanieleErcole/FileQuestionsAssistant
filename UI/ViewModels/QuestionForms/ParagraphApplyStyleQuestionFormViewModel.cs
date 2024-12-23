@@ -18,7 +18,7 @@ public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormBase
     
     public string? StyleNameSelected { get; set; }
     
-    public ParagraphApplyStyleQuestionFormViewModel(ErrorHandler errHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) 
+    public ParagraphApplyStyleQuestionFormViewModel(IErrorHandlerService errHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) 
         : base(errHandler, storageProvider, q) {
         if (q is null) return;
         

@@ -53,7 +53,8 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
 
     #endregion
 
-    public CreateStyleQuestionFormViewModel(ErrorHandler errorHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) : base(errorHandler, storageProvider, q) {
+    public CreateStyleQuestionFormViewModel(IErrorHandlerService errorHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) 
+        : base(errorHandler, storageProvider, q) {
         if (q is null) return;
         
         Filename = "Original file";

@@ -27,34 +27,29 @@ public class NavigatorService {
         }
     }
 
-    public const int Questions = 0;
-    public const int QuestionAddForm = 1;
-    public const int QuestionEditForm = 2;
-    public const int Results = 3;
+    public static NavigatorService FromServiceProvider(IServiceProvider sp) => new(sp.Get<MainWindow>(), type => 
+        type.Name switch { 
+            nameof(QuestionsPageViewModel) => sp.Get<QuestionsPageViewModel>(),
+            nameof(QuestionAddPageViewModel) => sp.Get<QuestionAddPageViewModel>(),
+            nameof(QuestionEditPageViewModel) => sp.Get<QuestionEditPageViewModel>(),
+            nameof(ResultsPageViewModel) => sp.Get<ResultsPageViewModel>(),
+            _ => throw new ArgumentException("Invalid page type")
+        }
+    );
     
-    private Frame _windowFrame;
-    private readonly PageViewModel[] _pages;
+    private readonly Frame _windowFrame;
+    private readonly Func<Type, PageViewModel> _pageFactory;
 
-    public NavigatorService(ErrorHandler errorHandler, QuestionSerializer serializer, Evaluator evaluator, DialogService dialogService, 
-        IStorageProvider storageProvider, WindowNotificationManager notificationManager) {
-        _pages = [
-            new QuestionsPageViewModel(this, errorHandler, serializer, evaluator,dialogService, storageProvider),
-            new QuestionAddPageViewModel(this, errorHandler, serializer, evaluator, storageProvider),
-            new QuestionEditPageViewModel(this, errorHandler, serializer, evaluator, storageProvider),
-            new ResultsPageViewModel(this, errorHandler, serializer, evaluator, storageProvider, notificationManager)
-        ];
-    }
-
-    public void Init(Frame windowFrame) {
-        _windowFrame = windowFrame;
+    public NavigatorService(MainWindow mw, Func<Type, PageViewModel> pageFactory) {
+        _windowFrame = mw.MainFrame;
         _windowFrame.NavigationPageFactory = new AppNavFactory();
-        NavigateTo(Questions);
+        _pageFactory = pageFactory;
     }
 
-    public void NavigateTo(int index, object? param = null) {
-        _pages[index].OnNavigatedTo(param);
-        _windowFrame.NavigateFromObject(_pages[index]);
+    public void NavigateTo<TPageVm>(object? param = null) {
+        var page = _pageFactory(typeof(TPageVm));
+        page.OnNavigatedTo(param);
+        _windowFrame.NavigateFromObject(page);
     }
-    
 
 }

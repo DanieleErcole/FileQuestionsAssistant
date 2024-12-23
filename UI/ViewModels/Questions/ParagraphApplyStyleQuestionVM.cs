@@ -9,7 +9,7 @@ using UI.Services;
 
 namespace UI.ViewModels.Questions;
 
-public class ParagraphApplyStyleQuestionVM(ParagraphApplyStyleQuestion q, Evaluator evaluator, ErrorHandler errorHandler, IStorageProvider storageProvider) 
+public class ParagraphApplyStyleQuestionVM(ParagraphApplyStyleQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageProvider storageProvider) 
     : WordQuestionViewModel(q, evaluator, errorHandler, storageProvider) {
     
     public override string Description => Question.Desc ?? Lang.Lang.ParagraphApplyStyleQuestionDesc;

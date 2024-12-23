@@ -16,7 +16,7 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     
     public static readonly Func<double, string> IntFormat = input => Math.Max(0, (int) input).ToString();
 
-    protected readonly ErrorHandler ErrorHandler;
+    protected readonly IErrorHandlerService ErrorHandler;
     protected readonly IStorageProvider StorageProvider;
     
     private string? _errorMsg;
@@ -43,7 +43,7 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     [ObservableProperty]
     private string? _path;
 
-    public QuestionFormBaseVM(ErrorHandler errorHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) {
+    public QuestionFormBaseVM(IErrorHandlerService errorHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) {
         ErrorHandler = errorHandler;
         StorageProvider = storageProvider;
         if (q is null) return;

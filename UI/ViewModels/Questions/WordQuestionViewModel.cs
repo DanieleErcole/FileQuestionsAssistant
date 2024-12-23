@@ -12,7 +12,7 @@ using UI.Utils;
 
 namespace UI.ViewModels.Questions;
 
-public abstract class WordQuestionViewModel(AbstractQuestion q, Evaluator evaluator, ErrorHandler errorHandler, IStorageProvider storageProvider) 
+public abstract class WordQuestionViewModel(AbstractQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageProvider storageProvider) 
     : SingleQuestionViewModel(q, evaluator, errorHandler, storageProvider) {
     
     public override string Icon => "/Assets/docx.svg";

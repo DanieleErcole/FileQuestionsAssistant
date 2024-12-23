@@ -11,7 +11,7 @@ using ColorConverter = Core.Utils.ColorConverter;
 
 namespace UI.Services;
 
-public class QuestionSerializer(Evaluator evaluator) {
+public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
 
     private static readonly string TrackedDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FileQuestionAssistant");
     private static string TrackedFilePath => Path.Combine(TrackedDirectoryPath, TrackedFileName);

@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using UI.Services;
+using UI.ViewModels.Factories;
 
 namespace UI.ViewModels.Pages;
 
-public class QuestionAddPageViewModel(NavigatorService navService, ErrorHandler errorHandler, QuestionSerializer serializer, Evaluator evaluator, IStorageProvider sProvider) 
-    : QuestionDataPageViewModel(Lang.Lang.NewQuestionPageTitle,  Lang.Lang.CreateBtnText, navService, errorHandler, serializer, evaluator, sProvider) {
+public class QuestionAddPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
+    Evaluator evaluator, IStorageProvider sProvider, IViewModelFactory vmFactory) 
+    : QuestionDataPageViewModel(Lang.Lang.NewQuestionPageTitle,  Lang.Lang.CreateBtnText, navService, errorHandler, serializer, evaluator, sProvider, vmFactory) {
 
     public override void OnNavigatedTo(object? param = null) => SelectedIndex = 0;
 
@@ -25,7 +27,7 @@ public class QuestionAddPageViewModel(NavigatorService navService, ErrorHandler 
             Evaluator.AddQuestion(q);
             
             await Serializer.UpdateTrackingFile();
-            NavigatorService.NavigateTo(NavigatorService.Results, q);
+            NavigatorService.NavigateTo<ResultsPageViewModel>(q);
         } catch (Exception e) {
             ErrorHandler.ShowError(e);
         }

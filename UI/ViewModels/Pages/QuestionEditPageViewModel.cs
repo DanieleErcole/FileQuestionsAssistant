@@ -6,18 +6,20 @@ using Core.Questions;
 using Core.Questions.Powerpoint;
 using Core.Questions.Word;
 using UI.Services;
+using UI.ViewModels.Factories;
 
 namespace UI.ViewModels.Pages;
 
-public class QuestionEditPageViewModel(NavigatorService navService, ErrorHandler errorHandler, QuestionSerializer serializer, Evaluator evaluator, IStorageProvider sProvider) 
-    : QuestionDataPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sProvider) {
+public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
+    Evaluator evaluator, IStorageProvider sProvider, IViewModelFactory vmFactory) 
+    : QuestionDataPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sProvider, vmFactory) {
    
     private static int QuestionToIndex(AbstractQuestion? question = null) {
         return question switch {
-            CreateStyleQuestion => 0,
-            ParagraphApplyStyleQuestion => 1,
-            ImageInsertQuestion => 2,
-            _ => 0
+            CreateStyleQuestion => QuestionViewModelFactory.CreateStyleQuestionIndex,
+            ParagraphApplyStyleQuestion => QuestionViewModelFactory.ParagraphApplyStyleQuestionIndex,
+            ImageInsertQuestion => QuestionViewModelFactory.ImageInsertQuestionIndex,
+            _ => QuestionViewModelFactory.CreateStyleQuestionIndex
         };
     }
 
@@ -26,11 +28,11 @@ public class QuestionEditPageViewModel(NavigatorService navService, ErrorHandler
     public override void OnNavigatedTo(object? param = null) {
         var question = param as AbstractQuestion;
         if (question is null)
-           NavigatorService.NavigateTo(NavigatorService.Questions);
+           NavigatorService.NavigateTo<QuestionsPageViewModel>();
         
         _question = question;
         SelectedIndex = QuestionToIndex(question);
-        Content = IndexToFormViewModel(SelectedIndex, question);
+        Content = ViewModelFactory.NewQuestionFormVm(SelectedIndex, question);
     }
 
     public override async Task ProcessQuestion() {
@@ -44,7 +46,7 @@ public class QuestionEditPageViewModel(NavigatorService navService, ErrorHandler
             Evaluator.ReplaceQuestion(_question, q);
             
             await Serializer.UpdateTrackingFile();
-            NavigatorService.NavigateTo(NavigatorService.Questions, q);
+            NavigatorService.NavigateTo<QuestionsPageViewModel>();
         } catch (Exception e) {
             ErrorHandler.ShowError(e);
         }

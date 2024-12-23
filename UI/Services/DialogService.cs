@@ -5,7 +5,7 @@ using UI.Views;
 
 namespace UI.Services;
 
-public class DialogService(MainWindow mainWindow) {
+public class DialogService(MainWindow mainWindow) : IDialogService {
     
     public async Task<bool> ShowYesNoDialog(string title, string message) {
         var yesBtn = TaskDialogButton.YesButton;

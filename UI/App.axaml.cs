@@ -5,64 +5,54 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Microsoft.Extensions.DependencyInjection;
 using UI.Services;
-using UI.ViewModels;
+using UI.ViewModels.Factories;
+using UI.ViewModels.Pages;
 using UI.Views;
 
 namespace UI;
 
-public static class NotificationExtensions {
-    public static void ShowNotification(this WindowNotificationManager nm, string title, string? message,
-        NotificationType type = NotificationType.Information) {
-        nm.Show(new Notification {
-            Title = title,
-            Message = message,
-            Type = type,
-        });
-    }
-}
-
 public static class ServicesExtensions {
-    public static T Get<T>(this IServiceProvider provider) where T : notnull {
-        return provider.GetRequiredService<T>();
-    }
+    public static T Get<T>(this IServiceProvider provider) where T : notnull => provider.GetRequiredService<T>();
 }
 
-public partial class App : Application {
+public class App : Application {
     
-    public override void Initialize() {
-        AvaloniaXamlLoader.Load(this);
-    }
+    private readonly IServiceProvider _services = new ServiceCollection()
+        .AddTransient<IViewModelFactory, QuestionViewModelFactory>()
+        .AddSingleton<IErrorHandlerService, ErrorHandler>()
+        .AddSingleton<IDialogService, DialogService>()
+        .AddTransient<ISerializerService, QuestionSerializer>()
+        .AddSingleton<IStorageProvider>(services => services.Get<MainWindow>().StorageProvider)
+        .AddSingleton<Evaluator>()
+        .AddSingleton<MainWindow>()
+        .AddSingleton<QuestionsPageViewModel>()
+        .AddSingleton<QuestionAddPageViewModel>()
+        .AddSingleton<QuestionEditPageViewModel>()
+        .AddSingleton<ResultsPageViewModel>()
+        .AddSingleton(NavigatorService.FromServiceProvider)
+        .AddSingleton<INotificationService, NotificationManager>(sp => new NotificationManager(new WindowNotificationManager(sp.Get<MainWindow>()) {
+            Position = NotificationPosition.BottomRight,
+            MaxItems = 3,
+        })).BuildServiceProvider();
+    
+    public override void Initialize() => AvaloniaXamlLoader.Load(this);
 
     public override void OnFrameworkInitializationCompleted() {
         Lang.Lang.Culture = CultureInfo.CurrentCulture;
+        
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) {
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            var mw = new MainWindow {
-                DataContext = new MainWindowViewModel()
-            };
+            desktop.ShutdownRequested += (_, _) => _services.Get<Evaluator>().DisposeAllFiles();
+            desktop.MainWindow = _services.Get<MainWindow>();
             
-            var dialogService = new DialogService(mw);
-            var services = new ServiceCollection()
-                .AddSingleton<NavigatorService>()
-                .AddSingleton<ErrorHandler>()
-                .AddSingleton(dialogService)
-                .AddSingleton<Evaluator>()
-                .AddSingleton(new WindowNotificationManager(mw) {
-                    Position = NotificationPosition.BottomRight,
-                    MaxItems = 3,
-                })
-                .AddSingleton<QuestionSerializer>()
-                .AddSingleton(mw.StorageProvider)
-                .BuildServiceProvider();
-            
-            desktop.MainWindow = mw;
-            services.Get<NavigatorService>().Init(mw.MainFrame);
+            _services.Get<NavigatorService>().NavigateTo<QuestionsPageViewModel>();
         }
 
         base.OnFrameworkInitializationCompleted();

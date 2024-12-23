@@ -10,14 +10,14 @@ using Core.FileHandling;
 using Core.Questions;
 using FluentAvalonia.UI.Data;
 using UI.Services;
+using UI.ViewModels.Factories;
 using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
 public partial class ResultsPageViewModel : PageViewModel {
     
-    private readonly IStorageProvider _storageProvider;
-    private readonly WindowNotificationManager _notification;
+    private readonly INotificationService _notification;
     
     [ObservableProperty]
     private SingleQuestionViewModel _questionVM;
@@ -33,10 +33,9 @@ public partial class ResultsPageViewModel : PageViewModel {
     private IEnumerable<FileResultViewModel> SelectedFiles => FilesResult!.OfType<FileResultViewModel>().Where(vm => vm.IsSelected);
     private readonly Dictionary<IFile, Result> _results = [];
 
-    public ResultsPageViewModel(NavigatorService navService, ErrorHandler errorHandler, QuestionSerializer serializer,
-        Evaluator evaluator, IStorageProvider storageProvider, WindowNotificationManager notificationManager) : base(
-        navService, errorHandler, serializer, evaluator) {
-        _storageProvider = storageProvider;
+    public ResultsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, 
+        IStorageProvider storageProvider, INotificationService notificationManager, IViewModelFactory vmFactory) 
+        : base(navService, errorHandler, serializer, evaluator, storageProvider, vmFactory) {
         _notification = notificationManager;
         FileSelected = (_, _) => {
             CheckBoxState = SelectedFiles.Count() switch {
@@ -50,10 +49,10 @@ public partial class ResultsPageViewModel : PageViewModel {
 
     public override void OnNavigatedTo(object? param = null) {
         if (param is not AbstractQuestion question) {
-            NavigatorService.NavigateTo(NavigatorService.Questions);
+            NavigatorService.NavigateTo<QuestionsPageViewModel>();
             return;
         }
-        QuestionVM = question.ToViewModel(Evaluator, ErrorHandler, _storageProvider);
+        QuestionVM = ViewModelFactory.NewQuestionVm(question);
         CorrectParams = QuestionVM.GetLocalizedQuestionParams();
         
         var files = Evaluator.QuestionFiles(QuestionVM.Question);
@@ -64,7 +63,7 @@ public partial class ResultsPageViewModel : PageViewModel {
     
     public void ToQuestionPage() {
         _results.Clear();
-        NavigatorService.NavigateTo(NavigatorService.Questions);
+        NavigatorService.NavigateTo<QuestionsPageViewModel>();
     }
 
     public void ToggleSelection() {
@@ -99,7 +98,7 @@ public partial class ResultsPageViewModel : PageViewModel {
     public void EvaluateButton() {
         try {
             var anySelected = SelectedFiles.Any();
-            var results =Evaluator.Evaluate(QuestionVM.Question, anySelected ? FilterOnlySelected : null).ToList();
+            var results = Evaluator.Evaluate(QuestionVM.Question, anySelected ? FilterOnlySelected : null).ToList();
             
             foreach (var result in results) {
                 var collection = anySelected ? SelectedFiles : FilesResult!.OfType<FileResultViewModel>();

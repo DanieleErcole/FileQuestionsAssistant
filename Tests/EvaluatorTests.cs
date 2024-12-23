@@ -17,6 +17,11 @@ public class EvaluatorTests {
             return files.Select(_ => new Result(d, [], true));
         }
     }
+
+    private class MyFile : IFile {
+        public string Name => "";
+        public void Dispose() {}
+    }
     
     [SetUp]
     public void Setup() => _evaluator = new Evaluator();
@@ -46,6 +51,49 @@ public class EvaluatorTests {
         _evaluator.AddQuestion(q);
         _evaluator.RemoveQuestion(q);
         Assert.That(_evaluator.Files, Has.Count.EqualTo(0));
+    }
+    
+    [Test]
+    public void Evaluate_ReplaceQuestion() {
+        var q1 = new MyQuestion();
+        var q2 = new MyQuestion();
+        _evaluator.AddQuestion(q1);
+        _evaluator.ReplaceQuestion(q1, q2);
+        Assert.That(_evaluator.Questions.First(), Is.EqualTo(q2));
+    }
+    
+    [Test]
+    public void Evaluate_AddFiles() {
+        var q = new MyQuestion();
+        _evaluator.AddQuestion(q);
+        _evaluator.AddFiles(q, new MyFile(), new MyFile());
+        Assert.That(_evaluator.Files.First(), Has.Count.EqualTo(2));
+    }
+    
+    [Test]
+    public void Evaluate_RemoveFile() {
+        var q = new MyQuestion();
+        var f1 = new MyFile();
+        var f2 = new MyFile();
+        
+        _evaluator.AddQuestion(q);
+        _evaluator.AddFiles(q, f1, f2);
+        _evaluator.RemoveFile(q, f1);
+        
+        Assert.That(_evaluator.Files.First().First(), Is.EqualTo(f2));
+    }
+    
+    [Test]
+    public void Evaluate_SetFiles() {
+        var q = new MyQuestion();
+        IFile[] files1 = [new MyFile(), new MyFile()];
+        IFile[] files2 = [new MyFile(), new MyFile(), new MyFile()];
+        
+        _evaluator.AddQuestion(q);
+        _evaluator.AddFiles(q, files1);
+        _evaluator.SetFiles(q, files2);
+        
+        Assert.That(_evaluator.Files.First(), Has.Count.EqualTo(files2.Length));
     }
 
 }
