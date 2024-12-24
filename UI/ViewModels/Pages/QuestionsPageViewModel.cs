@@ -27,9 +27,8 @@ public class QuestionsPageViewModel : PageViewModel {
     
     public IterableCollectionView QuestionsSearch { get; }
 
-    public QuestionsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
-        Evaluator evaluator, IDialogService dialogService, IStorageProvider storageProvider, IViewModelFactory vmFactory) 
-        : base(navService, errorHandler, serializer, evaluator, storageProvider, vmFactory) {
+    public QuestionsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, IDialogService dialogService,
+        IStorageProvider storageProvider, IViewModelFactory vmFactory) : base(navService, errorHandler, serializer, evaluator, storageProvider, vmFactory) {
         _dialogService = dialogService;
         var loadedQuestions = Serializer.LoadTrackedQuestions() ?? [];
         

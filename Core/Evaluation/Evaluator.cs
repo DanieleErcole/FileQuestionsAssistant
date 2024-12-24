@@ -10,8 +10,6 @@ public class Evaluator {
     public IReadOnlyCollection<ObservableCollection<IFile>> Files => _filesByQuestion.Values;
     
     private readonly Dictionary<IQuestion, ObservableCollection<IFile>> _filesByQuestion = new();
-    
-    //TODO: implementare questo con le observablecollection, forse riesco a levarmi dai viewmodel delle domande con gli style trigger
 
     public IEnumerable<Result> Evaluate(IQuestion question, Func<IFile, int, bool>? fileFilter = null) {
         if (!_filesByQuestion.TryGetValue(question, out var files))
@@ -26,11 +24,15 @@ public class Evaluator {
 
     public ObservableCollection<IFile> QuestionFiles(IQuestion question) => _filesByQuestion[question];
 
-    public void AddQuestion(IQuestion question, params IFile[] files) => _filesByQuestion.Add(question, [..files]);
+    public void AddQuestion(IQuestion question, params IFile[] files) {
+        if (_filesByQuestion.ContainsKey(question))
+            throw new ArgumentException("Question already exists");
+        _filesByQuestion.Add(question, [..files]);
+    }
 
     public void RemoveQuestion(IQuestion question) {
         if (!_filesByQuestion.ContainsKey(question))
-            throw new ArgumentOutOfRangeException();
+            throw new ArgumentException("Question already exists");
         
         DisposeFiles(question);
         _filesByQuestion.Remove(question);
@@ -80,6 +82,11 @@ public class Evaluator {
     public void DisposeAllFiles() {
         foreach (var f in _filesByQuestion.Values.SelectMany(f => f))
             f.Dispose();
+    }
+
+    public void Clear() {
+        DisposeAllFiles();
+        _filesByQuestion.Clear();
     }
 
 }

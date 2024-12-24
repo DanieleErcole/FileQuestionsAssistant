@@ -14,9 +14,9 @@ namespace Tests;
 public class WordTests {
     
 #if OS_WINDOWS
-    private const string WordFileDirectory = @"C:\Users\User\Documents\Documenti e lavori\Lavori\C#\FileQuestionsAssistant\Tests\Files\";
+    internal const string WordFileDirectory = @"C:\Users\User\Documents\Documenti e lavori\Lavori\C#\FileQuestionsAssistant\Tests\Files\";
 #elif OS_LINUX
-    private const string WordFileDirectory = @"/home/daniele/RiderProjects/FileQuestionsAssistant/Tests/Files/";
+    internal const string WordFileDirectory = @"/home/daniele/RiderProjects/FileQuestionsAssistant/Tests/Files/";
 #endif
 
     private static readonly JsonSerializerOptions Options = new() { Converters = { new ColorConverter() } };

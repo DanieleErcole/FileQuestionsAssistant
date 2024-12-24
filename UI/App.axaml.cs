@@ -2,7 +2,6 @@ using System;
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Notifications;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
@@ -34,10 +33,8 @@ public class App : Application {
         .AddSingleton<QuestionEditPageViewModel>()
         .AddSingleton<ResultsPageViewModel>()
         .AddSingleton(NavigatorService.FromServiceProvider)
-        .AddSingleton<INotificationService, NotificationManager>(sp => new NotificationManager(new WindowNotificationManager(sp.Get<MainWindow>()) {
-            Position = NotificationPosition.BottomRight,
-            MaxItems = 3,
-        })).BuildServiceProvider();
+        .AddSingleton<INotificationService, NotificationManager>(sp => new NotificationManager(sp.Get<MainWindow>()))
+        .BuildServiceProvider();
     
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
 

@@ -1,12 +1,20 @@
 ﻿using Avalonia.Controls.Notifications;
+using UI.Views;
 
 namespace UI.Services;
 
-public class NotificationManager(WindowNotificationManager notificationManager) : INotificationService {
+public class NotificationManager(MainWindow mw) : INotificationService {
+
+    private readonly WindowNotificationManager _notificationManager = new(mw) {
+        Position = NotificationPosition.BottomRight,
+        MaxItems = 3,
+    };
+    
     public void ShowNotification(string title, string? message, NotificationType type = NotificationType.Information) =>
-        notificationManager.Show(new Notification {
+        _notificationManager.Show(new Notification {
             Title = title,
             Message = message,
             Type = type,
         });
+    
 }
