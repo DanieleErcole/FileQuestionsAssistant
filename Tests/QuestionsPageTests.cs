@@ -3,14 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Headless.NUnit;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using Avalonia.Threading;
 using Core.Evaluation;
 using Core.Questions.Word;
 using Tests.TestApp;
-using Tests.TestApp.Services;
-using Tests.Utils;
 using UI.Services;
 using UI.ViewModels.Pages;
 using UI.Views;
@@ -49,14 +46,32 @@ public class QuestionsPageTests {
         var window = App.Services.Get<MainWindow>();
         App.Services.Get<NavigatorService>().NavigateTo<QuestionsPageViewModel>();
         window.Show();
-        
-        foreach (var item in window.GetLogicalDescendants().OfType<ListBoxItem>()) {
-            var btn = item.GetLogicalDescendants().OfType<Button>().First();
-            btn.Command?.Execute(btn.DataContext);
+
+        while (ev.Questions.Count > 0) {
             Dispatcher.UIThread.RunJobs();
+            var btn = window.GetLogicalDescendants().OfType<ListBoxItem>().First().GetLogicalDescendants().OfType<Button>().First();
+            btn.Command?.Execute(btn.DataContext);
         }
         
+        Dispatcher.UIThread.RunJobs();
         Assert.That(App.Services.Get<Evaluator>().Questions, Has.Count.EqualTo(0));
+    }
+
+    [AvaloniaTest]
+    public void QuestionPageTest_ClickQuestion() {
+        var ev = App.Services.Get<Evaluator>();
+        ev.AddQuestion(NewFakeCreateStyleQuestion("Q1"));
+        
+        var window = App.Services.Get<MainWindow>();
+        App.Services.Get<NavigatorService>().NavigateTo<QuestionsPageViewModel>();
+        window.Show();
+        
+        var item = window.GetLogicalDescendants().OfType<ListBoxItem>().First();
+        item.Focus();
+        window.KeyPressQwerty(PhysicalKey.Space, RawInputModifiers.None);
+        Dispatcher.UIThread.RunJobs();
+        
+        Assert.That(window.GetLogicalDescendants().OfType<ResultsPageView>(), Is.Not.EqualTo(null));
     }
     
 }

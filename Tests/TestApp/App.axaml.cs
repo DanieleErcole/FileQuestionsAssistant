@@ -2,7 +2,6 @@ using Tests.TestApp.Services;
 using Avalonia;
 using Avalonia.Headless;
 using Avalonia.Markup.Xaml;
-using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Microsoft.Extensions.DependencyInjection;
