@@ -42,6 +42,20 @@ public class CreateStyleQuestion : AbstractQuestion {
             };
         }
     }
+
+    private static Dictionary<string, object?> StyleToDict(Style s) {
+        var rgb = s.StyleRunProperties?.Color?.Val?.Value?.HexStringToRgb();
+        var fs = int.Parse(s.StyleRunProperties?.FontSize?.Val?.Value ?? "-1");
+
+        return new Dictionary<string, object?> {
+            ["styleName"] = s.StyleName?.Val?.Value,
+            ["baseStyleName"] = s.BasedOn?.Val?.Value,
+            ["fontName"] = s.StyleRunProperties?.RunFonts?.Ascii?.Value,
+            ["fontSize"] = fs == -1 ? null : fs / 2,
+            ["color"] = rgb is null ? null : Color.FromArgb(rgb.Value.Item1, rgb.Value.Item2, rgb.Value.Item3),
+            ["alignment"] = s.StyleParagraphProperties?.Justification?.Val?.InnerText
+        };
+    }
     
     public override IEnumerable<Result> Evaluate(IEnumerable<IFile> files) => 
         files.OfType<WordFile>().Select(file => {
@@ -52,11 +66,9 @@ public class CreateStyleQuestion : AbstractQuestion {
             var alignment = Params.Get<string?>("alignment");
             
             var matchedStyle = file.Styles.FirstOrDefault(s => {
-                if (s.StyleRunProperties is null) return false;
+                if (s.StyleRunProperties is not {} styleProps) return false;
                 
-                var styleProps = s.StyleRunProperties;
                 var (r, g, b) = styleProps.Color?.Val?.Value?.HexStringToRgb() ?? (-1, -1, -1);
-                
                 return s.StyleName?.Val?.Value == Params.Get<string>("styleName") && 
                        (baseStyleName is null || s.BasedOn?.Val?.Value == baseStyleName) &&
                        (fontName is null || styleProps.RunFonts?.Ascii?.Value == fontName) &&
@@ -68,26 +80,12 @@ public class CreateStyleQuestion : AbstractQuestion {
             if (matchedStyle is not null) 
                 return new Result(Params, [], true);
             
-            var styleToDict = new Func<Style, Dictionary<string, object?>>(s => {
-                var rgb = s.StyleRunProperties?.Color?.Val?.Value?.HexStringToRgb();
-                var fs = int.Parse(s.StyleRunProperties?.FontSize?.Val?.Value ?? "-1");
-
-                return new Dictionary<string, object?> {
-                    ["styleName"] = s.StyleName?.Val?.Value,
-                    ["baseStyleName"] = s.BasedOn?.Val?.Value,
-                    ["fontName"] = s.StyleRunProperties?.RunFonts?.Ascii?.Value,
-                    ["fontSize"] = fs == -1 ? null : fs / 2,
-                    ["color"] = rgb is null ? null : Color.FromArgb(rgb.Value.Item1, rgb.Value.Item2, rgb.Value.Item3),
-                    ["alignment"] = s.StyleParagraphProperties?.Justification?.Val?.InnerText
-                };
-            });
-            
             WordFile ogFile = OgFile;
-            var ogStyles = ogFile.Styles.Select(styleToDict);
+            var ogStyles = ogFile.Styles.Select(StyleToDict);
 
             var diff = file.Styles
                 .Where(s => s.Type?.InnerText == "paragraph")
-                .Select(styleToDict)
+                .Select(StyleToDict)
                 .Where(s => ogStyles.All(x =>
                     s.Get<string>("styleName") != x.Get<string>("styleName") ||
                     s.Get<string?>("baseStyleName") != x.Get<string?>("baseStyleName") ||

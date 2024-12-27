@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using Core.Evaluation;
 using Core.FileHandling;
+using Core.Questions.Powerpoint;
 using Core.Questions.Word;
 
 namespace Core.Questions;
@@ -21,6 +22,7 @@ public static class ParamsExtensions {
 //TODO: add other question types
 [JsonDerivedType(typeof(CreateStyleQuestion), typeDiscriminator: 0)]
 [JsonDerivedType(typeof(ParagraphApplyStyleQuestion), typeDiscriminator: 1)]
+[JsonDerivedType(typeof(ImageInsertQuestion), typeDiscriminator: 2)]
 public abstract class AbstractQuestion : IQuestion {
     
     public string Name { get; }

@@ -11,6 +11,7 @@ public class PowerpointFile : IFile {
     private readonly PresentationPart _mainDoc;
     
     public string Name { get; }
+    public Presentation Presentation => _mainDoc.Presentation;
 
     public IEnumerable<Picture> Pictures {
         get {
