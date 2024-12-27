@@ -11,8 +11,8 @@ using UI.ViewModels.Factories;
 namespace UI.ViewModels.Pages;
 
 public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
-    Evaluator evaluator, IStorageProvider sProvider, IViewModelFactory vmFactory) 
-    : QuestionDataPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sProvider, vmFactory) {
+    Evaluator evaluator, IStorageService sService, IViewModelFactory vmFactory) 
+    : QuestionDataPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sService, vmFactory) {
    
     private static int QuestionToIndex(AbstractQuestion? question = null) {
         return question switch {

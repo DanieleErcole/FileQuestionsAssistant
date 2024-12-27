@@ -1,14 +1,16 @@
 ﻿using System.Text.Json;
+using Core.Evaluation;
 using Core.Questions;
 using Core.Utils;
+using Core.Utils.Errors;
 using UI.Services;
 
 namespace Tests.TestApp.Services;
 
-public class TestSerializer : ISerializerService {
-    
-    internal readonly List<string> JsonQuestions = [];
-    
+public class TestSerializer(Evaluator evaluator) : ISerializerService {
+
+    private List<string> _jsonQuestions = [];
+
     private readonly JsonSerializerOptions _options = new() {
         IncludeFields = true,
         WriteIndented = true,
@@ -16,23 +18,49 @@ public class TestSerializer : ISerializerService {
     };
 
     public Task UpdateTrackingFile() {
+        _jsonQuestions = evaluator.Questions.Select(q => q.Path).ToList();
         return Task.CompletedTask;
     }
 
-    public AbstractQuestion[]? LoadTrackedQuestions() =>JsonQuestions
-            .Select(json => AbstractQuestion.DeserializeWithPath(JsonQuestions.IndexOf(json).ToString(), json, _options))
-            .Where(q => q is not null)
-            .ToArray()!;
-
-    public Task Save(AbstractQuestion question) {
-        var json = JsonSerializer.Serialize(question, _options);
-        if (JsonQuestions.Contains(json))
-            JsonQuestions[JsonQuestions.IndexOf(json)] = json;
-        else JsonQuestions.Add(json);
-        return Task.CompletedTask;
+    public AbstractQuestion[]? LoadTrackedQuestions() {
+        try {
+            return _jsonQuestions.Select(p => {
+                if (string.IsNullOrWhiteSpace(p)) return null;
+                try {
+                    using var stream = File.OpenRead(p);
+                    using var streamReader = new StreamReader(stream);
+                    return AbstractQuestion.DeserializeWithPath(p, streamReader.ReadToEnd(), _options);
+                } catch (Exception e) {
+                    Console.WriteLine(e);
+                    return null;
+                }
+            }).Where(q => q is not null).ToArray()!;
+        } catch (Exception e) {
+            Console.WriteLine(e);
+            return null;
+        }
     }
 
-    public Task<AbstractQuestion?> Load(string path) =>
-        Task.FromResult(AbstractQuestion.DeserializeWithPath(path, JsonQuestions[int.Parse(path)], _options));
+    public async Task Save(AbstractQuestion question) {
+        try {
+            await using var stream = File.Open(question.Path, FileMode.Create);
+            await using var streamWriter = new StreamWriter(stream);
+            await streamWriter.WriteLineAsync(JsonSerializer.Serialize(question, _options));
+        } catch (Exception e) {
+            throw new FileError(question.Path, e);
+        }
+    }
+
+    public async Task<AbstractQuestion?> Load(string path) {
+        try {
+            await using var stream = File.OpenRead(path);
+            using var streamReader = new StreamReader(stream);
+            return AbstractQuestion.DeserializeWithPath(path, await streamReader.ReadToEndAsync(), _options);
+        } catch (JsonException _) {
+            throw new InvalidFileFormat(path);
+        } catch (Exception e) {
+            throw new FileError(path, e);
+        }
+    }
     
 }

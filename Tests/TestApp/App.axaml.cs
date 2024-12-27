@@ -30,11 +30,12 @@ public class App : Application {
     
     public static readonly IServiceProvider Services = new ServiceCollection()
         .AddTransient<IViewModelFactory, QuestionViewModelFactory>()
-        .AddTransient<IErrorHandlerService, TestErrorHandler>()
+        .AddSingleton<IErrorHandlerService, TestErrorHandler>()
         .AddTransient<IDialogService, TestDialogService>()
         .AddTransient<INotificationService, TestNotificationManager>()
         .AddSingleton<ISerializerService, TestSerializer>()
         .AddSingleton<IStorageProvider>(services => services.Get<MainWindow>().StorageProvider)
+        .AddSingleton<IStorageService, TestStorageService>()
         .AddSingleton<Evaluator>()
         .AddSingleton<MainWindow>()
         .AddSingleton<QuestionsPageViewModel>()

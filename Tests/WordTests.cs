@@ -12,12 +12,6 @@ namespace Tests;
 
 [TestFixture]
 public class WordTests {
-    
-#if OS_WINDOWS
-    internal const string WordFileDirectory = @"C:\Users\User\Documents\Documenti e lavori\Lavori\C#\FileQuestionsAssistant\Tests\Files\";
-#elif OS_LINUX
-    internal const string WordFileDirectory = @"/home/daniele/RiderProjects/FileQuestionsAssistant/Tests/Files/";
-#endif
 
     private static readonly JsonSerializerOptions Options = new() { Converters = { new ColorConverter() } };
     private static FileStream _wordFile;
@@ -33,8 +27,8 @@ public class WordTests {
 
     [OneTimeSetUp]
     public void SetupBeforeAll() {
-        _wordFile = File.Open(WordFileDirectory + "Document1.docx", FileMode.Open);
-        _ogFile = File.ReadAllBytes(WordFileDirectory + "OgFile.docx");
+        _wordFile = File.Open(TestConstants.TestFilesDirectory + "Document1.docx", FileMode.Open);
+        _ogFile = File.ReadAllBytes(TestConstants.TestFilesDirectory + "OgFile.docx");
     }
 
     [OneTimeTearDown]
@@ -49,7 +43,7 @@ public class WordTests {
 
     [Test]
     public void File_InvalidFormat() => Assert.Throws<InvalidFileFormat>(() => {
-        var f = File.Open(WordFileDirectory + "InvalidFormat.docx", FileMode.Open);
+        var f = File.Open(TestConstants.TestFilesDirectory + "InvalidFormat.docx", FileMode.Open);
         _ = new WordFile(f.Name, f);
     });
 

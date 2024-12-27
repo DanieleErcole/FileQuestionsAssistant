@@ -34,8 +34,8 @@ public partial class ResultsPageViewModel : PageViewModel {
     private readonly Dictionary<IFile, Result> _results = [];
 
     public ResultsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, 
-        IStorageProvider storageProvider, INotificationService notificationManager, IViewModelFactory vmFactory) 
-        : base(navService, errorHandler, serializer, evaluator, storageProvider, vmFactory) {
+        IStorageService storageService, INotificationService notificationManager, IViewModelFactory vmFactory) 
+        : base(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
         _notification = notificationManager;
         FileSelected = (_, _) => {
             CheckBoxState = SelectedFiles.Count() switch {

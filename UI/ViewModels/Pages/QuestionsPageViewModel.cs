@@ -28,7 +28,7 @@ public class QuestionsPageViewModel : PageViewModel {
     public IterableCollectionView QuestionsSearch { get; }
 
     public QuestionsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, IDialogService dialogService,
-        IStorageProvider storageProvider, IViewModelFactory vmFactory) : base(navService, errorHandler, serializer, evaluator, storageProvider, vmFactory) {
+        IStorageService storageService, IViewModelFactory vmFactory) : base(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
         _dialogService = dialogService;
         var loadedQuestions = Serializer.LoadTrackedQuestions() ?? [];
         
@@ -46,7 +46,7 @@ public class QuestionsPageViewModel : PageViewModel {
     public override void OnNavigatedTo(object? param = null) => QuestionsSearch.Refresh();
     
     public async Task OpenQuestion() {
-        var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+        var files = await StorageService.GetFilesAsync(new FilePickerOpenOptions {
             AllowMultiple = false,
             FileTypeFilter = [QuestionSerializer.FileType]
         });

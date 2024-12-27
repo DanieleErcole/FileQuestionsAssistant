@@ -16,9 +16,9 @@ public abstract partial class QuestionDataPageViewModel(
     IErrorHandlerService errorHandler,
     ISerializerService serializer,
     Evaluator evaluator,
-    IStorageProvider storageProvider,
+    IStorageService storageService,
     IViewModelFactory vmFactory)
-    : PageViewModel(navService, errorHandler, serializer, evaluator, storageProvider, vmFactory) {
+    : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
     
     private int _selectedIndex;
     public int SelectedIndex {

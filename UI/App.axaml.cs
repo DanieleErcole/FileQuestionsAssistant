@@ -22,10 +22,11 @@ public class App : Application {
     
     private readonly IServiceProvider _services = new ServiceCollection()
         .AddTransient<IViewModelFactory, QuestionViewModelFactory>()
-        .AddSingleton<IErrorHandlerService, ErrorHandler>()
+        .AddTransient<IErrorHandlerService, ErrorHandler>()
         .AddSingleton<IDialogService, DialogService>()
         .AddTransient<ISerializerService, QuestionSerializer>()
         .AddSingleton<IStorageProvider>(services => services.Get<MainWindow>().StorageProvider)
+        .AddTransient<IStorageService, StorageService>()
         .AddSingleton<Evaluator>()
         .AddSingleton<MainWindow>()
         .AddSingleton<QuestionsPageViewModel>()

@@ -8,6 +8,8 @@ using Avalonia.Threading;
 using Core.Evaluation;
 using Core.Questions.Word;
 using Tests.TestApp;
+using Tests.TestApp.Services;
+using Tests.Utils;
 using UI.Services;
 using UI.ViewModels.Pages;
 using UI.Views;
@@ -19,13 +21,17 @@ namespace Tests;
 public class QuestionsPageTests {
 
     private static CreateStyleQuestion NewFakeCreateStyleQuestion(string name) {
-        var ogFile = File.ReadAllBytes(WordTests.WordFileDirectory + "OgFile.docx");
+        var ogFile = File.ReadAllBytes(TestConstants.TestFilesDirectory + "OgFile.docx");
         return new CreateStyleQuestion("", name, "Description", ogFile, "styleName", 
             "baseStyleName", "fontName", 12, Color.Blue, "alignment");
     }
-
+    
     [SetUp]
-    public void ClearQuestions() => App.Services.Get<Evaluator>().Clear();
+    public void ClearQuestions() {
+        App.Services.Get<Evaluator>().Clear();
+        var errHandler = App.Services.Get<IErrorHandlerService>() as TestErrorHandler;
+        errHandler!.Errors.Clear();
+    }
 
     [AvaloniaTest]
     public void QuestionsPageTest_QuestionList() {
@@ -72,6 +78,39 @@ public class QuestionsPageTests {
         Dispatcher.UIThread.RunJobs();
         
         Assert.That(window.GetLogicalDescendants().OfType<ResultsPageView>(), Is.Not.EqualTo(null));
+    }
+    
+    [AvaloniaTest]
+    public void QuestionPageTest_OpenQuestionWrong() {
+        var storage = App.Services.Get<IStorageService>() as TestStorageService;
+        storage!.IsCorrectFile = false;
+        
+        var window = App.Services.Get<MainWindow>();
+        App.Services.Get<NavigatorService>().NavigateTo<QuestionsPageViewModel>();
+        window.Show();
+        
+        var btn = window.GetLogicalDescendants().OfType<Button>().First(b => b.Classes.Contains("big-button"));
+        btn.Command?.Execute(btn.DataContext);
+        Dispatcher.UIThread.RunJobs();
+        
+        var errHandler = App.Services.Get<IErrorHandlerService>() as TestErrorHandler;
+        Assert.That(errHandler!.Errors, Has.Count.EqualTo(1));
+    }
+    
+    [AvaloniaTest]
+    public void QuestionPageTest_OpenQuestionCorrect() {
+        var storage = App.Services.Get<IStorageService>() as TestStorageService;
+        storage!.IsCorrectFile = true;
+        
+        var window = App.Services.Get<MainWindow>();
+        App.Services.Get<NavigatorService>().NavigateTo<QuestionsPageViewModel>();
+        window.Show();
+        
+        var btn = window.GetLogicalDescendants().OfType<Button>().First(b => b.Classes.Contains("big-button"));
+        btn.Command?.Execute(btn.DataContext);
+        Dispatcher.UIThread.RunJobs();
+        
+        Assert.That(App.Services.Get<Evaluator>().Questions, Has.Count.EqualTo(1));
     }
     
 }
