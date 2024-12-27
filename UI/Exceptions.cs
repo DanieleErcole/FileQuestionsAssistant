@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.FileHandling;
 using Core.Utils.Errors;
 using ApplicationException = Core.Utils.Errors.ApplicationException;
 
@@ -34,3 +35,4 @@ public class UIException(string title, string desc, Exception? inner = null) : E
 }
 
 public class UnableToOpenQuestion() : UIException(Lang.Lang.UnableToOpenQuestion, Lang.Lang.UnableToOpenQuestionDesc);
+public class FileTooLarge() : UIException(Lang.Lang.FileTooLargeTitle, $"{Lang.Lang.FileTooLargeDesc} {IFile.MaxBytesFileSize}");

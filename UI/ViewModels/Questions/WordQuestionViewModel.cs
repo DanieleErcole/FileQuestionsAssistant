@@ -12,20 +12,22 @@ using UI.Utils;
 
 namespace UI.ViewModels.Questions;
 
-public abstract class WordQuestionViewModel(AbstractQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageProvider storageProvider) 
-    : SingleQuestionViewModel(q, evaluator, errorHandler, storageProvider) {
+public abstract class WordQuestionViewModel(AbstractQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageService storageService) 
+    : SingleQuestionViewModel(q, evaluator, errorHandler, storageService) {
     
     public override string Icon => "/Assets/docx.svg";
     
     public override async Task AddFiles() {
         try {
-            var pickerFiles =  await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+            var pickerFiles =  await StorageService.GetFilesAsync(new FilePickerOpenOptions {
                 AllowMultiple = true,
                 FileTypeFilter = [FileTypesHelper.Word]
             });
             
             IFile[] files = await Task.WhenAll(pickerFiles
                 .Select(async f => {
+                    if ((await f.GetBasicPropertiesAsync()).Size > IFile.MaxBytesFileSize)
+                        throw new FileTooLarge();
                     try {
                         return new WordFile(f.Name, await f.OpenReadAsync());
                     } catch (Exception e) { throw new FileError(f.Name, e); }

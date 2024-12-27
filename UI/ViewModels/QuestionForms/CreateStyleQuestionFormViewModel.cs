@@ -53,8 +53,8 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
 
     #endregion
 
-    public CreateStyleQuestionFormViewModel(IErrorHandlerService errorHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) 
-        : base(errorHandler, storageProvider, q) {
+    public CreateStyleQuestionFormViewModel(IErrorHandlerService errorHandler, IStorageService storageService, AbstractQuestion? q = null) 
+        : base(errorHandler, storageService, q) {
         if (q is null) return;
         
         Filename = "Original file";
@@ -62,7 +62,7 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
         Color = q.Params.Get<Color?>("color") is { } color ? Avalonia.Media.Color.FromArgb(color.A, color.R, color.G, color.B) : null;
         FontSize = q.Params.Get<int?>("fontSize") is {} n ? n.ToString() : 0.ToString();
         
-        using WordFile file = _ogFile;
+        using WordFile file = OgFile;
         BasedOnStyles = new ObservableCollection<string>(
             file.Styles
                 .Where(s => s.Type?.InnerText == "paragraph" && s.StyleName is not null)
@@ -77,7 +77,7 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
     public override async Task UploadOgFile() {
         try {
             await base.UploadOgFile();
-            using WordFile file = _ogFile!;
+            using WordFile file = OgFile!;
             
             BasedOnStyles = new ObservableCollection<string>(
                 file.Styles
@@ -91,13 +91,13 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
     }
 
     public override AbstractQuestion? CreateQuestion() {
-        if (string.IsNullOrWhiteSpace(Name) || _ogFile is null || string.IsNullOrWhiteSpace(Path) || string.IsNullOrWhiteSpace(StyleName)) {
+        if (string.IsNullOrWhiteSpace(Name) || OgFile is null || string.IsNullOrWhiteSpace(Path) || string.IsNullOrWhiteSpace(StyleName)) {
             ErrorMsg = Lang.Lang.MissingRequiredFields;
             return null;
         }
 
         Color? c = Color is { } color ? System.Drawing.Color.FromArgb((int) color.ToUInt32()) : null;
-        return new CreateStyleQuestion(Path, Name, Desc, _ogFile, StyleName, BasedOnSelected, 
+        return new CreateStyleQuestion(Path, Name, Desc, OgFile, StyleName, BasedOnSelected, 
             FontNamesSelected, _fontSize == 0 ? null : _fontSize, c, AlignmentSelected);
     }
     

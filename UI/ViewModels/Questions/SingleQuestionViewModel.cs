@@ -7,11 +7,11 @@ using UI.Services;
 
 namespace UI.ViewModels.Questions;
 
-public abstract class SingleQuestionViewModel(AbstractQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageProvider storageProvider) : ViewModelBase {
+public abstract class SingleQuestionViewModel(AbstractQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageService storageService) : ViewModelBase {
     
     protected readonly Evaluator Evaluator = evaluator;
     protected readonly IErrorHandlerService ErrorHandler = errorHandler;
-    protected readonly IStorageProvider StorageProvider = storageProvider;
+    protected readonly IStorageService StorageService = storageService;
 
     public AbstractQuestion Question { get; } = q;
     public string Name => Question.Name;

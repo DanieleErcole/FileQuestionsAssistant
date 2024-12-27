@@ -1,11 +1,9 @@
 using System;
-using System.Data.SqlTypes;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Core.Evaluation;
+using Core.FileHandling;
 using Core.Questions;
 using UI.Services;
 using UI.Utils;
@@ -17,7 +15,7 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     public static readonly Func<double, string> IntFormat = input => Math.Max(0, (int) input).ToString();
 
     protected readonly IErrorHandlerService ErrorHandler;
-    protected readonly IStorageProvider StorageProvider;
+    private readonly IStorageService _storageService;
     
     private string? _errorMsg;
     public string? ErrorMsg {
@@ -29,7 +27,7 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     }
     public bool IsError => ErrorMsg is not null;
 
-    protected byte[]? _ogFile;
+    protected byte[]? OgFile;
     
     [ObservableProperty]
     private string _name;
@@ -43,12 +41,12 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     [ObservableProperty]
     private string? _path;
 
-    public QuestionFormBaseVM(IErrorHandlerService errorHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) {
+    protected QuestionFormBaseVM(IErrorHandlerService errorHandler, IStorageService storageService, AbstractQuestion? q = null) {
         ErrorHandler = errorHandler;
-        StorageProvider = storageProvider;
+        _storageService = storageService;
         if (q is null) return;
         
-        _ogFile = q.OgFile;
+        OgFile = q.OgFile;
         Name = q.Name;
         Desc = q.Desc;
         Path = q.Path;
@@ -59,7 +57,7 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     }
 
     public virtual async Task UploadOgFile() {
-        var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+        var files = await _storageService.GetFilesAsync(new FilePickerOpenOptions {
             AllowMultiple = false,
             FileTypeFilter = [FileTypesHelper.Word],
         });
@@ -68,16 +66,19 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
             return;
         
         using var f = files[0];
+        if ((await f.GetBasicPropertiesAsync()).Size > IFile.MaxBytesFileSize)
+            throw new FileTooLarge();
+        
         await using var stream = await f.OpenReadAsync();
         using var memStream = new MemoryStream();
         await stream.CopyToAsync(memStream);
             
-        _ogFile = memStream.ToArray();
+        OgFile = memStream.ToArray();
         Filename = f.Name;
     }
 
     public async Task LoadLocation() {
-        using var file = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions {
+        using var file = await _storageService.SaveFileAsync(new FilePickerSaveOptions {
             FileTypeChoices = [QuestionSerializer.FileType],
         });
         if (file is null) return;

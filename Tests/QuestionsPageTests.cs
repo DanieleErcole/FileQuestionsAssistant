@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Headless.NUnit;
 using Avalonia.Input;
@@ -20,10 +19,9 @@ namespace Tests;
 [TestFixture]
 public class QuestionsPageTests {
 
-    private static CreateStyleQuestion NewFakeCreateStyleQuestion(string name) {
+    private static ParagraphApplyStyleQuestion NewFakeParagraphQuestion(string name) {
         var ogFile = File.ReadAllBytes(TestConstants.TestFilesDirectory + "OgFile.docx");
-        return new CreateStyleQuestion("", name, "Description", ogFile, "styleName", 
-            "baseStyleName", "fontName", 12, Color.Blue, "alignment");
+        return new ParagraphApplyStyleQuestion("", name, "Description", ogFile, "styleName");
     }
     
     [SetUp]
@@ -36,8 +34,8 @@ public class QuestionsPageTests {
     [AvaloniaTest]
     public void QuestionsPageTest_QuestionList() {
         var ev = App.Services.Get<Evaluator>();
-        ev.AddQuestion(NewFakeCreateStyleQuestion("Q1"));
-        ev.AddQuestion(NewFakeCreateStyleQuestion("Q2"));
+        ev.AddQuestion(NewFakeParagraphQuestion("Q1"));
+        ev.AddQuestion(NewFakeParagraphQuestion("Q2"));
         
         App.Services.Get<NavigatorService>().NavigateTo<QuestionsPageViewModel>();
         Assert.That(App.Services.Get<QuestionsPageViewModel>().QuestionsSearch, Has.Count.EqualTo(ev.Questions.Count));
@@ -46,8 +44,8 @@ public class QuestionsPageTests {
     [AvaloniaTest]
     public void QuestionsPageTest_RemoveQuestion() {
         var ev = App.Services.Get<Evaluator>();
-        ev.AddQuestion(NewFakeCreateStyleQuestion("Q1"));
-        ev.AddQuestion(NewFakeCreateStyleQuestion("Q2"));
+        ev.AddQuestion(NewFakeParagraphQuestion("Q1"));
+        ev.AddQuestion(NewFakeParagraphQuestion("Q2"));
         
         var window = App.Services.Get<MainWindow>();
         App.Services.Get<NavigatorService>().NavigateTo<QuestionsPageViewModel>();
@@ -66,7 +64,7 @@ public class QuestionsPageTests {
     [AvaloniaTest]
     public void QuestionPageTest_ClickQuestion() {
         var ev = App.Services.Get<Evaluator>();
-        ev.AddQuestion(NewFakeCreateStyleQuestion("Q1"));
+        ev.AddQuestion(NewFakeParagraphQuestion("Q1"));
         
         var window = App.Services.Get<MainWindow>();
         App.Services.Get<NavigatorService>().NavigateTo<QuestionsPageViewModel>();

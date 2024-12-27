@@ -173,4 +173,10 @@
     <data name="NoFilesToEvaluateTitle" xml:space="preserve">
         <value>Nessun file da valutare</value>
     </data>
+    <data name="FileTooLargeTitle" xml:space="preserve">
+        <value>Impossibile caricare il file</value>
+    </data>
+    <data name="FileTooLargeDesc" xml:space="preserve">
+        <value>Le dimensioni del file devono essere inferiori a</value>
+    </data>
 </root>

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.Questions;
 using Core.Questions.Word;
@@ -11,8 +9,8 @@ using UI.Services;
 
 namespace UI.ViewModels.Questions;
 
-public class CreateStyleQuestionVM(CreateStyleQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageProvider storageProvider) 
-    : WordQuestionViewModel(q, evaluator, errorHandler, storageProvider) {
+public class CreateStyleQuestionVM(CreateStyleQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageService storageService) 
+    : WordQuestionViewModel(q, evaluator, errorHandler, storageService) {
     
     public override string Description => Question.Desc ?? Lang.Lang.CreateStyleQuestionDesc;
 

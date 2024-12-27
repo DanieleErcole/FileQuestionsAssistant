@@ -180,4 +180,10 @@
     <data name="NoFilesToEvaluateTitle" xml:space="preserve">
         <value>No file to evaluate</value>
     </data>
+    <data name="FileTooLargeTitle" xml:space="preserve">
+        <value>Unable to load file</value>
+    </data>
+    <data name="FileTooLargeDesc" xml:space="preserve">
+        <value>File size must be less than</value>
+    </data>
 </root>

@@ -18,12 +18,12 @@ public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormBase
     
     public string? StyleNameSelected { get; set; }
     
-    public ParagraphApplyStyleQuestionFormViewModel(IErrorHandlerService errHandler, IStorageProvider storageProvider, AbstractQuestion? q = null) 
-        : base(errHandler, storageProvider, q) {
+    public ParagraphApplyStyleQuestionFormViewModel(IErrorHandlerService errHandler, IStorageService storageService, AbstractQuestion? q = null) 
+        : base(errHandler, storageService, q) {
         if (q is null) return;
         
         Filename = "Original file";
-        using WordFile file = _ogFile!;
+        using WordFile file = OgFile!;
         StyleNames = new ObservableCollection<string>(
             file.Styles
                 .Where(s => s.Type?.InnerText == "paragraph" && s.StyleName is not null)
@@ -35,8 +35,8 @@ public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormBase
     public override async Task UploadOgFile() {
         try {
             await base.UploadOgFile();
-            if (_ogFile is null) return;
-            using WordFile file = _ogFile;
+            if (OgFile is null) return;
+            using WordFile file = OgFile;
             
             StyleNames = new ObservableCollection<string>(
                 file.Styles
@@ -49,11 +49,11 @@ public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormBase
     }
     
     public override AbstractQuestion? CreateQuestion() {
-        if (string.IsNullOrWhiteSpace(Name) || _ogFile is null || string.IsNullOrWhiteSpace(Path) || string.IsNullOrWhiteSpace(StyleNameSelected)) {
+        if (string.IsNullOrWhiteSpace(Name) || OgFile is null || string.IsNullOrWhiteSpace(Path) || string.IsNullOrWhiteSpace(StyleNameSelected)) {
             ErrorMsg = Lang.Lang.MissingRequiredFields;
             return null;
         }
-        return new ParagraphApplyStyleQuestion(Path, Name, Desc, _ogFile, StyleNameSelected);
+        return new ParagraphApplyStyleQuestion(Path, Name, Desc, OgFile, StyleNameSelected);
     }
     
 }

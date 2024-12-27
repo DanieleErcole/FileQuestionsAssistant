@@ -231,6 +231,24 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File size must be less than.
+        /// </summary>
+        public static string FileTooLargeDesc {
+            get {
+                return ResourceManager.GetString("FileTooLargeDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to load file.
+        /// </summary>
+        public static string FileTooLargeTitle {
+            get {
+                return ResourceManager.GetString("FileTooLargeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Font name.
         /// </summary>
         public static string FontNameLabel {
