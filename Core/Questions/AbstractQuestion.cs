@@ -4,6 +4,7 @@ using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions.Powerpoint;
 using Core.Questions.Word;
+using Core.Utils;
 
 namespace Core.Questions;
 
@@ -27,7 +28,7 @@ public abstract class AbstractQuestion : IQuestion {
     
     public string Name { get; }
     public string? Desc { get; }
-    public byte[] OgFile { get; }
+    public MemoryFile OgFile { get; }
 
     [JsonInclude]
     public readonly Dictionary<string, object?> Params = new();
@@ -42,7 +43,7 @@ public abstract class AbstractQuestion : IQuestion {
     }
     
     [JsonConstructor]
-    public AbstractQuestion(string name, string desc, byte[] ogFile, Dictionary<string, object?> Params) {
+    public AbstractQuestion(string name, string desc, MemoryFile ogFile, Dictionary<string, object?> Params) {
         Name = name;
         Desc = desc;
         OgFile = ogFile;
@@ -52,7 +53,7 @@ public abstract class AbstractQuestion : IQuestion {
         DeserializeParams();
     }
 
-    protected AbstractQuestion(string path, string name, string? desc, byte[] ogFile) {
+    protected AbstractQuestion(string path, string name, string? desc, MemoryFile ogFile) {
         Name = name;
         Desc = desc;
         Path = path;

@@ -10,7 +10,7 @@ namespace Core.Questions.Word;
 
 public class CreateStyleQuestion : AbstractQuestion {
 
-    public CreateStyleQuestion(string path, string name, string? desc, byte[] ogFile, string styleName, string? baseStyleName = null, 
+    public CreateStyleQuestion(string path, string name, string? desc, MemoryFile ogFile, string styleName, string? baseStyleName = null, 
         string? fontName = null, int? fontSize = null, Color? color = null, string? alignment = null) : base(path, name, desc, ogFile) {
         Params.Add("styleName", styleName);
         Params.Add("baseStyleName", baseStyleName);
@@ -21,7 +21,7 @@ public class CreateStyleQuestion : AbstractQuestion {
     }
     
     [JsonConstructor]
-    public CreateStyleQuestion(string name, string desc, byte[] ogFile, Dictionary<string, object?> Params) 
+    public CreateStyleQuestion(string name, string desc, MemoryFile ogFile, Dictionary<string, object?> Params) 
         : base(name, desc, ogFile, Params) {}
     
     protected override void DeserializeParams() {

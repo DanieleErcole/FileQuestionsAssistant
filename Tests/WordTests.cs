@@ -4,6 +4,7 @@ using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions;
 using Core.Questions.Word;
+using Core.Utils;
 using Core.Utils.Errors;
 using Tests.Utils;
 using ColorConverter = Core.Utils.ColorConverter;
@@ -15,7 +16,7 @@ public class WordTests {
 
     private static readonly JsonSerializerOptions Options = new() { Converters = { new ColorConverter() } };
     private static FileStream _wordFile;
-    private static byte[] _ogFile;
+    private static MemoryFile _ogFile;
 
     private Evaluator _evaluator;
 
@@ -28,7 +29,7 @@ public class WordTests {
     [OneTimeSetUp]
     public void SetupBeforeAll() {
         _wordFile = File.Open(TestConstants.TestFilesDirectory + "Document1.docx", FileMode.Open);
-        _ogFile = File.ReadAllBytes(TestConstants.TestFilesDirectory + "OgFile.docx");
+        _ogFile = new MemoryFile("OgFile.docx", File.ReadAllBytes(TestConstants.TestFilesDirectory + "OgFile.docx"));
     }
 
     [OneTimeTearDown]

@@ -1,6 +1,6 @@
-﻿using System.Text.Json;
-using Core.Evaluation;
+﻿using Core.Evaluation;
 using Core.FileHandling;
+using Core.Questions.Powerpoint;
 using Core.Utils;
 using Core.Utils.Errors;
 using Tests.Utils;
@@ -9,10 +9,9 @@ namespace Tests;
 
 [TestFixture]
 public class PowerpointTests {
-
-    private static readonly JsonSerializerOptions Options = new() { Converters = { new ColorConverter() } };
+    
     private static FileStream _powerpointFile;
-    private static byte[] _ogFile;
+    private static MemoryFile _ogFile;
 
     private Evaluator _evaluator;
 
@@ -25,7 +24,7 @@ public class PowerpointTests {
     [OneTimeSetUp]
     public void SetupBeforeAll() {
         _powerpointFile = File.Open(TestConstants.TestFilesDirectory + "Presentation1.pptx", FileMode.Open);
-        _ogFile = File.ReadAllBytes(TestConstants.TestFilesDirectory + "OgPresentation.pptx");
+        _ogFile = new MemoryFile("OgPresentation.pptx", File.ReadAllBytes(TestConstants.TestFilesDirectory + "OgPresentation.pptx"));
     }
 
     [OneTimeTearDown]
@@ -43,5 +42,16 @@ public class PowerpointTests {
         var f = File.Open(TestConstants.TestFilesDirectory + "InvalidFormat.pptx", FileMode.Open);
         _ = new PowerpointFile(f.Name, f);
     });
+
+    [TestCase("test1.jpg", 9.26, 0.68, 23.78, 13.38, Origin.TopLeftCorner, Origin.TopLeftCorner, true)]
+    public void ImageInsertQuestion_TestCase(string imageName, double? x, double? y, double? width, double? height, Origin? vO, Origin? hO, bool expectedRes) {
+        var image = new MemoryFile(imageName, File.ReadAllBytes(TestConstants.TestFilesDirectory + imageName));
+        var q = new ImageInsertQuestion("", "Name", "Description", _ogFile, image, x, y, width, height, vO, hO);
+        
+        _evaluator.AddQuestion(q, new PowerpointFile(_powerpointFile.Name, _powerpointFile));
+        var res = _evaluator.Evaluate(q).First();
+        ResHelper.LogResult(res);
+        Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));
+    }
 
 }

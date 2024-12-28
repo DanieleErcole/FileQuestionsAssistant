@@ -6,6 +6,7 @@ using Avalonia.LogicalTree;
 using Avalonia.Threading;
 using Core.Evaluation;
 using Core.Questions.Word;
+using Core.Utils;
 using Tests.TestApp;
 using Tests.TestApp.Services;
 using Tests.Utils;
@@ -20,7 +21,7 @@ namespace Tests;
 public class QuestionsPageTests {
 
     private static ParagraphApplyStyleQuestion NewFakeParagraphQuestion(string name) {
-        var ogFile = File.ReadAllBytes(TestConstants.TestFilesDirectory + "OgFile.docx");
+        var ogFile = new MemoryFile("OgFile.docx", File.ReadAllBytes(TestConstants.TestFilesDirectory + "OgFile.docx"));
         return new ParagraphApplyStyleQuestion("", name, "Description", ogFile, "styleName");
     }
     

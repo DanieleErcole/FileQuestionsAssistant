@@ -1,4 +1,5 @@
-﻿using Core.Utils.Errors;
+﻿using Core.Utils;
+using Core.Utils.Errors;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using ApplicationException = Core.Utils.Errors.ApplicationException;
@@ -53,9 +54,9 @@ public class WordFile : IFile {
             throw new FileError(Name, e);
         }
     }
-
-    public static implicit operator WordFile(byte[] raw) {
-        return new WordFile("in_memory", new MemoryStream(raw));
+    
+    public static implicit operator WordFile(MemoryFile inMem) {
+        return new WordFile(inMem.Name, new MemoryStream(inMem.Data));
     }
 
     public void Dispose() {
