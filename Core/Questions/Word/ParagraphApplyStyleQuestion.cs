@@ -2,18 +2,19 @@
 using System.Text.Json.Serialization;
 using Core.Evaluation;
 using Core.FileHandling;
+using Core.Utils;
 using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Core.Questions.Word;
 
 public class ParagraphApplyStyleQuestion : AbstractQuestion {
     
-    public ParagraphApplyStyleQuestion(string path, string name, string? desc, byte[] ogFile, string styleName) : base(path, name, desc, ogFile) {
+    public ParagraphApplyStyleQuestion(string path, string name, string? desc, MemoryFile ogFile, string styleName) : base(path, name, desc, ogFile) {
         Params.Add("styleName", styleName);
     }
     
     [JsonConstructor]
-    public ParagraphApplyStyleQuestion(string name, string desc, string path, byte[] ogFile, Dictionary<string, object?> Params) 
+    public ParagraphApplyStyleQuestion(string name, string desc, string path, MemoryFile ogFile, Dictionary<string, object?> Params) 
         : base(name, desc, ogFile, Params) {}
 
     protected override void DeserializeParams() {

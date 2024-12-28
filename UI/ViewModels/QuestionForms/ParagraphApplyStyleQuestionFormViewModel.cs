@@ -22,7 +22,6 @@ public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormBase
         : base(errHandler, storageService, q) {
         if (q is null) return;
         
-        Filename = "Original file";
         using WordFile file = OgFile!;
         StyleNames = new ObservableCollection<string>(
             file.Styles
@@ -53,6 +52,8 @@ public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormBase
             ErrorMsg = Lang.Lang.MissingRequiredFields;
             return null;
         }
+
+        Desc = string.IsNullOrWhiteSpace(Desc) ? null : Desc;
         return new ParagraphApplyStyleQuestion(Path, Name, Desc, OgFile, StyleNameSelected);
     }
     

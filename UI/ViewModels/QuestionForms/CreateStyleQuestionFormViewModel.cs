@@ -57,12 +57,11 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
         : base(errorHandler, storageService, q) {
         if (q is null) return;
         
-        Filename = "Original file";
         StyleName = q.Params.Get<string>("styleName");
         Color = q.Params.Get<Color?>("color") is { } color ? Avalonia.Media.Color.FromArgb(color.A, color.R, color.G, color.B) : null;
         FontSize = q.Params.Get<int?>("fontSize") is {} n ? n.ToString() : 0.ToString();
         
-        using WordFile file = OgFile;
+        using WordFile file = OgFile!;
         BasedOnStyles = new ObservableCollection<string>(
             file.Styles
                 .Where(s => s.Type?.InnerText == "paragraph" && s.StyleName is not null)
@@ -96,6 +95,7 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
             return null;
         }
 
+        Desc = string.IsNullOrWhiteSpace(Desc) ? null : Desc;
         Color? c = Color is { } color ? System.Drawing.Color.FromArgb((int) color.ToUInt32()) : null;
         return new CreateStyleQuestion(Path, Name, Desc, OgFile, StyleName, BasedOnSelected, 
             FontNamesSelected, _fontSize == 0 ? null : _fontSize, c, AlignmentSelected);

@@ -33,7 +33,7 @@
                             Command="{Binding UploadOgFile}"/>
                     <TextBlock VerticalAlignment="Center"
                                Margin="10, 0, 0, 0"
-                               Text="{Binding Filename}" />
+                               Text="{Binding OgFile.Name, FallbackValue={x:Static lang:Lang.NoFilesSelected}}" />
                 </StackPanel>
             </StackPanel>
         </Panel>

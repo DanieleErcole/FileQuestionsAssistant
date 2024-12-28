@@ -5,8 +5,11 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Core.FileHandling;
 using Core.Questions;
+using Core.Utils;
+using DocumentFormat.OpenXml.Office2013.PowerPoint.Roaming;
 using UI.Services;
 using UI.Utils;
+using Value = DocumentFormat.OpenXml.Office2019.Excel.RichData.Value;
 
 namespace UI.ViewModels.QuestionForms;
 
@@ -27,16 +30,14 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     }
     public bool IsError => ErrorMsg is not null;
 
-    protected byte[]? OgFile;
-    
+    [ObservableProperty] 
+    private MemoryFile? _ogFile;
+
     [ObservableProperty]
     private string _name;
     
     [ObservableProperty]
     private string? _desc;
-    
-    [ObservableProperty]
-    private string _filename = Lang.Lang.NoFilesSelected;
     
     [ObservableProperty]
     private string? _path;
@@ -72,9 +73,8 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
         await using var stream = await f.OpenReadAsync();
         using var memStream = new MemoryStream();
         await stream.CopyToAsync(memStream);
-            
-        OgFile = memStream.ToArray();
-        Filename = f.Name;
+        
+        OgFile = new MemoryFile(f.Name, memStream.ToArray());
     }
 
     public async Task LoadLocation() {
