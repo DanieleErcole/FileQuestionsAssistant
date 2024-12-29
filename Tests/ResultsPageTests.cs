@@ -4,6 +4,7 @@ using Avalonia.Headless.NUnit;
 using Avalonia.LogicalTree;
 using Avalonia.Threading;
 using Core.Evaluation;
+using Core.FileHandling;
 using Core.Questions.Word;
 using Core.Utils;
 using Tests.TestApp;
@@ -11,6 +12,7 @@ using Tests.TestApp.Services;
 using Tests.Utils;
 using UI.Services;
 using UI.ViewModels.Pages;
+using UI.ViewModels.Questions;
 using UI.Views;
 
 namespace Tests;
@@ -84,6 +86,37 @@ public class ResultsPageTests {
         Dispatcher.UIThread.RunJobs();
         
         Assert.That(App.Services.Get<Evaluator>().Files.First(), Has.Count.EqualTo(0));
+    }
+    
+    [AvaloniaTest]
+    public void ResultsPageTest_EvaluateCorrect() {
+        AddFiles(true);
+        
+        var btn = App.Services.Get<MainWindow>().GetLogicalDescendants().OfType<Button>().First(b => b.Name == "EvaluateBtn");
+        btn.Command?.Execute(btn.DataContext);
+        Dispatcher.UIThread.RunJobs();
+
+        var fileRes = App.Services.Get<ResultsPageViewModel>().FilesResult!.OfType<FileResultViewModel>().First();
+        Assert.That(fileRes.Result!.IsSuccessful, Is.True);
+    }
+    
+    [AvaloniaTest]
+    public void ResultsPageTest_EvaluateWrong() {
+        var ev = App.Services.Get<Evaluator>();
+        var page = App.Services.Get<ResultsPageViewModel>();
+
+        using var stream = File.Open(TestConstants.TestFilesDirectory + "OgFile.docx", FileMode.Open);
+        using var wrongFile = new WordFile(stream.Name, stream);
+        
+        App.Services.Get<Evaluator>().AddFiles(ev.Questions.First(), wrongFile);
+        page.FilesResult!.Refresh();
+        
+        var btn = App.Services.Get<MainWindow>().GetLogicalDescendants().OfType<Button>().First(b => b.Name == "EvaluateBtn");
+        btn.Command?.Execute(btn.DataContext);
+        Dispatcher.UIThread.RunJobs();
+
+        var fileRes = App.Services.Get<ResultsPageViewModel>().FilesResult!.OfType<FileResultViewModel>().First();
+        Assert.That(fileRes.Result!.IsSuccessful, Is.False);
     }
     
 }
