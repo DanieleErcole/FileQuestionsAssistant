@@ -35,7 +35,7 @@ public partial class FileResultViewModel : ViewModelBase {
     public bool IsSuccess => Result is { IsSuccessful: true };
     public bool IsFailed => Result is { IsSuccessful: false };
     public bool IsExpandable => Result is not null && Result.EachParamsWithRes().Any();
-    public List<Node> FileParams => Result is not null ?  _vm
+    public List<Node> FileParams => Result is not null ? _vm
         .GetLocalizedResultParams(Result)
         .Select(d => {
             var first = (d.First().Key, d.First().Value.Item1, d.First().Value.Item2);

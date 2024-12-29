@@ -15,8 +15,7 @@ public enum Origin {
 public class ImageInsertQuestion : AbstractQuestion {
 
     public ImageInsertQuestion(string path, string name, string? desc, MemoryFile ogFile, MemoryFile image, double? x, double? y, double? width, double? height, 
-        Origin? vO, Origin? hO) 
-        : base(path, name, desc, ogFile) {
+        Origin? vO, Origin? hO) : base(path, name, desc, ogFile) {
 
         if ((hO is not null && x is null) || (vO is not null && y is null))
             throw new ArgumentException("Origin must be set when setting horizontal or vertical position and vice versa");

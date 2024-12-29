@@ -20,9 +20,9 @@ public partial class ResultsPageViewModel : PageViewModel {
     private readonly INotificationService _notification;
     
     [ObservableProperty]
-    private SingleQuestionViewModel _questionVM;
+    private SingleQuestionViewModel? _questionVM;
     [ObservableProperty]
-    private Dictionary<string, object?> _correctParams;
+    private Dictionary<string, object?> _correctParams = [];
     [ObservableProperty]
     private IterableCollectionView? _filesResult;
     [ObservableProperty]
@@ -34,8 +34,7 @@ public partial class ResultsPageViewModel : PageViewModel {
     private readonly Dictionary<IFile, Result> _results = [];
 
     public ResultsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, 
-        IStorageService storageService, INotificationService notificationManager, IViewModelFactory vmFactory) 
-        : base(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
+        IStorageService storageService, INotificationService notificationManager, IViewModelFactory vmFactory) : base(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
         _notification = notificationManager;
         FileSelected = (_, _) => {
             CheckBoxState = SelectedFiles.Count() switch {
@@ -57,12 +56,14 @@ public partial class ResultsPageViewModel : PageViewModel {
         
         var files = Evaluator.QuestionFiles(QuestionVM.Question);
         FilesResult = new IterableCollectionView(files.Select(f => 
-                new FileResultViewModel(QuestionVM, f, _results.GetValueOrDefault(f), FileSelected)
+            new FileResultViewModel(QuestionVM, f, _results.GetValueOrDefault(f), FileSelected)
         ), _ => true);
     }
     
     public void ToQuestionPage() {
         _results.Clear();
+        QuestionVM = null;
+        CorrectParams.Clear();
         NavigatorService.NavigateTo<QuestionsPageViewModel>();
     }
 
@@ -80,7 +81,7 @@ public partial class ResultsPageViewModel : PageViewModel {
 
     public void RemoveSelection() {
         foreach (var item in SelectedFiles) {
-            Evaluator.RemoveFile(QuestionVM.Question, item.File);
+            Evaluator.RemoveFile(QuestionVM!.Question, item.File);
 
             if (item.Result is not null)
                 _results.Remove(item.File);
@@ -90,7 +91,7 @@ public partial class ResultsPageViewModel : PageViewModel {
     }
 
     public async Task AddFiles() {
-        await QuestionVM.AddFiles();
+        await QuestionVM!.AddFiles();
         FilesResult?.Refresh();
         RefreshCheckBoxState();
     }
@@ -98,7 +99,7 @@ public partial class ResultsPageViewModel : PageViewModel {
     public void EvaluateButton() {
         try {
             var anySelected = SelectedFiles.Any();
-            var results = Evaluator.Evaluate(QuestionVM.Question, anySelected ? FilterOnlySelected : null).ToList();
+            var results = Evaluator.Evaluate(QuestionVM!.Question, anySelected ? FilterOnlySelected : null).ToList();
             
             foreach (var result in results) {
                 var collection = anySelected ? SelectedFiles : FilesResult!.OfType<FileResultViewModel>();
@@ -106,9 +107,7 @@ public partial class ResultsPageViewModel : PageViewModel {
                 if (!_results.TryAdd(file, result))
                     _results[file] = result;
             }
-            
-            _notification.ShowNotification(Lang.Lang.EvaluationSuccessTitle,
-                Lang.Lang.EvaluationSuccessDesc, NotificationType.Success);
+            _notification.ShowNotification(Lang.Lang.EvaluationSuccessTitle, Lang.Lang.EvaluationSuccessDesc, NotificationType.Success);
             
             FilesResult?.Refresh();
             RefreshCheckBoxState();

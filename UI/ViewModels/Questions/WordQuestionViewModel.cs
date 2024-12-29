@@ -9,6 +9,7 @@ using Core.Utils.Errors;
 using Microsoft.Extensions.DependencyInjection;
 using UI.Services;
 using UI.Utils;
+using ApplicationException = Core.Utils.Errors.ApplicationException;
 
 namespace UI.ViewModels.Questions;
 
@@ -29,8 +30,9 @@ public abstract class WordQuestionViewModel(AbstractQuestion q, Evaluator evalua
                     if ((await f.GetBasicPropertiesAsync()).Size > IFile.MaxBytesFileSize)
                         throw new FileTooLarge();
                     try {
-                        return new WordFile(f.Name, await f.OpenReadAsync());
-                    } catch (Exception e) { throw new FileError(f.Name, e); }
+                        await using var stream = await f.OpenReadAsync();
+                        return new WordFile(f.Name, stream);
+                    } catch (Exception e) when (e is not ApplicationException) { throw new FileError(f.Name, e); }
                 })
                 .ToArray()
             );

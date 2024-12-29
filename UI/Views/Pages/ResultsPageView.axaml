@@ -25,10 +25,10 @@
             <TextBlock Margin="20, 10, 0, 20"
                        HorizontalAlignment="Left"
                        Theme="{StaticResource SubtitleTextBlockStyle}"
-                       Text="{Binding QuestionVM.Name}"/>
+                       Text="{Binding QuestionVM.Name, FallbackValue={x:Null}}"/>
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Margin="20, 0, 20, 20">
-            <TextBlock Margin="0, 0, 0, 20" Text="{Binding QuestionVM.Description}"/>
+            <TextBlock Margin="0, 0, 0, 20" Text="{Binding QuestionVM.Description, FallbackValue={x:Null}}"/>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl ItemsSource="{Binding CorrectParams}">
                     <ItemsControl.Styles>
@@ -52,7 +52,8 @@
         </StackPanel>
         <Panel DockPanel.Dock="Bottom" 
                Margin="0, 20, 20, 20">
-            <Button Content="{x:Static lang:Lang.AddFilesBtnText}" 
+            <Button Name="AddFilesBtn"
+                    Content="{x:Static lang:Lang.AddFilesBtnText}" 
                     HorizontalAlignment="Right" 
                     Command="{Binding AddFiles}"/>
         </Panel>
@@ -71,13 +72,15 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                <Button VerticalAlignment="Center"
+                <Button Name="DeleteBtn" 
+                        VerticalAlignment="Center"
                         Command="{Binding RemoveSelection}"
                         Theme="{StaticResource TransparentButton}"
                         ToolTip.Tip="{x:Static lang:Lang.ToolTipRemoveSelection}">
                     <controls:SymbolIcon Symbol="Delete" FontSize="20"></controls:SymbolIcon>
                 </Button>
-                <Button VerticalAlignment="Center"
+                <Button Name="EvaluateBtn"
+                        VerticalAlignment="Center"
                         Margin="5, 0, 0, 0"
                         Command="{Binding EvaluateButton}"
                         Theme="{StaticResource TransparentButton}"
