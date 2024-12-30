@@ -22,7 +22,7 @@ public class TestSerializer(Evaluator evaluator) : ISerializerService {
         return Task.CompletedTask;
     }
 
-    public AbstractQuestion[]? LoadTrackedQuestions() {
+    public List<AbstractQuestion?>? LoadTrackedQuestions() {
         try {
             return _jsonQuestions.Select(p => {
                 if (string.IsNullOrWhiteSpace(p)) return null;
@@ -34,7 +34,7 @@ public class TestSerializer(Evaluator evaluator) : ISerializerService {
                     Console.WriteLine(e);
                     return null;
                 }
-            }).Where(q => q is not null).ToArray()!;
+            }).Where(q => q is not null).ToList();
         } catch (Exception e) {
             Console.WriteLine(e);
             return null;

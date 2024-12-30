@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -40,27 +41,29 @@ public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
         }
     }
 
-    public AbstractQuestion[]? LoadTrackedQuestions() {
+    public List<AbstractQuestion?>? LoadTrackedQuestions() {
         if (!Directory.Exists(TrackedDirectoryPath))
             Directory.CreateDirectory(TrackedDirectoryPath);
         if (!File.Exists(TrackedFilePath)) {
-            File.Create(TrackedFilePath);
+            File.Create(TrackedFilePath).Dispose();
             return null;
         }
         
         try {
-            var paths = File.ReadAllLines(TrackedFilePath);
-            return paths.Select(p => {
-                if (string.IsNullOrWhiteSpace(p)) return null;
-                try {
-                    using var stream = File.OpenRead(p);
-                    using var streamReader = new StreamReader(stream);
-                    return AbstractQuestion.DeserializeWithPath(p, streamReader.ReadToEnd(), _options);
-                } catch (Exception e) {
-                    Console.WriteLine(e);
-                    return null;
-                }
-            }).Where(q => q is not null).ToArray()!;
+            var uniquePaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            return File.ReadAllLines(TrackedFilePath)
+                .Where(p => !string.IsNullOrWhiteSpace(p) && uniquePaths.Add(p))
+                .Select(p => {
+                    if (string.IsNullOrWhiteSpace(p)) return null;
+                    try {
+                        using var stream = File.OpenRead(p);
+                        using var streamReader = new StreamReader(stream);
+                        return AbstractQuestion.DeserializeWithPath(p, streamReader.ReadToEnd(), _options);
+                    } catch (Exception e) {
+                        Console.WriteLine(e);
+                        return null;
+                    }
+                }).Where(q => q is not null).ToList();
         } catch (Exception e) {
             Console.WriteLine(e);
             return null;

@@ -24,7 +24,7 @@ public abstract partial class QuestionDataPageViewModel(
     public int SelectedIndex {
         get => _selectedIndex;
         set {
-            _selectedIndex = value;
+            SetProperty(ref _selectedIndex, value);
             Content = ViewModelFactory.NewQuestionFormVm(SelectedIndex);
         }
     }

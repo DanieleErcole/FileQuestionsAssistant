@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia.Controls.Notifications;
 using Microsoft.Extensions.DependencyInjection;
+using UI.Utils;
 
 namespace UI.Services;
 

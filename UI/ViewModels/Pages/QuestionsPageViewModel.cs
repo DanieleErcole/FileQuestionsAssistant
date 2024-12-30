@@ -7,6 +7,7 @@ using Core.Evaluation;
 using Core.Utils.Errors;
 using FluentAvalonia.UI.Data;
 using UI.Services;
+using UI.Utils;
 using UI.ViewModels.Factories;
 using UI.ViewModels.Questions;
 
@@ -32,8 +33,8 @@ public class QuestionsPageViewModel : PageViewModel {
         _dialogService = dialogService;
         var loadedQuestions = Serializer.LoadTrackedQuestions() ?? [];
         
-        foreach (var q in loadedQuestions)
-            Evaluator.AddQuestion(q);
+        foreach (var q in loadedQuestions.Where(q => q is not null))
+            Evaluator.AddQuestion(q!);
         
         QuestionsSearch = new IterableCollectionView(Evaluator.Questions.Select(vmFactory.NewQuestionVm), o => {
             var q = (o as SingleQuestionViewModel)!;

@@ -3,7 +3,7 @@ using Core.FileHandling;
 using Core.Utils.Errors;
 using ApplicationException = Core.Utils.Errors.ApplicationException;
 
-namespace UI;
+namespace UI.Utils;
 
 public class UIException(string title, string desc, Exception? inner = null) : Exception(null, inner) {
 

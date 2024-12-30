@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
@@ -43,6 +44,10 @@ public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandle
 
             await Serializer.Save(q);
             Evaluator.SetFiles(_question);
+            
+            // I changed the question path, I need to check if I overwrote another question
+            if (_question.Path != q.Path && Evaluator.Questions.FirstOrDefault(e => e.Path == q.Path) is {} overwritten)
+                Evaluator.RemoveQuestion(overwritten);
             Evaluator.ReplaceQuestion(_question, q);
             
             await Serializer.UpdateTrackingFile();

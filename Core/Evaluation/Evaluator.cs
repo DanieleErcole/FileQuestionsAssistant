@@ -40,7 +40,8 @@ public class Evaluator {
 
     public void ReplaceQuestion(IQuestion oldQuestion, IQuestion newQuestion) {
         var files = _filesByQuestion[oldQuestion];
-        _filesByQuestion.Remove(oldQuestion);
+        if (!_filesByQuestion.Remove(oldQuestion)) 
+            throw new ArgumentException("Old question does not exist");
         AddQuestion(newQuestion, files.ToArray());
     }
 

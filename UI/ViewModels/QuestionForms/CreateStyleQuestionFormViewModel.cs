@@ -76,7 +76,8 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
     public override async Task UploadOgFile() {
         try {
             await base.UploadOgFile();
-            using WordFile file = OgFile!;
+            if (OgFile is null) return;
+            using WordFile file = OgFile;
             
             BasedOnStyles = new ObservableCollection<string>(
                 file.Styles
