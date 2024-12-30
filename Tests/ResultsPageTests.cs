@@ -22,7 +22,7 @@ public class ResultsPageTests {
     
     private static List<ContentPresenter> AddFiles(bool isCorrect) {
         var storage = App.Services.Get<IStorageService>() as TestStorageService;
-        storage!.IsCorrectFile = isCorrect;
+        storage!.IsCorrect = isCorrect;
 
         var window = App.Services.Get<MainWindow>();
         var btn = window.GetLogicalDescendants().OfType<Button>().First(b => b.Name == "AddFilesBtn");

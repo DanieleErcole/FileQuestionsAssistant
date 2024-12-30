@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
@@ -19,6 +20,8 @@ public static class ServicesExtensions {
 }
 
 public class App : Application {
+    
+    public static readonly string AppDataDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FileQuestionAssistant");
     
     private readonly IServiceProvider _services = new ServiceCollection()
         .AddTransient<IViewModelFactory, QuestionViewModelFactory>()

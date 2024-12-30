@@ -4,6 +4,7 @@
 **/.idea/shelf/*
 **/.idea/dictionaries
 **/.idea/httpRequests/
+**/Files/FileToSave.json
 
 # Sensitive or high-churn files
 **/.idea/**/dataSources/

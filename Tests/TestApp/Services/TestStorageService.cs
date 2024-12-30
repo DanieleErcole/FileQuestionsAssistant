@@ -13,14 +13,26 @@ public class TestStorageService(IStorageProvider storageProvider) : IStorageServ
         Question
     }
 
-    public bool IsCorrectFile { get; set; }
+    public bool? IsCorrect { get; set; } = false;
     public DocumentType DocumentTypeToSelect { get; set; } = DocumentType.Question;
 
     private string GetFilePath() => DocumentTypeToSelect switch {
-        DocumentType.Word => IsCorrectFile ? "Document1.docx" : "InvalidFormat.docx",
-        DocumentType.Excel => IsCorrectFile ? "Spreadsheet1.xlsx" : "InvalidFormat.xlsx",
-        DocumentType.Powerpoint => IsCorrectFile ? "Presentation1.pptx" : "InvalidFormat.pptx",
-        DocumentType.Question => IsCorrectFile ? "Domanda1.json" : "DomandaSbagliata.json"
+        DocumentType.Word => IsCorrect switch {
+            true => "Document1.docx",
+            false => "InvalidFormat.docx",
+            _ => "OgFile.docx"
+        },
+        DocumentType.Excel => IsCorrect switch {
+            true => "Spreadsheet1.xlsx",
+            false => "InvalidFormat.xlsx",
+            _ => "OgSpreadsheet.xlsx"
+        },
+        DocumentType.Powerpoint => IsCorrect switch {
+            true => "Presentation1.pptx",
+            false => "InvalidFormat.pptx",
+            _ => "OgPresentation.pptx"
+        },
+        DocumentType.Question => (bool) IsCorrect! ? "Domanda1.json" : "DomandaSbagliata.json"
     };
 
     public async Task<IReadOnlyList<IStorageFile>> GetFilesAsync(FilePickerOpenOptions? options = null) {

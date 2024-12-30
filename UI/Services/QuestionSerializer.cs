@@ -8,14 +8,13 @@ using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.Questions;
 using Core.Utils.Errors;
+using Serilog;
 using ColorConverter = Core.Utils.ColorConverter;
 
 namespace UI.Services;
 
 public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
-
-    private static readonly string TrackedDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FileQuestionAssistant");
-    private static string TrackedFilePath => Path.Combine(TrackedDirectoryPath, TrackedFileName);
+    private static string TrackedFilePath => Path.Combine(App.AppDataDirectoryPath, TrackedFileName);
     private const string TrackedFileName = "TrackedQuestions.txt";
     
     public static FilePickerFileType FileType { get; } = new("JSON file") {
@@ -42,8 +41,8 @@ public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
     }
 
     public List<AbstractQuestion?>? LoadTrackedQuestions() {
-        if (!Directory.Exists(TrackedDirectoryPath))
-            Directory.CreateDirectory(TrackedDirectoryPath);
+        if (!Directory.Exists(App.AppDataDirectoryPath))
+            Directory.CreateDirectory(App.AppDataDirectoryPath);
         if (!File.Exists(TrackedFilePath)) {
             File.Create(TrackedFilePath).Dispose();
             return null;
@@ -60,12 +59,12 @@ public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
                         using var streamReader = new StreamReader(stream);
                         return AbstractQuestion.DeserializeWithPath(p, streamReader.ReadToEnd(), _options);
                     } catch (Exception e) {
-                        Console.WriteLine(e);
+                        Log.Error(e, "Error while loading tracked questions");
                         return null;
                     }
                 }).Where(q => q is not null).ToList();
         } catch (Exception e) {
-            Console.WriteLine(e);
+            Log.Error(e, "Error while loading tracked questions");
             return null;
         }
     }

@@ -9,16 +9,8 @@ using UI.ViewModels.QuestionForms;
 
 namespace UI.ViewModels.Pages;
 
-public abstract partial class QuestionDataPageViewModel(
-    string title,
-    string btnText,
-    NavigatorService navService,
-    IErrorHandlerService errorHandler,
-    ISerializerService serializer,
-    Evaluator evaluator,
-    IStorageService storageService,
-    IViewModelFactory vmFactory)
-    : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
+public abstract partial class QuestionDataPageViewModel(string title, string btnText, NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
+    Evaluator evaluator, IStorageService storageService, IViewModelFactory vmFactory) : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
     
     private int _selectedIndex;
     public int SelectedIndex {
