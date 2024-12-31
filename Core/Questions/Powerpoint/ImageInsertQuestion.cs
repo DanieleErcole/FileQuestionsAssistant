@@ -14,19 +14,21 @@ public enum Origin {
 
 public class ImageInsertQuestion : AbstractQuestion {
 
-    public ImageInsertQuestion(string path, string name, string? desc, MemoryFile ogFile, MemoryFile image, double? x, double? y, double? width, double? height, 
+    public ImageInsertQuestion(string path, string name, string? desc, MemoryFile ogFile, double? x, double? y, double? width, double? height, 
         Origin? vO, Origin? hO) : base(path, name, desc, ogFile) {
 
         if ((hO is not null && x is null) || (vO is not null && y is null))
             throw new ArgumentException("Origin must be set when setting horizontal or vertical position and vice versa");
         
-        Params.Add("image", image);
+        if (x is null && y is null && width is null && height is null)
+            throw new ArgumentException("Parameters must be set");
+        
         Params.Add("x", x);
         Params.Add("y", y);
         Params.Add("width", width);
         Params.Add("height", height);
-        Params.Add("hOrigin", hO);
-        Params.Add("vOrigin", vO);
+        Params.Add("hOrigin", hO ?? Origin.TopLeftCorner);
+        Params.Add("vOrigin", vO ?? Origin.TopLeftCorner);
     }
     
     [JsonConstructor]
@@ -37,7 +39,6 @@ public class ImageInsertQuestion : AbstractQuestion {
         foreach (var (k, v) in Params) {
             var jsonEl = (JsonElement?) v;
             Params[k] = k switch {
-                "image" => jsonEl?.Deserialize<MemoryFile>(),
                 "x" => jsonEl?.Deserialize<double?>(),
                 "y" => jsonEl?.Deserialize<double?>(),
                 "width" => jsonEl?.Deserialize<double?>(),
@@ -51,7 +52,6 @@ public class ImageInsertQuestion : AbstractQuestion {
     private static Dictionary<string, object?> PictureToDict(PowerpointFile file, Picture p) {
         var shapeProps = p.ShapeProperties;
         return new Dictionary<string, object?> {
-            ["image"] = file.GetImageFromPic(p),
             ["x"] = EMUsHelper.ToCentimeters(shapeProps?.Transform2D?.Offset?.X?.Value),
             ["y"] = EMUsHelper.ToCentimeters(shapeProps?.Transform2D?.Offset?.Y?.Value),
             ["width"] = EMUsHelper.ToCentimeters(shapeProps?.Transform2D?.Extents?.Cx?.Value),
@@ -60,8 +60,7 @@ public class ImageInsertQuestion : AbstractQuestion {
             ["hOrigin"] = Origin.TopLeftCorner
         };
     }
-
-    //TODO: Non va è impossibile che un'immagine sia uguale a quella messa in una presentazione, trovare un modo di decidere su cosa devo confrontarle
+    
     public override IEnumerable<Result> Evaluate(IEnumerable<IFile> files) =>
         files.OfType<PowerpointFile>().Select(file => {
             var x = Params.Get<double?>("x");
@@ -82,10 +81,8 @@ public class ImageInsertQuestion : AbstractQuestion {
                     x += slideWidth / 2;
                 if (Params.Get<Origin?>("vOrigin") is Origin.SlideCenter)
                     y += slideHeight / 2;
-
-                var fileImg = file.GetImageFromPic(picture);
-                return Params.Get<MemoryFile>("image")!.Equals(fileImg) &&
-                       (x is null || fileX.DoubleEquals(x)) &&
+                
+                return (x is null || fileX.DoubleEquals(x)) &&
                        (y is null || fileY.DoubleEquals(y)) &&
                        (height is null || fileWidth.DoubleEquals(width)) &&
                        (height is null || fileHeight.DoubleEquals(height));
@@ -99,16 +96,14 @@ public class ImageInsertQuestion : AbstractQuestion {
 
             var diff = file.Pictures
                 .Select(p => PictureToDict(file, p))
-                .Where(p => ogPictures.All(i => {
-                    var img = p.Get<MemoryFile>("image");
-                    return (img is not null && img.Equals(i.Get<MemoryFile>("image"))) ||
-                           !p.Get<double?>("x").DoubleEquals(i.Get<double?>("x")) ||
-                           !p.Get<double?>("y").DoubleEquals(i.Get<double?>("y")) ||
-                           !p.Get<double?>("width").DoubleEquals(i.Get<double?>("width")) ||
-                           !p.Get<double?>("height").DoubleEquals(i.Get<double?>("height")) ||
-                           p.Get<Origin?>("hOrigin") != i.Get<Origin?>("hOrigin") ||
-                           p.Get<Origin?>("vOrigin") != i.Get<Origin?>("vOrigin");
-                }));
+                .Where(p => ogPictures.All(i => 
+                    !p.Get<double?>("x").DoubleEquals(i.Get<double?>("x")) ||
+                    !p.Get<double?>("y").DoubleEquals(i.Get<double?>("y")) ||
+                    !p.Get<double?>("width").DoubleEquals(i.Get<double?>("width")) ||
+                    !p.Get<double?>("height").DoubleEquals(i.Get<double?>("height")) ||
+                    p.Get<Origin?>("hOrigin") != i.Get<Origin?>("hOrigin") ||
+                    p.Get<Origin?>("vOrigin") != i.Get<Origin?>("vOrigin")
+                ));
             return new Result(Params, diff.ToList(), false);
         });
 

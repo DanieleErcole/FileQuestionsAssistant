@@ -43,12 +43,14 @@ public class PowerpointTests {
         _ = new PowerpointFile(f.Name, f);
     });
 
-    [TestCase("test1.jpg", 11.8, 0.85, 21.52, 12.11, Origin.TopLeftCorner, Origin.TopLeftCorner, true)]
-    public void ImageInsertQuestion_TestCase(string imageName, double? x, double? y, double? width, double? height, Origin? vO, Origin? hO, bool expectedRes) {
-        var image = new MemoryFile(imageName, File.ReadAllBytes(TestConstants.TestFilesDirectory + imageName));
-        var q = new ImageInsertQuestion("", "Name", "Description", _ogFile, image, x, y, width, height, vO, hO);
-        
+    [TestCase(11.8, 0.85, 21.52, 12.11, Origin.TopLeftCorner, Origin.TopLeftCorner, true)]
+    [TestCase(11.8, null, 21.52, 12.11, null, Origin.TopLeftCorner, true)]
+    [TestCase(11.8, 0.85, 21.52, 12.11, Origin.SlideCenter, Origin.SlideCenter, false)]
+    [TestCase(11.8, null, 21.52, 12.11, null, Origin.SlideCenter, false)]
+    public void ImageInsertQuestion_TestCase(double? x, double? y, double? width, double? height, Origin? vO, Origin? hO, bool expectedRes) {
+        var q = new ImageInsertQuestion("", "Name", "Description", _ogFile, x, y, width, height, vO, hO);
         _evaluator.AddQuestion(q, new PowerpointFile(_powerpointFile.Name, _powerpointFile));
+        
         var res = _evaluator.Evaluate(q).First();
         ResHelper.LogResult(res);
         Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));

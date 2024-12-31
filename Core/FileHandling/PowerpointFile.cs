@@ -35,19 +35,6 @@ public class PowerpointFile : IFile {
             throw new FileError(Name, e);
         }
     }
-
-    public MemoryFile? GetImageFromPic(Picture picture) {
-        if (picture.BlipFill?.Blip?.Embed?.Value is not { } relId) 
-            return null;
-        if (Presentation.PresentationPart?.SlideParts.Select(s => s.GetPartById(relId)).FirstOrDefault() is not ImagePart imagePart) 
-            return null;
-        
-        using var imageStream = imagePart.GetStream();
-        using var memoryStream = new MemoryStream();
-        
-        imageStream.CopyTo(memoryStream);
-        return new MemoryFile(Uri.UnescapeDataString(imagePart.Uri.OriginalString), memoryStream.ToArray());
-    }
     
     public static implicit operator PowerpointFile(MemoryFile inMem) {
         return new PowerpointFile(inMem.Name, new MemoryStream(inMem.Data));
