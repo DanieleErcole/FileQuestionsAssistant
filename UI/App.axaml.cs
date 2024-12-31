@@ -8,6 +8,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using UI.Services;
 using UI.ViewModels.Factories;
 using UI.ViewModels.Pages;
@@ -50,7 +51,11 @@ public class App : Application {
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            desktop.ShutdownRequested += (_, _) => _services.Get<Evaluator>().DisposeAllFiles();
+            desktop.ShutdownRequested += (_, _) => {
+                Log.Information("Disposing all evaluator files...");
+                _services.Get<Evaluator>().DisposeAllFiles();
+                Log.Information("Shutting down the application...");
+            };
             desktop.MainWindow = _services.Get<MainWindow>();
             
             _services.Get<NavigatorService>().NavigateTo<QuestionsPageViewModel>();

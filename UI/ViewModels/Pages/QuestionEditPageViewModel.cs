@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.Questions;
 using Core.Questions.Powerpoint;
@@ -41,7 +40,7 @@ public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandle
         try {
             var q = Content?.CreateQuestion();
             if (q is null) return;
-
+            
             await Serializer.Save(q);
             Evaluator.SetFiles(_question);
             

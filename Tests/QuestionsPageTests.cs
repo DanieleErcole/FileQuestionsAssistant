@@ -4,11 +4,9 @@ using Avalonia.Headless.NUnit;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.Threading;
-using Avalonia.VisualTree;
 using Core.Evaluation;
 using Core.Questions.Word;
 using Core.Utils;
-using FluentAvalonia.UI.Controls;
 using Tests.TestApp;
 using Tests.TestApp.Services;
 using Tests.Utils;
@@ -59,6 +57,8 @@ public class QuestionsPageTests {
         storage!.DocumentTypeToSelect = TestStorageService.DocumentType.Question;
         
         App.Services.Get<Evaluator>().Clear();
+        App.Services.Get<ISerializerService>().UpdateTrackingFile();
+        
         var errHandler = App.Services.Get<IErrorHandlerService>() as TestErrorHandler;
         errHandler!.Errors.Clear();
         

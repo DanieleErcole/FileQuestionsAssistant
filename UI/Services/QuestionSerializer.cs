@@ -59,12 +59,12 @@ public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
                         using var streamReader = new StreamReader(stream);
                         return AbstractQuestion.DeserializeWithPath(p, streamReader.ReadToEnd(), _options);
                     } catch (Exception e) {
-                        Log.Error(e, "Error while loading tracked questions");
+                        Log.Error(e, "Handled error: error while loading tracked questions");
                         return null;
                     }
                 }).Where(q => q is not null).ToList();
         } catch (Exception e) {
-            Log.Error(e, "Error while loading tracked questions");
+            Log.Error(e, "Handled error: error while loading tracked questions");
             return null;
         }
     }
