@@ -32,14 +32,10 @@
                    Text="{x:Static lang:Lang.ChooseQuestionTypeText}"/>
         <ComboBox DockPanel.Dock="Top"
                   Margin="30, 10, 0, 0"
-                  Width="200"
+                  Width="300"
                   MaxDropDownHeight="200"
-                  SelectedIndex="{Binding SelectedIndex}">
-            <ComboBoxItem Content="{x:Static lang:Lang.CreateStyleQuestionName}"/>
-            <ComboBoxItem Content="{x:Static lang:Lang.ParagraphApplyStyleQuestionName}"/>
-            <ComboBoxItem Content="{x:Static lang:Lang.PptxImageInsertQuestionName}"/>
-        </ComboBox>
-        
+                  ItemsSource="{Binding QuestionTypes}"
+                  SelectedIndex="{Binding SelectedIndex}"/>
         <Panel DockPanel.Dock="Bottom"
                Margin="0, 0, 20, 20">
             <Button HorizontalAlignment="Right" 
@@ -47,7 +43,6 @@
                     Content="{Binding SaveButtonText}"
                     Command="{Binding ProcessQuestion}"/>
         </Panel>
-        
         <ScrollViewer DockPanel.Dock="Top" 
                       Margin="20">
             <ContentControl Content="{Binding Content}"/>

@@ -13,7 +13,6 @@ public static class NumberHelper {
 
     public static bool DoubleEquals(this double? a, double? b) {
         if (a is null || b is null) return false;
-        Console.WriteLine($"{Math.Round((double) a, 2)} - - {Math.Round((double) b, 2)}");
         return Math.Abs(Math.Round((double) a, 2) - Math.Round((double) b, 2)) < Tolerance;
     }
 

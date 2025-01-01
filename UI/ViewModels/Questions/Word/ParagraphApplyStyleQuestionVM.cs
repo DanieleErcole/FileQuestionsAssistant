@@ -5,7 +5,7 @@ using Core.Questions;
 using Core.Questions.Word;
 using UI.Services;
 
-namespace UI.ViewModels.Questions;
+namespace UI.ViewModels.Questions.Word;
 
 public class ParagraphApplyStyleQuestionVM(ParagraphApplyStyleQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageService storageService) 
     : WordQuestionViewModel(q, evaluator, errorHandler, storageService) {

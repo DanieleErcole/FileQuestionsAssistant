@@ -6,12 +6,11 @@ using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions;
 using Core.Utils.Errors;
-using Microsoft.Extensions.DependencyInjection;
 using UI.Services;
 using UI.Utils;
 using ApplicationException = Core.Utils.Errors.ApplicationException;
 
-namespace UI.ViewModels.Questions;
+namespace UI.ViewModels.Questions.Word;
 
 public abstract class WordQuestionViewModel(AbstractQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageService storageService) 
     : SingleQuestionViewModel(q, evaluator, errorHandler, storageService) {

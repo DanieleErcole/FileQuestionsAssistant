@@ -48,11 +48,10 @@ public class PowerpointTests {
     [TestCase(11.8, 0.85, 21.52, 12.11, Origin.SlideCenter, Origin.SlideCenter, false)]
     [TestCase(11.8, null, 21.52, 12.11, null, Origin.SlideCenter, false)]
     public void ImageInsertQuestion_TestCase(double? x, double? y, double? width, double? height, Origin? vO, Origin? hO, bool expectedRes) {
-        var q = new ImageInsertQuestion("", "Name", "Description", _ogFile, x, y, width, height, vO, hO);
+        var q = new ImageInsertQuestion("", "Name", "Description", _ogFile, x, y, width, height, vO ?? Origin.TopLeftCorner, hO ?? Origin.TopLeftCorner);
         _evaluator.AddQuestion(q, new PowerpointFile(_powerpointFile.Name, _powerpointFile));
         
         var res = _evaluator.Evaluate(q).First();
-        ResHelper.LogResult(res);
         Assert.That(res.IsSuccessful, Is.EqualTo(expectedRes));
     }
 

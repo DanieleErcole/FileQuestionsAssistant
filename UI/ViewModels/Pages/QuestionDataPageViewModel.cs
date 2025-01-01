@@ -11,13 +11,20 @@ namespace UI.ViewModels.Pages;
 
 public abstract partial class QuestionDataPageViewModel(string title, string btnText, NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
     Evaluator evaluator, IStorageService storageService, IViewModelFactory vmFactory) : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
-    
+
+    // Note: edit when adding new question types
+    public string[] QuestionTypes { get; } = [
+        Lang.Lang.CreateStyleQuestionName,
+        Lang.Lang.ParagraphApplyStyleQuestionName,
+        Lang.Lang.PptxImageInsertQuestionName
+    ];
+
     private int _selectedIndex;
     public int SelectedIndex {
         get => _selectedIndex;
         set {
             SetProperty(ref _selectedIndex, value);
-            Content = ViewModelFactory.NewQuestionFormVm(SelectedIndex);
+            Content = ViewModelFactory.NewQuestionFormVm((QuestionTypeIndex) SelectedIndex);
         }
     }
 

@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions;
 using Core.Questions.Word;
 using UI.Services;
 using UI.Utils;
 
-namespace UI.ViewModels.QuestionForms;
+namespace UI.ViewModels.QuestionForms.Word;
 
 public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
     
-    public static readonly string[] Alignments = ["left", "center", "right"]; 
+    public static readonly string[] Alignments = ["left", "center", "right"];
+
+    protected override FilePickerFileType FileType => FileTypesHelper.Word;
     
     public string? FontNamesSelected { get; set; }
     

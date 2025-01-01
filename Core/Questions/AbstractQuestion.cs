@@ -20,7 +20,7 @@ public static class ParamsExtensions {
     }
 }
 
-//TODO: add other question types
+// Note: edit when adding new question types
 [JsonDerivedType(typeof(CreateStyleQuestion), typeDiscriminator: 0)]
 [JsonDerivedType(typeof(ParagraphApplyStyleQuestion), typeDiscriminator: 1)]
 [JsonDerivedType(typeof(ImageInsertQuestion), typeDiscriminator: 2)]

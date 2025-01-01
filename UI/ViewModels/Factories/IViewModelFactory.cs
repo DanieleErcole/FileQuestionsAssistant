@@ -6,5 +6,5 @@ namespace UI.ViewModels.Factories;
 
 public interface IViewModelFactory {
     SingleQuestionViewModel NewQuestionVm(IQuestion question);
-    QuestionFormBaseVM NewQuestionFormVm(int index, AbstractQuestion? question = null);
+    QuestionFormBaseVM NewQuestionFormVm(QuestionTypeIndex index, AbstractQuestion? question = null);
 }

@@ -14,12 +14,13 @@ public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandle
     Evaluator evaluator, IStorageService sService, IViewModelFactory vmFactory) 
     : QuestionDataPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sService, vmFactory) {
    
-    private static int QuestionToIndex(AbstractQuestion? question = null) {
+    // Note: edit when adding new question types
+    private static QuestionTypeIndex QuestionToIndex(AbstractQuestion? question = null) {
         return question switch {
-            CreateStyleQuestion => QuestionViewModelFactory.CreateStyleQuestionIndex,
-            ParagraphApplyStyleQuestion => QuestionViewModelFactory.ParagraphApplyStyleQuestionIndex,
-            ImageInsertQuestion => QuestionViewModelFactory.ImageInsertQuestionIndex,
-            _ => QuestionViewModelFactory.CreateStyleQuestionIndex
+            CreateStyleQuestion => QuestionTypeIndex.CreateStyle,
+            ParagraphApplyStyleQuestion => QuestionTypeIndex.ParagraphApplyStyle,
+            ImageInsertQuestion => QuestionTypeIndex.PptxImageInsert,
+            _ => QuestionTypeIndex.CreateStyle
         };
     }
 
@@ -31,8 +32,8 @@ public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandle
            NavigatorService.NavigateTo<QuestionsPageViewModel>();
         
         _question = question;
-        SelectedIndex = QuestionToIndex(question);
-        Content = ViewModelFactory.NewQuestionFormVm(SelectedIndex, question);
+        SelectedIndex = (int) QuestionToIndex(question);
+        Content = ViewModelFactory.NewQuestionFormVm((QuestionTypeIndex) SelectedIndex, question);
     }
 
     public override async Task ProcessQuestion() {

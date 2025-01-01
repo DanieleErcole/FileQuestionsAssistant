@@ -7,7 +7,7 @@ using Core.Questions.Word;
 using Core.Utils;
 using UI.Services;
 
-namespace UI.ViewModels.Questions;
+namespace UI.ViewModels.Questions.Word;
 
 public class CreateStyleQuestionVM(CreateStyleQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageService storageService) 
     : WordQuestionViewModel(q, evaluator, errorHandler, storageService) {
@@ -26,8 +26,8 @@ public class CreateStyleQuestionVM(CreateStyleQuestion q, Evaluator evaluator, I
         };
     }
 
-    public override List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res) {
-        return res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool)> {
+    public override List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res) => 
+        res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool)> {
             [Lang.Lang.StyleNameLabel] = d["styleName"],
             [Lang.Lang.BasedOnLabel] = (d["baseStyleName"].Item1 ?? Lang.Lang.NoneText, d["baseStyleName"].Item2),
             [Lang.Lang.FontNameLabel] = (d["fontName"].Item1 ?? Lang.Lang.NoneText, d["fontName"].Item2),
@@ -35,6 +35,5 @@ public class CreateStyleQuestionVM(CreateStyleQuestion q, Evaluator evaluator, I
             [Lang.Lang.ColorLabel] = (((Color? ) d["color"].Item1)?.ToHexString() ?? Lang.Lang.NoneText, d["color"].Item2),
             [Lang.Lang.AlignmentLabel] = (d["alignment"].Item1 ?? Lang.Lang.NoneText, d["alignment"].Item2),
         }).ToList();
-    }
     
 }

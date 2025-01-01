@@ -186,4 +186,43 @@
     <data name="FileTooLargeDesc" xml:space="preserve">
         <value>File size must be less than</value>
     </data>
+    <data name="XPosLabel" xml:space="preserve">
+        <value>Horizontal position</value>
+    </data>
+    <data name="YPosLabel" xml:space="preserve">
+        <value>Vertical position</value>
+    </data>
+    <data name="WidthLabel" xml:space="preserve">
+        <value>Width</value>
+    </data>
+    <data name="HeightLabel" xml:space="preserve">
+        <value>Height</value>
+    </data>
+    <data name="HorizontalOriginLabel" xml:space="preserve">
+        <value>Horizontal origin</value>
+    </data>
+    <data name="VerticalOriginLabel" xml:space="preserve">
+        <value>Vertical origin</value>
+    </data>
+    <data name="FromLabel" xml:space="preserve">
+        <value>From</value>
+    </data>
+    <data name="AlignmentCenter" xml:space="preserve">
+        <value>Center</value>
+    </data>
+    <data name="AlignmentLeft" xml:space="preserve">
+        <value>Left</value>
+    </data>
+    <data name="AlignmentRight" xml:space="preserve">
+        <value>Right</value>
+    </data>
+    <data name="NoParametersSetText" xml:space="preserve">
+        <value>Parameters must be set</value>
+    </data>
+    <data name="OriginCenterText" xml:space="preserve">
+        <value>Center</value>
+    </data>
+    <data name="OriginTopLeftCornerText" xml:space="preserve">
+        <value>Top left corner</value>
+    </data>
 </root>

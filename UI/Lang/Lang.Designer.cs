@@ -87,11 +87,38 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Center.
+        /// </summary>
+        public static string AlignmentCenter {
+            get {
+                return ResourceManager.GetString("AlignmentCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alignment.
         /// </summary>
         public static string AlignmentLabel {
             get {
                 return ResourceManager.GetString("AlignmentLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left.
+        /// </summary>
+        public static string AlignmentLeft {
+            get {
+                return ResourceManager.GetString("AlignmentLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right.
+        /// </summary>
+        public static string AlignmentRight {
+            get {
+                return ResourceManager.GetString("AlignmentRight", resourceCulture);
             }
         }
         
@@ -267,6 +294,33 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string FromLabel {
+            get {
+                return ResourceManager.GetString("FromLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string HeightLabel {
+            get {
+                return ResourceManager.GetString("HeightLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal origin.
+        /// </summary>
+        public static string HorizontalOriginLabel {
+            get {
+                return ResourceManager.GetString("HorizontalOriginLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import a local question file.
         /// </summary>
         public static string ImportQuestionBtnDesc {
@@ -339,6 +393,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parameters must be set.
+        /// </summary>
+        public static string NoParametersSetText {
+            get {
+                return ResourceManager.GetString("NoParametersSetText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You do not have permission to access this file.
         /// </summary>
         public static string NoPermissionDesc {
@@ -362,6 +425,24 @@ namespace UI.Lang {
         public static string OGFileLabel {
             get {
                 return ResourceManager.GetString("OGFileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Center.
+        /// </summary>
+        public static string OriginCenterText {
+            get {
+                return ResourceManager.GetString("OriginCenterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top left corner.
+        /// </summary>
+        public static string OriginTopLeftCornerText {
+            get {
+                return ResourceManager.GetString("OriginTopLeftCornerText", resourceCulture);
             }
         }
         
@@ -555,11 +636,47 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vertical origin.
+        /// </summary>
+        public static string VerticalOriginLabel {
+            get {
+                return ResourceManager.GetString("VerticalOriginLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string WidthLabel {
+            get {
+                return ResourceManager.GetString("WidthLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal position.
+        /// </summary>
+        public static string XPosLabel {
+            get {
+                return ResourceManager.GetString("XPosLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
         public static string YesText {
             get {
                 return ResourceManager.GetString("YesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical position.
+        /// </summary>
+        public static string YPosLabel {
+            get {
+                return ResourceManager.GetString("YPosLabel", resourceCulture);
             }
         }
     }

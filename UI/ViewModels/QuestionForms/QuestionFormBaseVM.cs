@@ -19,6 +19,8 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
 
     protected readonly IErrorHandlerService ErrorHandler;
     private readonly IStorageService _storageService;
+
+    protected abstract FilePickerFileType FileType { get; }
     
     private string? _errorMsg;
     public string? ErrorMsg {
@@ -60,7 +62,7 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     public virtual async Task UploadOgFile() {
         var files = await _storageService.GetFilesAsync(new FilePickerOpenOptions {
             AllowMultiple = false,
-            FileTypeFilter = [FileTypesHelper.Word],
+            FileTypeFilter = [FileType],
         });
         
         if (files.Count == 0)

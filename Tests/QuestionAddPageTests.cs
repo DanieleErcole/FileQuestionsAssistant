@@ -9,6 +9,7 @@ using Tests.Utils;
 using UI.Services;
 using UI.ViewModels.Pages;
 using UI.ViewModels.QuestionForms;
+using UI.ViewModels.QuestionForms.Word;
 using UI.Views;
 
 namespace Tests;

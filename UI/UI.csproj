@@ -59,6 +59,18 @@
       <DependentUpon>ResultsPageView.axaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\QuestionForms\Word\CreateStyleQuestionFormView.axaml.cs">
+      <DependentUpon>CreateStyleQuestionFormView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\QuestionForms\Word\ParagraphApplyStyleQuestionFormView.axaml.cs">
+      <DependentUpon>ParagraphApplyStyleQuestionFormView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\QuestionForms\Powerpoint\ImageInsertQuestionFormView.axaml.cs">
+      <DependentUpon>ImageInsertQuestionFormView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

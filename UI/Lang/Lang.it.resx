@@ -179,4 +179,43 @@
     <data name="FileTooLargeDesc" xml:space="preserve">
         <value>Le dimensioni del file devono essere inferiori a</value>
     </data>
+    <data name="XPosLabel" xml:space="preserve">
+        <value>Posizione orizzontale</value>
+    </data>
+    <data name="YPosLabel" xml:space="preserve">
+        <value>Posizione verticale</value>
+    </data>
+    <data name="HeightLabel" xml:space="preserve">
+        <value>Altezza</value>
+    </data>
+    <data name="HorizontalOriginLabel" xml:space="preserve">
+        <value>Origine orizzontale</value>
+    </data>
+    <data name="VerticalOriginLabel" xml:space="preserve">
+        <value>Origine verticale</value>
+    </data>
+    <data name="FromLabel" xml:space="preserve">
+        <value>Da</value>
+    </data>
+    <data name="AlignmentCenter" xml:space="preserve">
+        <value>Al centro</value>
+    </data>
+    <data name="AlignmentLeft" xml:space="preserve">
+        <value>A sinistra</value>
+    </data>
+    <data name="AlignmentRight" xml:space="preserve">
+        <value>A destra</value>
+    </data>
+    <data name="NoParametersSetText" xml:space="preserve">
+        <value>Nessun parametro inserito</value>
+    </data>
+    <data name="OriginCenterText" xml:space="preserve">
+        <value>Centro</value>
+    </data>
+    <data name="OriginTopLeftCornerText" xml:space="preserve">
+        <value>Angolo superiore sinistro</value>
+    </data>
+    <data name="WidthLabel" xml:space="preserve">
+        <value>Larghezza</value>
+    </data>
 </root>

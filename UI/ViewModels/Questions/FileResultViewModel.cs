@@ -31,7 +31,8 @@ public partial class FileResultViewModel : ViewModelBase {
     }
 
     private readonly SingleQuestionViewModel _vm;
-    
+
+    //TODO: fix the results of the image insert question, I think it's an empty list
     public bool IsSuccess => Result is { IsSuccessful: true };
     public bool IsFailed => Result is { IsSuccessful: false };
     public bool IsExpandable => Result is not null && Result.EachParamsWithRes().Any();

@@ -8,10 +8,13 @@ using Core.FileHandling;
 using Core.Questions;
 using Core.Questions.Word;
 using UI.Services;
+using UI.Utils;
 
-namespace UI.ViewModels.QuestionForms;
+namespace UI.ViewModels.QuestionForms.Word;
 
 public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormBaseVM {
+    
+    protected override FilePickerFileType FileType => FileTypesHelper.Word;
     
     [ObservableProperty]
     private ObservableCollection<string> _styleNames = [];
