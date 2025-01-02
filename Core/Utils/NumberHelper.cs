@@ -13,7 +13,11 @@ public static class NumberHelper {
 
     public static bool DoubleEquals(this double? a, double? b) {
         if (a is null || b is null) return false;
-        return Math.Abs(Math.Round((double) a, 2) - Math.Round((double) b, 2)) < Tolerance;
+        return DoubleEquals((double) a, (double) b);
+    }
+    
+    public static bool DoubleEquals(this double a, double b) {
+        return Math.Abs(Math.Round(a, 2) - Math.Round(b, 2)) < Tolerance;
     }
 
 }

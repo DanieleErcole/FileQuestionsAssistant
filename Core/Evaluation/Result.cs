@@ -1,4 +1,6 @@
-﻿namespace Core.Evaluation; 
+﻿using Core.Utils;
+
+namespace Core.Evaluation; 
 
 public class Result {
     
@@ -14,9 +16,14 @@ public class Result {
 
     public IEnumerable<Dictionary<string, (object?, bool)>> EachParamsWithRes() => _paramsFromFile
         .Select(styleParams => styleParams
-            .Select(p 
-                => new KeyValuePair<string, (object?, bool)>(p.Key, (p.Value, _correctParams[p.Key] is null || (p.Value?.Equals(_correctParams[p.Key]) ?? false)))
-            ).ToDictionary()
+            .Select(p => {
+                _correctParams.TryGetValue(p.Key, out var val);
+                var equals = p.Value switch {
+                    double d => (d as double?).DoubleEquals(val as double?),
+                    _ => p.Value?.Equals(val) ?? false
+                };
+                return new KeyValuePair<string, (object?, bool)>(p.Key, (p.Value, val is null || equals));   
+            }).ToDictionary()
         );
 
 }

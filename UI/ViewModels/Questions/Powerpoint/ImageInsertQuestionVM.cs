@@ -25,15 +25,15 @@ public class ImageInsertQuestionVM(ImageInsertQuestion q, Evaluator evaluator, I
         };
     }
 
-    public override List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res) => 
-        res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool)> {
-            ["imageName"] = d["imageName"],
+    protected override List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res) =>
+        res.EachParamsWithRes().ToList().Select(d => new Dictionary<string, (object?, bool)> {
+            ["imageName"] = (d["imageName"].Item1, d["imageName"].Item2),
             [Lang.Lang.XPosLabel] = (d["x"].Item1 ?? Lang.Lang.NoneText, d["x"].Item2),
             [Lang.Lang.YPosLabel] = (d["y"].Item1 ?? Lang.Lang.NoneText, d["y"].Item2),
             [Lang.Lang.WidthLabel] = (d["width"].Item1 ?? Lang.Lang.NoneText, d["width"].Item2),
             [Lang.Lang.HeightLabel] = (d["height"].Item1 ?? Lang.Lang.NoneText, d["height"].Item2),
-            [Lang.Lang.VerticalOriginLabel] = (d["vOrigin"].Item1 ?? Lang.Lang.NoneText, d["vOrigin"].Item2),
-            [Lang.Lang.HorizontalOriginLabel] = (d["hOrigin"].Item1 ?? Lang.Lang.NoneText, d["hOrigin"].Item2),
+            [Lang.Lang.VerticalOriginLabel] = ((d["vOrigin"].Item1 as Origin?)?.ToFriendlyString() ?? Lang.Lang.NoneText, d["vOrigin"].Item2),
+            [Lang.Lang.HorizontalOriginLabel] = ((d["hOrigin"].Item1 as Origin?)?.ToFriendlyString() ?? Lang.Lang.NoneText, d["hOrigin"].Item2),
         }).ToList();
     
 }

@@ -26,7 +26,7 @@ public class CreateStyleQuestionVM(CreateStyleQuestion q, Evaluator evaluator, I
         };
     }
 
-    public override List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res) => 
+    protected override List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res) => 
         res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool)> {
             [Lang.Lang.StyleNameLabel] = d["styleName"],
             [Lang.Lang.BasedOnLabel] = (d["baseStyleName"].Item1 ?? Lang.Lang.NoneText, d["baseStyleName"].Item2),

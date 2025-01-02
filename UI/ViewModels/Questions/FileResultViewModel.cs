@@ -31,21 +31,11 @@ public partial class FileResultViewModel : ViewModelBase {
     }
 
     private readonly SingleQuestionViewModel _vm;
-
-    //TODO: fix the results of the image insert question, I think it's an empty list
+    
     public bool IsSuccess => Result is { IsSuccessful: true };
     public bool IsFailed => Result is { IsSuccessful: false };
     public bool IsExpandable => Result is not null && Result.EachParamsWithRes().Any();
-    public List<Node> FileParams => Result is not null ? _vm
-        .GetLocalizedResultParams(Result)
-        .Select(d => {
-            var first = (d.First().Key, d.First().Value.Item1, d.First().Value.Item2);
-            var list = d
-                .Select(e => (e.Key, e.Value.Item1, e.Value.Item2))
-                .Where(e => e.Item1 != first.Item1 && e.Item1 != first.Item1 && e.Item2 != first.Item2)
-                .ToList();
-            return new Node(first.Item1, first.Item2, first.Item3, list, true);
-        }).ToList() : [];
+    public List<Node> FileParams => Result is not null ? _vm.ResultParamsAsNodes(Result) : [];
 
     public string Icon => Result switch {
         not null => Result.IsSuccessful ? "Checkmark" : "Dismiss",
