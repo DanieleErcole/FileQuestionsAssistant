@@ -41,6 +41,7 @@
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <Build>false</Build>
+    <Restore>false</Restore>
   </PropertyGroup>
 
   <ItemGroup>
