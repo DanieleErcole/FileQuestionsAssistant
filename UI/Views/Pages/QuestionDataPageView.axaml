@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:lang="clr-namespace:UI.Lang"
+             xmlns:pages="clr-namespace:UI.ViewModels.Pages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="UI.Views.QuestionDataPageView"
+             x:DataType="pages:QuestionDataPageViewModel">
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
+    </UserControl.Styles>
+    
+    <DockPanel x:Name="PageContainer"
+               Height="{Binding $parent[StackPanel].Height}">
+        <StackPanel DockPanel.Dock="Top" 
+                    Orientation="Horizontal">
+            <Button Margin="20, 10, 0, 20"
+                    HorizontalAlignment="Left"
+                    Theme="{StaticResource TransparentButton}"
+                    Command="{Binding ToQuestionPage}">
+                <controls:SymbolIcon Symbol="Back" FontSize="20"/>
+            </Button>
+            <TextBlock Margin="20, 10, 0, 20"
+                       HorizontalAlignment="Left"
+                       Theme="{StaticResource SubtitleTextBlockStyle}"
+                       Text="{Binding PageTitle}"/>
+        </StackPanel>
+        <TextBlock DockPanel.Dock="Top"
+                   Margin="30, 0, 0, 0"
+                   Text="{x:Static lang:Lang.ChooseQuestionTypeText}"/>
+        <ComboBox DockPanel.Dock="Top"
+                  Margin="30, 10, 0, 0"
+                  Width="300"
+                  MaxDropDownHeight="200"
+                  ItemsSource="{Binding QuestionTypes}"
+                  SelectedIndex="{Binding SelectedIndex}"/>
+        <Panel DockPanel.Dock="Bottom"
+               Margin="0, 0, 20, 20">
+            <Button HorizontalAlignment="Right" 
+                    Classes="accent" 
+                    Content="{Binding SaveButtonText}"
+                    Command="{Binding ProcessQuestion}"/>
+        </Panel>
+        <ScrollViewer DockPanel.Dock="Top" 
+                      Margin="20">
+            <ContentControl Content="{Binding Content}"/>
+        </ScrollViewer>
+        
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,221 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="CreateStyleQuestionDesc" xml:space="preserve">
+        <value>Controlla se nel documento esiste uno stile con le proprietà specificate</value>
+    </data>
+    <data name="CreateStyleQuestionName" xml:space="preserve">
+        <value>Crea stile Word</value>
+    </data>
+    <data name="NoFilesSelected" xml:space="preserve">
+        <value>Nessun file selezionato</value>
+    </data>
+    <data name="ToolTipRemoveButton" xml:space="preserve">
+        <value>Rimuovi domanda dall'elenco</value>
+    </data>
+    <data name="InvalidFileFormatMsg" xml:space="preserve">
+        <value>Formato file non valido</value>
+    </data>
+    <data name="QuestionsTab" xml:space="preserve">
+        <value>Le tue domande</value>
+    </data>
+    <data name="ResultsTab" xml:space="preserve">
+        <value>Valutazione domande</value>
+    </data>
+    <data name="RecentText" xml:space="preserve">
+        <value>Recenti</value>
+    </data>
+    <data name="AddQuestionBtnText" xml:space="preserve">
+        <value>Crea nuova domanda</value>
+    </data>
+    <data name="AddQuestionBtnDesc" xml:space="preserve">
+        <value>Crea una nuova domanda scegliendo un modello tra quelli preimpostati</value>
+    </data>
+    <data name="ImportQuestionBtnText" xml:space="preserve">
+        <value>Importa domanda</value>
+    </data>
+    <data name="ImportQuestionBtnDesc" xml:space="preserve">
+        <value>Importa una domanda da file</value>
+    </data>
+    <data name="NewQuestionPageTitle" xml:space="preserve">
+        <value>Crea domanda</value>
+    </data>
+    <data name="ErrorOpeningFilename" xml:space="preserve">
+        <value>Errore durante l'apertura del file</value>
+    </data>
+    <data name="UnableToOpenQuestion" xml:space="preserve">
+        <value>Impossibile aprire la domanda</value>
+    </data>
+    <data name="UnableToOpenQuestionDesc" xml:space="preserve">
+        <value>La domanda è già presente</value>
+    </data>
+    <data name="UnableToAccessFile" xml:space="preserve">
+        <value>Impossibile accedere al file</value>
+    </data>
+    <data name="NoPermissionDesc" xml:space="preserve">
+        <value>Non hai l'autorizzazione per accedere a questo file</value>
+    </data>
+    <data name="UnknownError" xml:space="preserve">
+        <value>Errore sconosciuto</value>
+    </data>
+    <data name="SearchPlaceholder" xml:space="preserve">
+        <value>Cerca</value>
+    </data>
+    <data name="ChooseQuestionTypeText" xml:space="preserve">
+        <value>Tipo di domanda</value>
+    </data>
+    <data name="MissingRequiredFields" xml:space="preserve">
+        <value>Non sono stati compilati tutti i campi obbligatori.</value>
+    </data>
+    <data name="QuestionNameLabel" xml:space="preserve">
+        <value>Nome domanda</value>
+    </data>
+    <data name="OGFileLabel" xml:space="preserve">
+        <value>File originale</value>
+    </data>
+    <data name="QuestionDescLabel" xml:space="preserve">
+        <value>Descrizione domanda</value>
+    </data>
+    <data name="PathLabel" xml:space="preserve">
+        <value>Percorso</value>
+    </data>
+    <data name="StyleNameLabel" xml:space="preserve">
+        <value>Nome stile</value>
+    </data>
+    <data name="BasedOnLabel" xml:space="preserve">
+        <value>Basato su</value>
+    </data>
+    <data name="FontNameLabel" xml:space="preserve">
+        <value>Nome del carattere</value>
+    </data>
+    <data name="AlignmentLabel" xml:space="preserve">
+        <value>Allineamento</value>
+    </data>
+    <data name="ColorLabel" xml:space="preserve">
+        <value>Colore</value>
+    </data>
+    <data name="FontSizeLabel" xml:space="preserve">
+        <value>Dimensione del carattere</value>
+    </data>
+    <data name="NoText" xml:space="preserve">
+        <value>No</value>
+    </data>
+    <data name="YesText" xml:space="preserve">
+        <value>Sì</value>
+    </data>
+    <data name="DeleteDialogMessage" xml:space="preserve">
+        <value>Sei sicuro di voler eliminare il file?</value>
+    </data>
+    <data name="DeleteDialogTitle" xml:space="preserve">
+        <value>Elimina file</value>
+    </data>
+    <data name="CreateBtnText" xml:space="preserve">
+        <value>Crea</value>
+    </data>
+    <data name="AnyText" xml:space="preserve">
+        <value>Qualsiasi</value>
+    </data>
+    <data name="FilesLabel" xml:space="preserve">
+        <value>File</value>
+    </data>
+    <data name="EvaluateBtnText" xml:space="preserve">
+        <value>Valuta</value>
+    </data>
+    <data name="AddFilesBtnText" xml:space="preserve">
+        <value>Aggiungi file</value>
+    </data>
+    <data name="NoneText" xml:space="preserve">
+        <value>Nessuno</value>
+    </data>
+    <data name="EvaluationSuccessTitle" xml:space="preserve">
+        <value>Valutazione completata</value>
+    </data>
+    <data name="EvaluationSuccessDesc" xml:space="preserve">
+        <value>Tutti i file selezionati sono stati valutati con successo.</value>
+    </data>
+    <data name="ParagraphApplyStyleQuestionName" xml:space="preserve">
+        <value>Applica stile Word</value>
+    </data>
+    <data name="ParagraphApplyStyleQuestionDesc" xml:space="preserve">
+        <value>Verifica che in un documento Word sia stato applicato uno stile specifico a un paragrafo qualsiasi</value>
+    </data>
+    <data name="PptxImageInsertQuestionName" xml:space="preserve">
+        <value>Inserisci immagine Powerpoint</value>
+    </data>
+    <data name="PptxImageInsertQuestionDesc" xml:space="preserve">
+        <value>Verifica che nella presentazione PowerPoint sia stata inserita un'immagine con la posizione e le dimensioni corrette</value>
+    </data>
+    <data name="SaveBtnText" xml:space="preserve">
+        <value>Salva</value>
+    </data>
+    <data name="EditQuestionPageTitle" xml:space="preserve">
+        <value>Modifica domanda</value>
+    </data>
+    <data name="ToolTipEditButton" xml:space="preserve">
+        <value>Modifica i parametri della domanda</value>
+    </data>
+    <data name="ToolTipEvaluateButton" xml:space="preserve">
+        <value>Valuta le domande selezionate o tutto se nulla è selezionato</value>
+    </data>
+    <data name="ToolTipRemoveSelection" xml:space="preserve">
+        <value>Rimuovi selezione</value>
+    </data>
+    <data name="NoFilesToEvaluateTitle" xml:space="preserve">
+        <value>Nessun file da valutare</value>
+    </data>
+    <data name="FileTooLargeTitle" xml:space="preserve">
+        <value>Impossibile caricare il file</value>
+    </data>
+    <data name="FileTooLargeDesc" xml:space="preserve">
+        <value>Le dimensioni del file devono essere inferiori a</value>
+    </data>
+    <data name="XPosLabel" xml:space="preserve">
+        <value>Posizione orizzontale</value>
+    </data>
+    <data name="YPosLabel" xml:space="preserve">
+        <value>Posizione verticale</value>
+    </data>
+    <data name="HeightLabel" xml:space="preserve">
+        <value>Altezza</value>
+    </data>
+    <data name="HorizontalOriginLabel" xml:space="preserve">
+        <value>Origine orizzontale</value>
+    </data>
+    <data name="VerticalOriginLabel" xml:space="preserve">
+        <value>Origine verticale</value>
+    </data>
+    <data name="FromLabel" xml:space="preserve">
+        <value>Da</value>
+    </data>
+    <data name="AlignmentCenter" xml:space="preserve">
+        <value>Al centro</value>
+    </data>
+    <data name="AlignmentLeft" xml:space="preserve">
+        <value>A sinistra</value>
+    </data>
+    <data name="AlignmentRight" xml:space="preserve">
+        <value>A destra</value>
+    </data>
+    <data name="NoParametersSetText" xml:space="preserve">
+        <value>Nessun parametro inserito</value>
+    </data>
+    <data name="OriginCenterText" xml:space="preserve">
+        <value>Centro</value>
+    </data>
+    <data name="OriginTopLeftCornerText" xml:space="preserve">
+        <value>Angolo superiore sinistro</value>
+    </data>
+    <data name="WidthLabel" xml:space="preserve">
+        <value>Larghezza</value>
+    </data>
+</root>

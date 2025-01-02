@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="CreateStyleQuestionDesc" xml:space="preserve">
+        <value>Checks if a style with the specified properties exists in the document</value>
+    </data>
+    <data name="CreateStyleQuestionName" xml:space="preserve">
+        <value>Create Word style</value>
+    </data>
+    <data name="NoFilesSelected" xml:space="preserve">
+        <value>No files selected</value>
+    </data>
+    <data name="ToolTipRemoveButton" xml:space="preserve">
+        <value>Remove question from the list</value>
+    </data>
+    <data name="InvalidFileFormatMsg" xml:space="preserve">
+        <value>Invalid file format: malformed file</value>
+    </data>
+    <data name="QuestionsTab" xml:space="preserve">
+        <value>Your questions</value>
+    </data>
+    <data name="ResultsTab" xml:space="preserve">
+        <value>Question evaluation</value>
+    </data>
+    <data name="RecentText" xml:space="preserve">
+        <value>Recents</value>
+    </data>
+    <data name="AddQuestionBtnText" xml:space="preserve">
+        <value>Create new question</value>
+    </data>
+    <data name="AddQuestionBtnDesc" xml:space="preserve">
+        <value>Choose a question template and create a question</value>
+    </data>
+    <data name="ImportQuestionBtnText" xml:space="preserve">
+        <value>Import question</value>
+    </data>
+    <data name="ImportQuestionBtnDesc" xml:space="preserve">
+        <value>Import a local question file</value>
+    </data>
+    <data name="NewQuestionPageTitle" xml:space="preserve">
+        <value>New question</value>
+    </data>
+    <data name="ErrorOpeningFilename" xml:space="preserve">
+        <value>Error opening file</value>
+    </data>
+    <data name="UnableToOpenQuestion" xml:space="preserve">
+        <value>Unable to open question</value>
+    </data>
+    <data name="UnableToOpenQuestionDesc" xml:space="preserve">
+        <value>Question already tracked</value>
+    </data>
+    <data name="UnableToAccessFile" xml:space="preserve">
+        <value>Unable to access the file</value>
+    </data>
+    <data name="NoPermissionDesc" xml:space="preserve">
+        <value>You do not have permission to access this file</value>
+    </data>
+    <data name="UnknownError" xml:space="preserve">
+        <value>An unknown error occurred</value>
+    </data>
+    <data name="SearchPlaceholder" xml:space="preserve">
+        <value>Search</value>
+    </data>
+    <data name="ChooseQuestionTypeText" xml:space="preserve">
+        <value>Question type</value>
+    </data>
+    <data name="MissingRequiredFields" xml:space="preserve">
+        <value>The required fields are missing.</value>
+    </data>
+    <data name="QuestionNameLabel" xml:space="preserve">
+        <value>Question name</value>
+    </data>
+    <data name="OGFileLabel" xml:space="preserve">
+        <value>Original file</value>
+    </data>
+    <data name="QuestionDescLabel" xml:space="preserve">
+        <value>Question description</value>
+    </data>
+    <data name="PathLabel" xml:space="preserve">
+        <value>Location</value>
+    </data>
+    <data name="StyleNameLabel" xml:space="preserve">
+        <value>Style name</value>
+    </data>
+    <data name="BasedOnLabel" xml:space="preserve">
+        <value>Based on</value>
+    </data>
+    <data name="FontNameLabel" xml:space="preserve">
+        <value>Font name</value>
+    </data>
+    <data name="AlignmentLabel" xml:space="preserve">
+        <value>Alignment</value>
+    </data>
+    <data name="ColorLabel" xml:space="preserve">
+        <value>Color</value>
+    </data>
+    <data name="FontSizeLabel" xml:space="preserve">
+        <value>Font size</value>
+    </data>
+    <data name="YesText" xml:space="preserve">
+        <value>Yes</value>
+    </data>
+    <data name="NoText" xml:space="preserve">
+        <value>No</value>
+    </data>
+    <data name="DeleteDialogTitle" xml:space="preserve">
+        <value>Delete file</value>
+    </data>
+    <data name="DeleteDialogMessage" xml:space="preserve">
+        <value>Are you sure you want to delete the file?</value>
+    </data>
+    <data name="CreateBtnText" xml:space="preserve">
+        <value>Create</value>
+    </data>
+    <data name="AnyText" xml:space="preserve">
+        <value>Any</value>
+    </data>
+    <data name="FilesLabel" xml:space="preserve">
+        <value>Files</value>
+    </data>
+    <data name="EvaluateBtnText" xml:space="preserve">
+        <value>Evaluate</value>
+    </data>
+    <data name="AddFilesBtnText" xml:space="preserve">
+        <value>Add files</value>
+    </data>
+    <data name="NoneText" xml:space="preserve">
+        <value>None</value>
+    </data>
+    <data name="EvaluationSuccessTitle" xml:space="preserve">
+        <value>Evaluation success</value>
+    </data>
+    <data name="EvaluationSuccessDesc" xml:space="preserve">
+        <value>The evaluation of the selected files has been completed.</value>
+    </data>
+    <data name="ParagraphApplyStyleQuestionName" xml:space="preserve">
+        <value>Apply Word style</value>
+    </data>
+    <data name="ParagraphApplyStyleQuestionDesc" xml:space="preserve">
+        <value>Checks if a specific style has been applied to a paragraph in a Word document</value>
+    </data>
+    <data name="PptxImageInsertQuestionName" xml:space="preserve">
+        <value>Insert Powepoint image</value>
+    </data>
+    <data name="PptxImageInsertQuestionDesc" xml:space="preserve">
+        <value>Checks if an image has been inserted in a PowerPoint document with specific position and dimensions</value>
+    </data>
+    <data name="SaveBtnText" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="EditQuestionPageTitle" xml:space="preserve">
+        <value>Edit question</value>
+    </data>
+    <data name="ToolTipEditButton" xml:space="preserve">
+        <value>Edit question parameters</value>
+    </data>
+    <data name="ToolTipRemoveSelection" xml:space="preserve">
+        <value>Remove selection</value>
+    </data>
+    <data name="ToolTipEvaluateButton" xml:space="preserve">
+        <value>Evaluate selected questions or everything if nothing is selected</value>
+    </data>
+    <data name="NoFilesToEvaluateTitle" xml:space="preserve">
+        <value>No file to evaluate</value>
+    </data>
+    <data name="FileTooLargeTitle" xml:space="preserve">
+        <value>Unable to load file</value>
+    </data>
+    <data name="FileTooLargeDesc" xml:space="preserve">
+        <value>File size must be less than</value>
+    </data>
+    <data name="XPosLabel" xml:space="preserve">
+        <value>Horizontal position</value>
+    </data>
+    <data name="YPosLabel" xml:space="preserve">
+        <value>Vertical position</value>
+    </data>
+    <data name="WidthLabel" xml:space="preserve">
+        <value>Width</value>
+    </data>
+    <data name="HeightLabel" xml:space="preserve">
+        <value>Height</value>
+    </data>
+    <data name="HorizontalOriginLabel" xml:space="preserve">
+        <value>Horizontal origin</value>
+    </data>
+    <data name="VerticalOriginLabel" xml:space="preserve">
+        <value>Vertical origin</value>
+    </data>
+    <data name="FromLabel" xml:space="preserve">
+        <value>From</value>
+    </data>
+    <data name="AlignmentCenter" xml:space="preserve">
+        <value>Center</value>
+    </data>
+    <data name="AlignmentLeft" xml:space="preserve">
+        <value>Left</value>
+    </data>
+    <data name="AlignmentRight" xml:space="preserve">
+        <value>Right</value>
+    </data>
+    <data name="NoParametersSetText" xml:space="preserve">
+        <value>Parameters must be set</value>
+    </data>
+    <data name="OriginCenterText" xml:space="preserve">
+        <value>Center</value>
+    </data>
+    <data name="OriginTopLeftCornerText" xml:space="preserve">
+        <value>Top left corner</value>
+    </data>
+</root>
