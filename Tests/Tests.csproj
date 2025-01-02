@@ -39,6 +39,10 @@
     <ProjectReference Include="..\UI\UI.csproj" />
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <Build>false</Build>
+  </PropertyGroup>
+
   <ItemGroup>
     <Using Include="NUnit.Framework" />
   </ItemGroup>
