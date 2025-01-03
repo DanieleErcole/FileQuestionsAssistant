@@ -1,21 +1,26 @@
-name: Build and Release Avalonia App
+name: Build and Release
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build for MacOS, Linux and Windows
-    runs-on: ${{ matrix.os }}
+    name: Build project
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         arch: [x64]
+        include:
+          - os: macos-latest
+            arch: x64
+            rid: osx-x64
+          - os: windows-latest
+            arch: x64
+            rid: win-x64
+          - os: ubuntu-latest
+            arch: x64
+            rid: linux-x64
     
     steps:
     - name: Checkout Code
@@ -31,34 +36,50 @@ jobs:
 
     - name: Publish Application
       run: |
-        dotnet publish -c Release -r ${{ matrix.os }}-${{ matrix.arch }} --self-contained -o publish/${{ matrix.os }}
+        dotnet publish ./UI -c Release -r ${{ matrix.rid }} -p:DebugType=Portable -p:PublishSingleFile=true --self-contained true -o publish/fileQuestionsAssistant_${{ matrix.rid }}
+
+    - name: Zip the files
+      run: |
+        cd publish
+        zip -r fileQuestionsAssistant_${{ matrix.rid }}.zip fileQuestionsAssistant_${{ matrix.rid }}
 
     - name: Archive Build Artifacts
       if: ${{ success() }}
       uses: actions/upload-artifact@v3
       with:
-        name: fileQuestionAssistant-${{ matrix.os }}-${{ matrix.arch }}
-        path: publish/${{ matrix.os }}
+        name: fileQuestionsAssistant-${{ matrix.rid }}
+        path: publish/fileQuestionsAssistant_${{ matrix.rid }}.zip
+
+    - name: Retrieve Version
+      id: version
+      run: |
+        VERSION=$(cat version.txt)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+    
+    outputs:
+      version: ${{ env.VERSION }}
 
   release:
     name: Create Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: build
     steps:
-    - name: Download Artifacts
+    - name: Download Linux Artifacts
       uses: actions/download-artifact@v3
       with:
-        name: fileQuestionAssistant-ubuntu-latest-x64
+        name: fileQuestionsAssistant-linux-x64
         path: ./artifacts/linux
     - name: Download macOS Artifact
       uses: actions/download-artifact@v3
       with:
-        name: fileQuestionAssistant-macos-latest-x64
+        name: fileQuestionsAssistant-osx-x64
         path: ./artifacts/macos
     - name: Download Windows Artifact
       uses: actions/download-artifact@v3
       with:
-        name: fileQuestionAssistant-windows-latest-x64
+        name: fileQuestionsAssistant-win-x64
         path: ./artifacts/windows
     - name: Create Release
       uses: ncipollo/release-action@v1
@@ -68,11 +89,11 @@ jobs:
           ./artifacts/macos/*
           ./artifacts/windows/*
         token: ${{ secrets.GITHUB_TOKEN }}
-        tag: v${{ github.run_number }}
-        releaseName: File Question Assistant Release
+        tag: ${{ needs.build.outputs.version }}
+        name: v${{ needs.build.outputs.version }}
         body: |
           ## Release Notes
           This release contains the following builds:
-          - Windows
-          - macOS
-          - Linux
+          - Windows (x64)
+          - macOS (x64)
+          - Linux (x64)
