@@ -20,7 +20,7 @@ public class PowerpointFile : IFile {
             try {
                 var slides = _mainDoc.Presentation.PresentationPart?.SlideParts ?? throw new InvalidFileFormat(Name);
                 return slides.SelectMany(s => s.Slide.Descendants<Picture>());
-            } catch (Exception e) when (e is not ApplicationException) {
+            } catch (Exception e) when (e is not FileError) {
                 throw new FileError(Name, e);
             }
         }
@@ -32,7 +32,7 @@ public class PowerpointFile : IFile {
         try {
             _doc = PresentationDocument.Open(file, false);
             _mainDoc = _doc.PresentationPart ?? throw new InvalidFileFormat(Name);
-        } catch (Exception e) when (e is not FileError or ApplicationException) {
+        } catch (Exception e) when (e is not FileError) {
             throw new FileError(Name, e);
         }
     }

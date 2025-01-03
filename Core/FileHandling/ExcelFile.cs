@@ -16,7 +16,7 @@ public class ExcelFile : IFile {
         Path = file is FileStream fs ? fs.Name : Name;
         try {
             _doc = SpreadsheetDocument.Open(file, false);
-        } catch (Exception e) when (e is not FileError or ApplicationException) {
+        } catch (Exception e) when (e is not FileError) {
             throw new FileError(Name, e);
         }
     }

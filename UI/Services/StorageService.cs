@@ -32,7 +32,7 @@ public class StorageService(IStorageProvider storageProvider) : IStorageService 
                 try {
                     await using var stream = await f.OpenReadAsync();
                     return FileFromType(type, f.Name, stream);
-                }catch (Exception e) when (e is not ApplicationException) {
+                }catch (Exception e) when (e is not FileError) {
                     throw new FileError(f.Name, e);
                 }
             }).ToArray()
