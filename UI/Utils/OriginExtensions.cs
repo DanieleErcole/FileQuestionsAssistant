@@ -1,5 +1,5 @@
 ﻿using System;
-using Core.Questions.Powerpoint;
+using Core.Utils;
 
 namespace UI.Utils;
 

@@ -6,6 +6,7 @@ using Core.Questions;
 using Core.Questions.Word;
 using Core.Utils;
 using UI.Services;
+using UI.Utils;
 
 namespace UI.ViewModels.Questions.Word;
 
@@ -22,7 +23,7 @@ public class CreateStyleQuestionVM(CreateStyleQuestion q, Evaluator evaluator, I
             [Lang.Lang.FontNameLabel] = qParams.Get<string?>("fontName") ?? Lang.Lang.AnyText,
             [Lang.Lang.FontSizeLabel] = qParams.Get<int?>("fontSize")?.ToString() ?? Lang.Lang.AnyText,
             [Lang.Lang.ColorLabel] = qParams.Get<Color?>("color")?.ToHexString() ?? Lang.Lang.AnyText,
-            [Lang.Lang.AlignmentLabel] = qParams.Get<string?>("alignment") ?? Lang.Lang.AnyText,
+            [Lang.Lang.AlignmentLabel] = qParams.Get<Alignment?>("alignment").ToFriendlyString() ?? Lang.Lang.AnyText,
         };
     }
 
@@ -33,7 +34,7 @@ public class CreateStyleQuestionVM(CreateStyleQuestion q, Evaluator evaluator, I
             [Lang.Lang.FontNameLabel] = (d["fontName"].Item1 ?? Lang.Lang.NoneText, d["fontName"].Item2),
             [Lang.Lang.FontSizeLabel] = (d["fontSize"].Item1?.ToString() ?? Lang.Lang.NoneText, d["fontSize"].Item2),
             [Lang.Lang.ColorLabel] = (((Color? ) d["color"].Item1)?.ToHexString() ?? Lang.Lang.NoneText, d["color"].Item2),
-            [Lang.Lang.AlignmentLabel] = (d["alignment"].Item1 ?? Lang.Lang.NoneText, d["alignment"].Item2),
+            [Lang.Lang.AlignmentLabel] = ((d["alignment"].Item1 as Alignment?).ToFriendlyString(), d["alignment"].Item2),
         }).ToList();
     
 }

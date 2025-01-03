@@ -7,9 +7,13 @@
              xmlns:lang="clr-namespace:UI.Lang"
              xmlns:word="clr-namespace:UI.ViewModels.QuestionForms.Word"
              xmlns:mycontrols="clr-namespace:UI.Views.Controls"
+             xmlns:utils="clr-namespace:UI.Utils"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="word:CreateStyleQuestionFormViewModel"
              x:Class="UI.Views.QuestionForms.Word.CreateStyleQuestionFormView">
+    <UserControl.Resources>
+        <utils:AlignmentValueConverter x:Key="AlignmentValueConverter" />
+    </UserControl.Resources>
     <StackPanel>
         <mycontrols:BaseQuestionControls/>
         <Separator Margin="20,0, 20, 20"/>
@@ -47,7 +51,7 @@
                            Text="{x:Static lang:Lang.AlignmentLabel}"/>
                 <ComboBox Width="200"
                           ItemsSource="{x:Static word:CreateStyleQuestionFormViewModel.Alignments}"
-                          SelectedItem="{Binding AlignmentSelected}"/>
+                          SelectedItem="{Binding AlignmentSelected, Converter={StaticResource AlignmentValueConverter}}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="1" 
                         HorizontalAlignment="Center"

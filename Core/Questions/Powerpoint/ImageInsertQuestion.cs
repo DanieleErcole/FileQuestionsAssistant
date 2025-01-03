@@ -4,13 +4,9 @@ using Core.Evaluation;
 using Core.FileHandling;
 using Core.Utils;
 using DocumentFormat.OpenXml.Presentation;
+using Origin = Core.Utils.Origin;
 
 namespace Core.Questions.Powerpoint;
-
-public enum Origin {
-    SlideCenter = 0,
-    TopLeftCorner = 1,
-}
 
 public class ImageInsertQuestion : AbstractQuestion {
 

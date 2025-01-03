@@ -218,4 +218,7 @@
     <data name="WidthLabel" xml:space="preserve">
         <value>Larghezza</value>
     </data>
+    <data name="FileAlreadyOpenedMsg" xml:space="preserve">
+        <value>Il file {0} è già stato aperto</value>
+    </data>
 </root>

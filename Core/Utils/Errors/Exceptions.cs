@@ -7,3 +7,4 @@ public class FileError(string filename, Exception? inner) : ApplicationException
 }
 
 public class InvalidFileFormat(string filename) : FileError(filename, null);
+public class FileAlreadyOpened(string path) : FileError(path, null);

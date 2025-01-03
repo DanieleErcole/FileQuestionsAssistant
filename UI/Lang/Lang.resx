@@ -225,4 +225,7 @@
     <data name="OriginTopLeftCornerText" xml:space="preserve">
         <value>Top left corner</value>
     </data>
+    <data name="FileAlreadyOpenedMsg" xml:space="preserve">
+        <value>The file {0} is already opened </value>
+    </data>
 </root>

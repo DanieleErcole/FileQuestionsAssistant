@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using Core.FileHandling;
 using Core.Questions;
+using Core.Utils.Errors;
 
 namespace Core.Evaluation;
 
@@ -27,7 +28,8 @@ public class Evaluator {
     public void AddQuestion(IQuestion question, params IFile[] files) {
         if (_filesByQuestion.ContainsKey(question))
             throw new ArgumentException("Question already exists");
-        _filesByQuestion.Add(question, [..files]);
+        _filesByQuestion.Add(question, []);
+        AddFiles(question, files);
     }
 
     public void RemoveQuestion(IQuestion question) {
@@ -48,8 +50,11 @@ public class Evaluator {
     public void AddFiles(IQuestion question, params IFile[] files) {
         if (!_filesByQuestion.TryGetValue(question, out var qFiles))
             throw new ArgumentOutOfRangeException();
-        foreach (var file in files) 
+        foreach (var file in files) {
+            if (qFiles.FirstOrDefault(f => f.Path == file.Path) is { } found)
+                throw new FileAlreadyOpened(found.Path);
             qFiles.Add(file);
+        }
     }
 
     public void SetFiles(IQuestion question, params IFile[] files) {

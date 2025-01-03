@@ -1,5 +1,4 @@
 ﻿using Core.Utils.Errors;
-using System.Linq;
 using Core.Utils;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
@@ -13,6 +12,7 @@ public class PowerpointFile : IFile {
     private readonly PresentationPart _mainDoc;
     
     public string Name { get; }
+    public string Path { get; }
     public Presentation Presentation => _mainDoc.Presentation;
 
     public IEnumerable<Picture> Pictures {
@@ -28,6 +28,7 @@ public class PowerpointFile : IFile {
 
     public PowerpointFile(string name, Stream file) {
         Name = name;
+        Path = file is FileStream fs ? fs.Name : Name;
         try {
             _doc = PresentationDocument.Open(file, false);
             _mainDoc = _doc.PresentationPart ?? throw new InvalidFileFormat(Name);

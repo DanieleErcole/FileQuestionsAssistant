@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Core.FileHandling;
 using Core.Questions;
 using Core.Questions.Word;
+using Core.Utils;
 using UI.Services;
 using UI.Utils;
 
@@ -15,13 +16,13 @@ namespace UI.ViewModels.QuestionForms.Word;
 
 public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
     
-    public static readonly string[] Alignments = ["left", "center", "right"];
+    public static readonly string[] Alignments = [Lang.Lang.AlignmentLeft, Lang.Lang.AlignmentCenter, Lang.Lang.AlignmentRight];
 
     protected override FilePickerFileType FileType => FileTypesHelper.Word;
     
     public string? FontNamesSelected { get; set; }
     
-    public string? AlignmentSelected { get; set; }
+    public Alignment? AlignmentSelected { get; set; }
     public string? BasedOnSelected { get; set; }
 
     #region Observable properties
@@ -70,7 +71,7 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
         FontNames = new ObservableCollection<string>(file.Fonts.Select(s => s.Name!.Value!));
         BasedOnSelected = q.Params.Get<string?>("baseStyleName");
         FontNamesSelected = q.Params.Get<string?>("fontName");
-        AlignmentSelected = q.Params.Get<string?>("alignment");
+        AlignmentSelected = q.Params.Get<Alignment?>("alignment");
     }
 
     public override async Task UploadOgFile() {
