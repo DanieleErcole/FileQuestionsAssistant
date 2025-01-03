@@ -51,7 +51,7 @@ public class App : Application {
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
-            desktop.ShutdownRequested += (_, _) => {
+            desktop.Exit += (_, _) => {
                 Log.Information("Disposing all evaluator files...");
                 _services.Get<Evaluator>().DisposeAllFiles();
                 Log.Information("Shutting down the application...");

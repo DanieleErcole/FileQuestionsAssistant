@@ -249,6 +249,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file {0} is already opened .
+        /// </summary>
+        public static string FileAlreadyOpenedMsg {
+            get {
+                return ResourceManager.GetString("FileAlreadyOpenedMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Files.
         /// </summary>
         public static string FilesLabel {

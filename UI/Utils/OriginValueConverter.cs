@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using Core.Questions.Powerpoint;
+using Core.Utils;
 
 namespace UI.Utils;
 

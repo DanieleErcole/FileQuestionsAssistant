@@ -18,8 +18,9 @@ public class EvaluatorTests {
         }
     }
 
-    private class MyFile : IFile {
-        public string Name => "";
+    private class MyFile(string name) : IFile {
+        public string Name => name;
+        public string Path => name;
         public void Dispose() {}
     }
     
@@ -66,15 +67,15 @@ public class EvaluatorTests {
     public void Evaluate_AddFiles() {
         var q = new MyQuestion();
         _evaluator.AddQuestion(q);
-        _evaluator.AddFiles(q, new MyFile(), new MyFile());
+        _evaluator.AddFiles(q, new MyFile("f1"), new MyFile("f2"));
         Assert.That(_evaluator.Files.First(), Has.Count.EqualTo(2));
     }
     
     [Test]
     public void Evaluate_RemoveFile() {
         var q = new MyQuestion();
-        var f1 = new MyFile();
-        var f2 = new MyFile();
+        var f1 = new MyFile("f1");
+        var f2 = new MyFile("f2");
         
         _evaluator.AddQuestion(q);
         _evaluator.AddFiles(q, f1, f2);
@@ -86,8 +87,8 @@ public class EvaluatorTests {
     [Test]
     public void Evaluate_SetFiles() {
         var q = new MyQuestion();
-        IFile[] files1 = [new MyFile(), new MyFile()];
-        IFile[] files2 = [new MyFile(), new MyFile(), new MyFile()];
+        IFile[] files1 = [new MyFile("f1"), new MyFile("f2")];
+        IFile[] files2 = [new MyFile("f1"), new MyFile("f2"), new MyFile("f3")];
         
         _evaluator.AddQuestion(q);
         _evaluator.AddFiles(q, files1);

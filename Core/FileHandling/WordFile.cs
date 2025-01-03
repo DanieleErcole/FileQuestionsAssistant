@@ -12,6 +12,7 @@ public class WordFile : IFile {
     private readonly MainDocumentPart _mainDoc;
     
     public string Name { get; }
+    public string Path { get; }
 
     public IEnumerable<Style> Styles {
         get {
@@ -19,7 +20,7 @@ public class WordFile : IFile {
                 if (_mainDoc.StylesWithEffectsPart is { } s)
                     return s.Styles?.Elements<Style>() ?? throw new InvalidFileFormat(Name);
                 return _mainDoc.StyleDefinitionsPart?.Styles?.Elements<Style>() ?? throw new InvalidFileFormat(Name);
-            } catch (Exception e) when (e is not ApplicationException) {
+            } catch (Exception e) when (e is not FileError) {
                 throw new FileError(Name, e);
             }
         }
@@ -29,7 +30,7 @@ public class WordFile : IFile {
         get {
             try {
                 return _mainDoc.FontTablePart?.Fonts.Elements<Font>() ?? throw new InvalidFileFormat(Name);
-            } catch (Exception e) when (e is not ApplicationException) {
+            } catch (Exception e) when (e is not FileError) {
                 throw new FileError(Name, e);
             }
         }
@@ -39,7 +40,7 @@ public class WordFile : IFile {
         get {
             try {
                 return _mainDoc.Document.Body?.Elements<Paragraph>() ?? throw new InvalidFileFormat(Name);
-            } catch (Exception e) when (e is not ApplicationException) {
+            } catch (Exception e) when (e is not FileError) {
                 throw new FileError(Name, e);
             }
         }
@@ -47,10 +48,11 @@ public class WordFile : IFile {
     
     public WordFile(string name, Stream file) {
         Name = name;
+        Path = file is FileStream fs ? fs.Name : Name;
         try {
             _doc = WordprocessingDocument.Open(file, false);
             _mainDoc = _doc.MainDocumentPart ?? throw new InvalidFileFormat(Name);
-        } catch (Exception e) when (e is not ApplicationException) {
+        } catch (Exception e) when (e is not FileError) {
             throw new FileError(Name, e);
         }
     }

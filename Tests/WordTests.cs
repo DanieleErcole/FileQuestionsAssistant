@@ -48,11 +48,12 @@ public class WordTests {
         _ = new WordFile(f.Name, f);
     });
 
-    [TestCase("CustomStyle", "Normal", "Consolas", 12, 255, 0, 0, "center", true)]
-    [TestCase("NotReal", "Normal", "Calibri", 12, 1, 1, 1, "left", false)]
+    [TestCase("CustomStyle", "Normal", "Consolas", 12, 255, 0, 0, Alignment.Center, true)]
+    [TestCase("NotReal", "Normal", "Calibri", 12, 1, 1, 1, Alignment.Left, false)]
     [TestCase("CustomStyle", "Normal", "Consolas", null, null, 0, 0, null, true)]
     [TestCase("WrongName", "Heading 1", "Calibri", null, 255, 0, 0, null, false)]
-    public void WordCreateStyleQuestion_TestCase(string styleName, string? baseStyleName, string? fontName, int? fontSize, int? r, int? g, int? b, string? alignment, bool expectedRes) {
+    public void WordCreateStyleQuestion_TestCase(string styleName, string? baseStyleName, string? fontName, int? fontSize, int? r, int? g, int? b, 
+        Alignment? alignment, bool expectedRes) {
         Color? rgb = r is null || g is null || b is null ? null : Color.FromArgb((int) r, (int) g, (int) b);
         var q = new CreateStyleQuestion("", "Name", "Description", _ogFile, styleName, baseStyleName, fontName, fontSize, rgb, alignment);
         
@@ -64,7 +65,7 @@ public class WordTests {
     [Test]
     public void WordCreateStyleQuestion_polymorphic_serialization() {
         AbstractQuestion q = new CreateStyleQuestion("", "Name", "Description", _ogFile, "styleName", 
-            "baseStyleName", "fontName", 12, Color.Blue, "alignment");
+            "baseStyleName", "fontName", 12, Color.Blue, Alignment.Left);
         var json = JsonSerializer.Serialize(q, Options);
         var deserialized = JsonSerializer.Deserialize<AbstractQuestion>(json, Options);
         Assert.That(deserialized is CreateStyleQuestion, Is.EqualTo(true));

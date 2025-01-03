@@ -19,6 +19,7 @@ public class UIException(string title, string desc, Exception? inner = null) : E
 
     public static implicit operator UIException(ApplicationException ex) {
         return ex switch {
+            FileAlreadyOpened e => new UIException(Lang.Lang.ErrorOpeningFilename, string.Format(Lang.Lang.FileAlreadyOpenedMsg, e.Filename)),
             InvalidFileFormat => new UIException(Lang.Lang.ErrorOpeningFilename, Lang.Lang.InvalidFileFormatMsg),
             FileError other => other.InnerException switch {
                 UnauthorizedAccessException => new UIException(Lang.Lang.UnableToAccessFile, Lang.Lang.NoPermissionDesc),
