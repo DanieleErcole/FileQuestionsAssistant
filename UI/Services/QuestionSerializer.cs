@@ -9,7 +9,7 @@ using Core.Evaluation;
 using Core.Questions;
 using Core.Utils.Errors;
 using Serilog;
-using ColorConverter = Core.Utils.ColorConverter;
+using ColorConverter = Core.Utils.Converters.ColorConverter;
 
 namespace UI.Services;
 

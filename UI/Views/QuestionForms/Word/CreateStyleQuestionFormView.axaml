@@ -8,11 +8,12 @@
              xmlns:word="clr-namespace:UI.ViewModels.QuestionForms.Word"
              xmlns:mycontrols="clr-namespace:UI.Views.Controls"
              xmlns:utils="clr-namespace:UI.Utils"
+             xmlns:converters="clr-namespace:UI.Utils.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="word:CreateStyleQuestionFormViewModel"
              x:Class="UI.Views.QuestionForms.Word.CreateStyleQuestionFormView">
     <UserControl.Resources>
-        <utils:AlignmentValueConverter x:Key="AlignmentValueConverter" />
+        <converters:AlignmentValueConverter x:Key="AlignmentValueConverter" />
     </UserControl.Resources>
     <StackPanel>
         <mycontrols:BaseQuestionControls/>

@@ -19,7 +19,7 @@ public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandle
         return question switch {
             CreateStyleQuestion => QuestionTypeIndex.CreateStyle,
             ParagraphApplyStyleQuestion => QuestionTypeIndex.ParagraphApplyStyle,
-            ImageInsertQuestion => QuestionTypeIndex.PptxImageInsert,
+            ShapeInsertQuestion => QuestionTypeIndex.PptxImageInsert,
             _ => QuestionTypeIndex.CreateStyle
         };
     }

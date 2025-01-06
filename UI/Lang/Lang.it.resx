@@ -149,11 +149,11 @@
     <data name="ParagraphApplyStyleQuestionDesc" xml:space="preserve">
         <value>Verifica che in un documento Word sia stato applicato uno stile specifico a un paragrafo qualsiasi</value>
     </data>
-    <data name="PptxImageInsertQuestionName" xml:space="preserve">
-        <value>Inserisci immagine Powerpoint</value>
+    <data name="PptxShapeInsertQuestionName" xml:space="preserve">
+        <value>Inserisci forma PowerPoint</value>
     </data>
-    <data name="PptxImageInsertQuestionDesc" xml:space="preserve">
-        <value>Verifica che nella presentazione PowerPoint sia stata inserita un'immagine con la posizione e le dimensioni corrette</value>
+    <data name="PptxShapeInsertQuestionDesc" xml:space="preserve">
+        <value>Verifica che nella presentazione PowerPoint sia stata inserita un'immagine o una forma con la posizione, le dimensioni o la rotazione corrette.</value>
     </data>
     <data name="SaveBtnText" xml:space="preserve">
         <value>Salva</value>
@@ -220,5 +220,11 @@
     </data>
     <data name="FileAlreadyOpenedMsg" xml:space="preserve">
         <value>Il file {0} è già stato aperto</value>
+    </data>
+    <data name="FlipHLabel" xml:space="preserve">
+        <value>Flip orizzontale</value>
+    </data>
+    <data name="RotationLabel" xml:space="preserve">
+        <value>Rotazione</value>
     </data>
 </root>

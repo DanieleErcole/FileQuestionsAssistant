@@ -2,8 +2,8 @@
 
 namespace UI.Views.QuestionForms.Powerpoint;
 
-public partial class ImageInsertQuestionFormView : UserControl {
-    public ImageInsertQuestionFormView() {
+public partial class ShapeInsertQuestionFormView : UserControl {
+    public ShapeInsertQuestionFormView() {
         InitializeComponent();
     }
 }

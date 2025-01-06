@@ -6,6 +6,7 @@ using Core.Evaluation;
 using Core.Questions;
 using Core.Utils.Errors;
 using UI.Services;
+using UI.Utils;
 
 namespace UI.ViewModels.Questions;
 
@@ -32,14 +33,14 @@ public abstract class SingleQuestionViewModel(AbstractQuestion q, Evaluator eval
     public abstract Dictionary<string, object?> GetLocalizedQuestionParams();
     protected abstract List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res);
 
-    public List<FileResultViewModel.Node> ResultParamsAsNodes(Result res) => 
+    public List<TreeViewNode> ResultParamsAsNodes(Result res) => 
         GetLocalizedResultParams(res)
         .Select(d => { var first = (d.First().Key, d.First().Value.Item1, d.First().Value.Item2);
             var list = d
                 .Select(e => (e.Key, e.Value.Item1, e.Value.Item2))
                 .Where(e => e.Item1 != first.Item1 && e.Item2 != first.Item2)
                 .ToList();
-            return new FileResultViewModel.Node(first.Item1, first.Item2, first.Item3, list, true);
+            return new TreeViewNode(first.Item1, first.Item2, first.Item3, list, true);
         }).ToList();
 
 }

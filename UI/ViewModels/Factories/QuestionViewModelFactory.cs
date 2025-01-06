@@ -26,14 +26,14 @@ public class QuestionViewModelFactory(Evaluator evaluator, IErrorHandlerService 
     public SingleQuestionViewModel NewQuestionVm(IQuestion question) => question switch {
         CreateStyleQuestion csq => new CreateStyleQuestionVM(csq, evaluator, errorHandler, storageService),
         ParagraphApplyStyleQuestion par => new ParagraphApplyStyleQuestionVM(par, evaluator, errorHandler, storageService),
-        ImageInsertQuestion pptImage => new ImageInsertQuestionVM(pptImage, evaluator, errorHandler, storageService),
+        ShapeInsertQuestion pptImage => new ShapeInsertQuestionVM(pptImage, evaluator, errorHandler, storageService),
         _ => throw new ArgumentException("Invalid question type")
     };
 
     public QuestionFormBaseVM NewQuestionFormVm(QuestionTypeIndex index, AbstractQuestion? question = null) => index switch {
         QuestionTypeIndex.CreateStyle => new CreateStyleQuestionFormViewModel(errorHandler, storageService, question),
         QuestionTypeIndex.ParagraphApplyStyle => new ParagraphApplyStyleQuestionFormViewModel(errorHandler, storageService, question),
-        QuestionTypeIndex.PptxImageInsert => new ImageInsertQuestionFormViewModel(errorHandler, storageService, question),
+        QuestionTypeIndex.PptxImageInsert => new ShapeInsertQuestionFormViewModel(errorHandler, storageService, question),
         _ => throw new ArgumentException("Invalid question index")
     };
     

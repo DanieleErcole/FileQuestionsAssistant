@@ -6,12 +6,15 @@
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:lang="clr-namespace:UI.Lang"
              xmlns:questions="clr-namespace:UI.ViewModels.Questions"
+             xmlns:converters="clr-namespace:UI.Utils.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="pages:ResultsPageViewModel"
              x:Class="UI.Views.Pages.ResultsPageView">
+    
     <UserControl.Styles>
         <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
     </UserControl.Styles>
+    
     <DockPanel x:Name="PageContainer"
                Height="{Binding $parent[StackPanel].Height}">
         <StackPanel DockPanel.Dock="Top" 
@@ -29,10 +32,11 @@
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Margin="20, 0, 20, 20">
             <TextBlock Margin="0, 0, 0, 20" Text="{Binding QuestionVM.Description, FallbackValue={x:Null}}"/>
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                          MaxHeight="200">
                 <ItemsControl ItemsSource="{Binding CorrectParams}">
                     <ItemsControl.Styles>
-                        <Style Selector="ContentPresenter:nth-child(2n+1)">
+                        <Style Selector="ContentPresenter:nth-child(odd)">
                             <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorTertiary}"></Setter>
                         </Style>
                     </ItemsControl.Styles>
@@ -42,8 +46,8 @@
                             <Panel Margin="0, 5, 0, 5">
                                 <TextBlock HorizontalAlignment="Left" Margin="10, 0, 0, 0"
                                            Text="{Binding Key}"/>
-                                <TextBlock HorizontalAlignment="Right" Margin="0, 0, 10, 0"
-                                           Text="{Binding Value}"/>
+                                <TextBlock HorizontalAlignment="Right" Margin="0, 0, 20, 0"
+                                           Text="{Binding Value, Converter={x:Static converters:ParamsConverters.AnyConverter}}"/>
                             </Panel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -143,7 +147,8 @@
                                             <TextBlock HorizontalAlignment="Left" Margin="20, 0, 0, 0"
                                                        Text="{Binding Title}"/>
                                             <TextBlock HorizontalAlignment="Right" Margin="0, 0, 10, 0"
-                                                       Text="{Binding Value}"/>
+                                                       IsVisible="{Binding IsFirst}"
+                                                       Text="{Binding Value, Converter={x:Static converters:ParamsConverters.NoneConverter}}"/>
                                         </Panel>
                                     </TreeDataTemplate>
                                 </TreeView.ItemTemplate>
