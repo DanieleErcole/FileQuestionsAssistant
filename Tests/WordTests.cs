@@ -7,7 +7,7 @@ using Core.Questions.Word;
 using Core.Utils;
 using Core.Utils.Errors;
 using Tests.Utils;
-using ColorConverter = Core.Utils.ColorConverter;
+using ColorConverter = Core.Utils.Converters.ColorConverter;
 
 namespace Tests;
 

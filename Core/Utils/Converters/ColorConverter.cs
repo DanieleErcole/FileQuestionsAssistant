@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Core.Utils;
+namespace Core.Utils.Converters;
 
 public static class ColorExtensions {
     public static string ToHexString(this Color color) {

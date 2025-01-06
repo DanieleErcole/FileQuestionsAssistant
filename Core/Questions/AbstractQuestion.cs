@@ -11,7 +11,7 @@ namespace Core.Questions;
 // Note: edit when adding new question types
 [JsonDerivedType(typeof(CreateStyleQuestion), typeDiscriminator: 0)]
 [JsonDerivedType(typeof(ParagraphApplyStyleQuestion), typeDiscriminator: 1)]
-[JsonDerivedType(typeof(ImageInsertQuestion), typeDiscriminator: 2)]
+[JsonDerivedType(typeof(ShapeInsertQuestion), typeDiscriminator: 2)]
 public abstract class AbstractQuestion : IQuestion {
     
     public string Name { get; }

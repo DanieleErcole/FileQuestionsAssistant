@@ -34,7 +34,7 @@ public class PowerpointTests {
     public void File_NotPresent() => Assert.Throws<FileError>(() => {
         var f = new PowerpointFile(_powerpointFile.Name, _powerpointFile);
         f.Dispose();
-        Console.WriteLine($"{f.Pictures}");
+        Console.WriteLine($"{f.Shapes}");
     });
 
     [Test]
@@ -43,12 +43,16 @@ public class PowerpointTests {
         _ = new PowerpointFile(f.Name, f);
     });
 
-    [TestCase(11.8, 0.85, 21.52, 12.11, Origin.TopLeftCorner, Origin.TopLeftCorner, true)]
-    [TestCase(11.8, null, 21.52, 12.11, null, Origin.TopLeftCorner, true)]
-    [TestCase(11.8, 0.85, 21.52, 12.11, Origin.SlideCenter, Origin.SlideCenter, false)]
-    [TestCase(11.8, null, 21.52, 12.11, null, Origin.SlideCenter, false)]
-    public void ImageInsertQuestion_TestCase(double? x, double? y, double? width, double? height, Origin? vO, Origin? hO, bool expectedRes) {
-        var q = new ImageInsertQuestion("", "Name", "Description", _ogFile, x, y, width, height, vO ?? Origin.TopLeftCorner, hO ?? Origin.TopLeftCorner);
+    [TestCase(11.8, 0.85, 21.52, 12.11, null, Origin.TopLeftCorner, Origin.TopLeftCorner, false, false, true)]
+    [TestCase(-12.48, -3.23, 16.27, 9.15, null, Origin.SlideCenter, Origin.SlideCenter, true, false, true)]
+    [TestCase(11.8, null, 21.52, 12.11, null, null, Origin.TopLeftCorner, false, false, true)]
+    [TestCase(3.32, 11.52, 5.17, 5.74, 10, null, null, true, false, true)]
+    [TestCase(null, null, 5.17, 5.74, 10, null, Origin.TopLeftCorner, true, false, true)]
+    [TestCase(11.8, 0.85, 21.52, 12.11, null, Origin.SlideCenter, Origin.SlideCenter, false, true, false)]
+    [TestCase(11.8, null, 21.52, 12.11, null, null, Origin.SlideCenter, true, false, false)]
+    public void ShapeInsertQuestion_TestCase(double? x, double? y, double? width, double? height, int? rotation, Origin? vO, Origin? hO, bool flipV, bool flipH, bool expectedRes) {
+        var q = new ShapeInsertQuestion("", "Name", "Description", _ogFile, x, y, width, height, rotation,
+            vO ?? Origin.TopLeftCorner, hO ?? Origin.TopLeftCorner, flipV, flipH);
         _evaluator.AddQuestion(q, new PowerpointFile(_powerpointFile.Name, _powerpointFile));
         
         var res = _evaluator.Evaluate(q).First();
