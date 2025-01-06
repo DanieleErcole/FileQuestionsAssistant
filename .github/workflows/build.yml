@@ -1,4 +1,4 @@
-name: Build and Release
+name: build
 
 on:
   workflow_dispatch:
@@ -36,7 +36,7 @@ jobs:
 
     - name: Publish Application
       run: |
-        dotnet publish ./UI -c Release -r ${{ matrix.rid }} -p:DebugType=Portable -p:PublishSingleFile=true --self-contained true -o publish/fileQuestionsAssistant_${{ matrix.rid }}
+        dotnet publish ./UI -c Release -r ${{ matrix.rid }} -p:DebugType=Embedded -p:PublishSingleFile=true --self-contained true -o publish/fileQuestionsAssistant_${{ matrix.rid }}
 
     - name: Zip the files
       run: |
