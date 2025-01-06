@@ -16,7 +16,7 @@ public abstract partial class QuestionDataPageViewModel(string title, string btn
     public string[] QuestionTypes { get; } = [
         Lang.Lang.CreateStyleQuestionName,
         Lang.Lang.ParagraphApplyStyleQuestionName,
-        Lang.Lang.PptxImageInsertQuestionName
+        Lang.Lang.PptxShapeInsertQuestionName
     ];
 
     private int _selectedIndex;

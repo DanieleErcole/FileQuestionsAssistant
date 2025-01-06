@@ -69,7 +69,7 @@
       <DependentUpon>ParagraphApplyStyleQuestionFormView.axaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\QuestionForms\Powerpoint\ImageInsertQuestionFormView.axaml.cs">
+    <Compile Update="Views\QuestionForms\Powerpoint\ShapeInsertQuestionFormView.axaml.cs">
       <DependentUpon>ImageInsertQuestionFormView.axaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

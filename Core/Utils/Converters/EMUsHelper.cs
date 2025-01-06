@@ -1,4 +1,4 @@
-﻿namespace Core.Utils;
+﻿namespace Core.Utils.Converters;
 
 public static class EMUsHelper {
 

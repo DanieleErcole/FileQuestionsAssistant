@@ -156,11 +156,11 @@
     <data name="ParagraphApplyStyleQuestionDesc" xml:space="preserve">
         <value>Checks if a specific style has been applied to a paragraph in a Word document</value>
     </data>
-    <data name="PptxImageInsertQuestionName" xml:space="preserve">
-        <value>Insert Powepoint image</value>
+    <data name="PptxShapeInsertQuestionName" xml:space="preserve">
+        <value>Insert PowerPoint shape</value>
     </data>
-    <data name="PptxImageInsertQuestionDesc" xml:space="preserve">
-        <value>Checks if an image has been inserted in a PowerPoint document with specific position and dimensions</value>
+    <data name="PptxShapeInsertQuestionDesc" xml:space="preserve">
+        <value>Checks if a shape or an image has been inserted in a PowerPoint document with specific position, dimensions or rotation.</value>
     </data>
     <data name="SaveBtnText" xml:space="preserve">
         <value>Save</value>
@@ -227,5 +227,14 @@
     </data>
     <data name="FileAlreadyOpenedMsg" xml:space="preserve">
         <value>The file {0} is already opened </value>
+    </data>
+    <data name="FlipVLabel" xml:space="preserve">
+        <value>Vertical flip</value>
+    </data>
+    <data name="FlipHLabel" xml:space="preserve">
+        <value>Horizontal flip</value>
+    </data>
+    <data name="RotationLabel" xml:space="preserve">
+        <value>Rotation</value>
     </data>
 </root>

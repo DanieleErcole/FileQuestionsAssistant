@@ -285,6 +285,24 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal flip.
+        /// </summary>
+        public static string FlipHLabel {
+            get {
+                return ResourceManager.GetString("FlipHLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical flip.
+        /// </summary>
+        public static string FlipVLabel {
+            get {
+                return ResourceManager.GetString("FlipVLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Font name.
         /// </summary>
         public static string FontNameLabel {
@@ -483,20 +501,20 @@ namespace UI.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checks if an image has been inserted in a PowerPoint document with specific position and dimensions.
+        ///   Looks up a localized string similar to Checks if a shape or an image has been inserted in a PowerPoint document with specific position, dimensions or rotation..
         /// </summary>
-        public static string PptxImageInsertQuestionDesc {
+        public static string PptxShapeInsertQuestionDesc {
             get {
-                return ResourceManager.GetString("PptxImageInsertQuestionDesc", resourceCulture);
+                return ResourceManager.GetString("PptxShapeInsertQuestionDesc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert Powepoint image.
+        ///   Looks up a localized string similar to Insert PowerPoint shape.
         /// </summary>
-        public static string PptxImageInsertQuestionName {
+        public static string PptxShapeInsertQuestionName {
             get {
-                return ResourceManager.GetString("PptxImageInsertQuestionName", resourceCulture);
+                return ResourceManager.GetString("PptxShapeInsertQuestionName", resourceCulture);
             }
         }
         
@@ -542,6 +560,15 @@ namespace UI.Lang {
         public static string ResultsTab {
             get {
                 return ResourceManager.GetString("ResultsTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rotation.
+        /// </summary>
+        public static string RotationLabel {
+            get {
+                return ResourceManager.GetString("RotationLabel", resourceCulture);
             }
         }
         

@@ -1,0 +1,101 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:powerpoint="clr-namespace:UI.ViewModels.QuestionForms.Powerpoint"
+             xmlns:mycontrols="clr-namespace:UI.Views.Controls"
+             xmlns:lang="clr-namespace:UI.Lang"
+             xmlns:converters="clr-namespace:UI.Utils.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="powerpoint:ShapeInsertQuestionFormViewModel"
+             x:Class="UI.Views.QuestionForms.Powerpoint.ShapeInsertQuestionFormView">
+    <UserControl.Resources>
+        <converters:OriginValueConverter x:Key="OriginValueConverter"/>
+    </UserControl.Resources>
+    
+    <StackPanel>
+        <mycontrols:BaseQuestionControls/>
+        <Separator Margin="20,0, 20, 20"/>
+        <StackPanel Margin="20, 0">
+            <StackPanel Margin="0, 0, 0, 20"
+                        Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" 
+                           Margin="0, 0, 10,  0"
+                           Text="{x:Static lang:Lang.XPosLabel}"/>
+                <NumericUpDown Width="200"
+                               FormatString="0.00"
+                               Value="{Binding X}"/>
+                <TextBlock VerticalAlignment="Center"
+                           Margin="20, 0, 10,  0"
+                           Text="{x:Static lang:Lang.FromLabel}"/>
+                <ComboBox ItemsSource="{Binding Origins}"
+                          SelectedItem="{Binding HOrigin, Converter={StaticResource OriginValueConverter}}"/>
+            </StackPanel>
+            <StackPanel Margin="0, 0, 0, 20"
+                        Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center"
+                           Margin="0, 0, 10,  0"
+                           Text="{x:Static lang:Lang.YPosLabel}"/>
+                <NumericUpDown Width="200"
+                               FormatString="0.00"
+                               Value="{Binding Y}"/>
+                <TextBlock VerticalAlignment="Center"
+                           Margin="20, 0, 10,  0"
+                           Text="{x:Static lang:Lang.FromLabel}"/>
+                <ComboBox ItemsSource="{Binding Origins}"
+                          SelectedItem="{Binding VOrigin, Converter={StaticResource OriginValueConverter}}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 20">
+                <StackPanel HorizontalAlignment="Left">
+                    <TextBlock Margin="2, 0, 0, 5" 
+                               Text="{x:Static lang:Lang.WidthLabel}"/>
+                    <NumericUpDown HorizontalAlignment="Left"
+                                   FormatString="0.00"
+                                   Width="200" 
+                                   Value="{Binding Width}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" 
+                            Margin="20, 0, 0, 0"
+                            HorizontalAlignment="Right">
+                    <TextBlock Margin="0, 20, 10, 0" 
+                               VerticalAlignment="Center"
+                               Text="{x:Static lang:Lang.FlipHLabel}"/>
+                    <CheckBox HorizontalAlignment="Left"
+                              Margin="0, 20, 0, 0"
+                              IsChecked="{Binding FlipH}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 20">
+                <StackPanel HorizontalAlignment="Left">
+                    <TextBlock Margin="2, 0, 0, 5" 
+                               Text="{x:Static lang:Lang.HeightLabel}"/>
+                    <NumericUpDown HorizontalAlignment="Left"
+                                   FormatString="0.00"
+                                   Width="200"
+                                   Value="{Binding Height}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" 
+                            Margin="20, 0, 0, 0"
+                            HorizontalAlignment="Right">
+                    <TextBlock Margin="0, 20, 10, 0"
+                               VerticalAlignment="Center"
+                               Text="{x:Static lang:Lang.FlipVLabel}"/>
+                    <CheckBox HorizontalAlignment="Left"
+                              Margin="0, 20, 0, 0"
+                              IsChecked="{Binding FlipV}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Margin="2, 0, 0, 5">
+                    <TextBlock Text="{x:Static lang:Lang.RotationLabel}"/>
+                    <TextBlock Text="(°)"/>
+                </StackPanel>
+                <NumericUpDown HorizontalAlignment="Left"
+                               FormatString="0"
+                               Width="200"
+                               Value="{Binding Rotation}"/>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

@@ -3,7 +3,7 @@ using System.Globalization;
 using Avalonia.Data.Converters;
 using Core.Utils;
 
-namespace UI.Utils;
+namespace UI.Utils.Converters;
 
 public class AlignmentValueConverter : IValueConverter {
     

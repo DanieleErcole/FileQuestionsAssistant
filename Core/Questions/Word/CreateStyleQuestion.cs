@@ -3,9 +3,8 @@ using System.Text.Json.Serialization;
 using Core.Evaluation;
 using Core.FileHandling;
 using Core.Utils;
-using Core.Utils.Errors;
+using Core.Utils.Converters;
 using DocumentFormat.OpenXml.Wordprocessing;
-using ArgumentException = System.ArgumentException;
 using Color = System.Drawing.Color;
 
 namespace Core.Questions.Word;
@@ -37,8 +36,7 @@ public class CreateStyleQuestion : AbstractQuestion {
             var jsonEl = (JsonElement?) v;
             Params[k] = k switch {
                 "styleName" => jsonEl?.Deserialize<string>(),
-                "baseStyleName" => jsonEl?.Deserialize<string?>(),
-                "fontName" => jsonEl?.Deserialize<string?>(),
+                "baseStyleName" or "fontName" => jsonEl?.Deserialize<string?>(),
                 "fontSize" => jsonEl?.Deserialize<int?>(),
                 "color" => jsonEl?.Deserialize<Color?>(Options),
                 "alignment" => jsonEl?.Deserialize<Alignment?>(),

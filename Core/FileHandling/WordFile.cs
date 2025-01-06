@@ -2,7 +2,6 @@
 using Core.Utils.Errors;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using ApplicationException = Core.Utils.Errors.ApplicationException;
 
 namespace Core.FileHandling; 
 
@@ -66,8 +65,6 @@ public class WordFile : IFile {
         GC.SuppressFinalize(this);
     }
     
-    ~WordFile() {
-        Dispose();
-    }
+    ~WordFile() => Dispose();
     
 }
