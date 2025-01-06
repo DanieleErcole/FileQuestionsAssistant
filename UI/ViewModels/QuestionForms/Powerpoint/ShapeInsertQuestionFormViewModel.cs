@@ -53,7 +53,7 @@ public partial class ShapeInsertQuestionFormViewModel : QuestionFormBaseVM {
             ErrorMsg = Lang.Lang.MissingRequiredFields;
             return null;
         }
-        if (X is null && Y is null && Width is null && Height is null) {
+        if (X is null && Y is null && Width is null && Height is null && Rotation is null) {
             ErrorMsg = Lang.Lang.NoParametersSetText;
             return null;
         }

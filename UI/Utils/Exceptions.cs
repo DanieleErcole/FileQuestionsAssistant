@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Core.FileHandling;
 using Core.Utils.Errors;
 using ApplicationException = Core.Utils.Errors.ApplicationException;
@@ -17,17 +18,16 @@ public class UIException(string title, string desc, Exception? inner = null) : E
         };
     }
 
-    public static implicit operator UIException(ApplicationException ex) {
-        return ex switch {
-            FileAlreadyOpened e => new UIException(Lang.Lang.ErrorOpeningFilename, string.Format(Lang.Lang.FileAlreadyOpenedMsg, e.Filename)),
-            InvalidFileFormat => new UIException(Lang.Lang.ErrorOpeningFilename, Lang.Lang.InvalidFileFormatMsg),
-            FileError other => other.InnerException switch {
-                UnauthorizedAccessException => new UIException(Lang.Lang.UnableToAccessFile, Lang.Lang.NoPermissionDesc),
-                _ => new UIException(Lang.Lang.ErrorOpeningFilename + $": {other.Filename}", other.InnerException?.Message ?? "")
-            },
-            _ => new UIException(Lang.Lang.UnknownError, ex.InnerException?.Message ?? "")
-        };
-    }
+    public static implicit operator UIException(ApplicationException ex) => ex switch {
+        FileAlreadyOpened e => new UIException(Lang.Lang.ErrorOpeningFilename, string.Format(Lang.Lang.FileAlreadyOpenedMsg, e.Filename)),
+        InvalidFileFormat => new UIException(Lang.Lang.ErrorOpeningFilename, Lang.Lang.InvalidFileFormatMsg),
+        FileError other => other.InnerException switch {
+            UnauthorizedAccessException => new UIException(Lang.Lang.ErrorOpeningFilename, Lang.Lang.NoPermissionDesc),
+            FileNotFoundException => new UIException(Lang.Lang.ErrorOpeningFilename, Lang.Lang.FileNotFoundText), 
+            _ => new UIException(Lang.Lang.ErrorOpeningFilename + $": {other.Filename}", other.InnerException?.Message ?? "")
+        },
+        _ => new UIException(Lang.Lang.UnknownError, ex.InnerException?.Message ?? "")
+    };
 
     public override string ToString() {
         return InnerException is null ? Message : $"{Message}: {InnerException}";

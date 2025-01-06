@@ -66,9 +66,6 @@
     <data name="UnableToOpenQuestionDesc" xml:space="preserve">
         <value>Question already tracked</value>
     </data>
-    <data name="UnableToAccessFile" xml:space="preserve">
-        <value>Unable to access the file</value>
-    </data>
     <data name="NoPermissionDesc" xml:space="preserve">
         <value>You do not have permission to access this file</value>
     </data>
@@ -236,5 +233,8 @@
     </data>
     <data name="RotationLabel" xml:space="preserve">
         <value>Rotation</value>
+    </data>
+    <data name="FileNotFoundText" xml:space="preserve">
+        <value>File {0} not found. </value>
     </data>
 </root>
