@@ -34,16 +34,16 @@ public class Evaluator {
 
     public void RemoveQuestion(IQuestion question) {
         if (!_filesByQuestion.ContainsKey(question))
-            throw new ArgumentException("Question already exists");
+            throw new ArgumentException("Question does not exists");
         
         DisposeFiles(question);
         _filesByQuestion.Remove(question);
     }
 
     public void ReplaceQuestion(IQuestion oldQuestion, IQuestion newQuestion) {
-        var files = _filesByQuestion[oldQuestion];
-        if (!_filesByQuestion.Remove(oldQuestion)) 
+        if (!_filesByQuestion.TryGetValue(oldQuestion, out var files)) 
             throw new ArgumentException("Old question does not exist");
+        RemoveQuestion(oldQuestion);
         AddQuestion(newQuestion, files.ToArray());
     }
 

@@ -258,6 +258,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File {0} not found. .
+        /// </summary>
+        public static string FileNotFoundText {
+            get {
+                return ResourceManager.GetString("FileNotFoundText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Files.
         /// </summary>
         public static string FilesLabel {
@@ -632,15 +641,6 @@ namespace UI.Lang {
         public static string ToolTipRemoveSelection {
             get {
                 return ResourceManager.GetString("ToolTipRemoveSelection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to access the file.
-        /// </summary>
-        public static string UnableToAccessFile {
-            get {
-                return ResourceManager.GetString("UnableToAccessFile", resourceCulture);
             }
         }
         

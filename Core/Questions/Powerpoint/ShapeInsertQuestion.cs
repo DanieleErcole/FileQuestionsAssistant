@@ -87,22 +87,17 @@ public class ShapeInsertQuestion : AbstractQuestion {
                 return new Result(Params, [], true);
 
             PowerpointFile ogFile = OgFile;
-            var ogShapes = ogFile.Shapes.Select(ShapeToDict);
-
             var diff = file.Shapes
-                .Select(ShapeToDict)
-                .Where(p => ogShapes.All(i => 
-                    !p.Get<double?>("x").DoubleEquals(i.Get<double?>("x")) ||
-                    !p.Get<double?>("y").DoubleEquals(i.Get<double?>("y")) ||
-                    !p.Get<double?>("width").DoubleEquals(i.Get<double?>("width")) ||
-                    !p.Get<double?>("height").DoubleEquals(i.Get<double?>("height")) ||
-                    p.Get<int?>("rotation") != i.Get<int?>("rotation") ||
-                    p.Get<bool>("flipH") != i.Get<bool>("flipH") ||
-                    p.Get<bool>("flipV") != i.Get<bool>("flipV") ||
-                    p.Get<Origin>("hOrigin") != i.Get<Origin>("hOrigin") ||
-                    p.Get<Origin>("vOrigin") != i.Get<Origin>("vOrigin")
+                .Where(sp => ogFile.Shapes.All(ogSp => 
+                    !sp.X.DoubleEquals(ogSp.X) ||
+                    !sp.Y.DoubleEquals(ogSp.Y) ||
+                    !sp.Width.DoubleEquals(ogSp.Width) ||
+                    !sp.Height.DoubleEquals(ogSp.Height) ||
+                    sp.Rotation != ogSp.Rotation ||
+                    sp.HFlip != ogSp.HFlip ||
+                    sp.VFlip != ogSp.VFlip
                 ));
-            return new Result(Params, diff.ToList(), false);
+            return new Result(Params, diff.Select(ShapeToDict).ToList(), false);
         });
 
 }

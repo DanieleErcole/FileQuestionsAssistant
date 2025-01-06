@@ -59,9 +59,6 @@
     <data name="UnableToOpenQuestionDesc" xml:space="preserve">
         <value>La domanda è già presente</value>
     </data>
-    <data name="UnableToAccessFile" xml:space="preserve">
-        <value>Impossibile accedere al file</value>
-    </data>
     <data name="NoPermissionDesc" xml:space="preserve">
         <value>Non hai l'autorizzazione per accedere a questo file</value>
     </data>
@@ -226,5 +223,11 @@
     </data>
     <data name="RotationLabel" xml:space="preserve">
         <value>Rotazione</value>
+    </data>
+    <data name="FileNotFoundText" xml:space="preserve">
+        <value>File {0} non trovato.</value>
+    </data>
+    <data name="FlipVLabel" xml:space="preserve">
+        <value>Flip verticale</value>
     </data>
 </root>

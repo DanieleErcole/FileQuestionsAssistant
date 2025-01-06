@@ -22,7 +22,7 @@ public class ExcelFile : IFile {
     }
     
     public void Dispose() {
-        _doc.Dispose();
+        if (_doc is not null) _doc.Dispose();
         GC.SuppressFinalize(this);
     }
     
