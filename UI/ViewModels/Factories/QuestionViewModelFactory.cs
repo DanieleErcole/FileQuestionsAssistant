@@ -1,5 +1,4 @@
 ﻿using System;
-using Core.Evaluation;
 using Core.Questions;
 using Core.Questions.Powerpoint;
 using Core.Questions.Word;
@@ -21,12 +20,12 @@ public enum QuestionTypeIndex {
     PptxImageInsert = 2
 }
 
-public class QuestionViewModelFactory(Evaluator evaluator, IErrorHandlerService errorHandler, IStorageService storageService) : IViewModelFactory {
+public class QuestionViewModelFactory(IErrorHandlerService errorHandler, IStorageService storageService) : IViewModelFactory {
 
     public SingleQuestionViewModel NewQuestionVm(IQuestion question) => question switch {
-        CreateStyleQuestion csq => new CreateStyleQuestionVM(csq, evaluator, errorHandler, storageService),
-        ParagraphApplyStyleQuestion par => new ParagraphApplyStyleQuestionVM(par, evaluator, errorHandler, storageService),
-        ShapeInsertQuestion pptImage => new ShapeInsertQuestionVM(pptImage, evaluator, errorHandler, storageService),
+        CreateStyleQuestion csq => new CreateStyleQuestionVM(csq),
+        ParagraphApplyStyleQuestion par => new ParagraphApplyStyleQuestionVM(par),
+        ShapeInsertQuestion pptImage => new ShapeInsertQuestionVM(pptImage),
         _ => throw new ArgumentException("Invalid question type")
     };
 

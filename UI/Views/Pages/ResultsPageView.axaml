@@ -17,41 +17,48 @@
     
     <DockPanel x:Name="PageContainer"
                Height="{Binding $parent[StackPanel].Height}">
-        <StackPanel DockPanel.Dock="Top" 
-                    Orientation="Horizontal">
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *">
             <Button Margin="20, 10, 0, 20"
                     HorizontalAlignment="Left"
                     Theme="{StaticResource TransparentButton}"
                     Command="{Binding ToQuestionPage}">
                 <controls:SymbolIcon Symbol="Back" FontSize="20"/>
             </Button>
-            <TextBlock Margin="20, 10, 0, 20"
+            <TextBlock Grid.Column="1"
+                       Margin="20, 10, 0, 20"
                        HorizontalAlignment="Left"
                        Theme="{StaticResource SubtitleTextBlockStyle}"
                        Text="{Binding QuestionVM.Name, FallbackValue={x:Null}}"/>
-        </StackPanel>
+        </Grid>
         <StackPanel DockPanel.Dock="Top" Margin="20, 0, 20, 20">
             <TextBlock Margin="0, 0, 0, 20" Text="{Binding QuestionVM.Description, FallbackValue={x:Null}}"/>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                          ClipToBounds="True"
                           MaxHeight="200">
-                <ItemsControl ItemsSource="{Binding CorrectParams}">
-                    <ItemsControl.Styles>
-                        <Style Selector="ContentPresenter:nth-child(odd)">
+                <ItemsRepeater ItemsSource="{Binding CorrectParams}">
+                    <ItemsRepeater.Styles>
+                        <Style Selector="ItemsRepeater > Panel">
+                            <Setter Property="Height" Value="30"></Setter>
+                        </Style>
+                        <Style Selector="ItemsRepeater > Panel:nth-child(odd)">
                             <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorTertiary}"></Setter>
                         </Style>
-                    </ItemsControl.Styles>
+                        <Style Selector="ItemsRepeater TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                        </Style>
+                    </ItemsRepeater.Styles>
                     
-                    <ItemsControl.ItemTemplate>
+                    <ItemsRepeater.ItemTemplate>
                         <DataTemplate>
-                            <Panel Margin="0, 5, 0, 5">
+                            <Panel>
                                 <TextBlock HorizontalAlignment="Left" Margin="10, 0, 0, 0"
                                            Text="{Binding Key}"/>
                                 <TextBlock HorizontalAlignment="Right" Margin="0, 0, 20, 0"
                                            Text="{Binding Value, Converter={x:Static converters:ParamsConverters.AnyConverter}}"/>
                             </Panel>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
             </ScrollViewer>
         </StackPanel>
         <Panel DockPanel.Dock="Bottom" 
@@ -77,44 +84,44 @@
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
                 <Button Name="DeleteBtn" 
-                        VerticalAlignment="Center"
+                        Classes="transparent-button"
                         Command="{Binding RemoveSelection}"
-                        Theme="{StaticResource TransparentButton}"
                         ToolTip.Tip="{x:Static lang:Lang.ToolTipRemoveSelection}">
                     <controls:SymbolIcon Symbol="Delete" FontSize="20"></controls:SymbolIcon>
                 </Button>
                 <Button Name="EvaluateBtn"
-                        VerticalAlignment="Center"
+                        Classes="transparent-button"
                         Margin="5, 0, 0, 0"
                         Command="{Binding EvaluateButton}"
-                        Theme="{StaticResource TransparentButton}"
                         ToolTip.Tip="{x:Static lang:Lang.ToolTipEvaluateButton}">
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Center">
+                    <Grid ColumnDefinitions="Auto,Auto">
                         <TextBlock Text="{x:Static lang:Lang.EvaluateBtnText}"/>
-                        <controls:SymbolIcon Symbol="PlayFilled" FontSize="18" Foreground="{DynamicResource SystemFillColorSuccessBrush}"/>
-                    </StackPanel>
+                        <controls:SymbolIcon Grid.Column="1" Symbol="PlayFilled" FontSize="18" Foreground="{DynamicResource SystemFillColorSuccessBrush}"/>
+                    </Grid>
                 </Button>
             </StackPanel>
         </Panel>
         <ScrollViewer DockPanel.Dock="Top"
-                      Margin="20, 0">
-            <ItemsControl Name="FileList"
-                     ItemsSource="{Binding FilesResult}">
+                      Margin="20, 0"
+                      ClipToBounds="True">
+            <ItemsRepeater Name="FileList"
+                            ItemsSource="{Binding FilesResult}">
+                <ItemsRepeater.Layout>
+                    <StackLayout Spacing="5"/>
+                </ItemsRepeater.Layout>
                 
-                <ItemsControl.Styles>
+                <ItemsRepeater.Styles>
                     <Style Selector="Expander.success > StackPanel > controls|SymbolIcon">
                         <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}"></Setter>
                     </Style>
                     <Style Selector="Expander.failure > StackPanel > controls|SymbolIcon">
                         <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}"></Setter>
                     </Style>
-                </ItemsControl.Styles>
+                </ItemsRepeater.Styles>
                 
-                <ItemsControl.ItemTemplate>
+                <ItemsRepeater.ItemTemplate>
                     <DataTemplate DataType="{x:Type questions:FileResultViewModel}">
                         <Expander Expanding="OnExpanding"
-                                  Margin="0, 0, 0, 5"
                                   Classes.success="{Binding IsSuccess}"
                                   Classes.failure="{Binding IsFailed}">
                             <Expander.Header>
@@ -133,10 +140,17 @@
                             </Expander.Header>
                             <TreeView ItemsSource="{Binding FileParams}"
                                       SelectionChanged="OnSelectionChanged">
+                                <TreeView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel/>
+                                    </ItemsPanelTemplate>
+                                </TreeView.ItemsPanel>
+                                
                                 <TreeView.Styles>
                                     <StyleInclude Source="/Styles/TreeViewStyle.axaml"/>
                                 </TreeView.Styles>
                                 <TreeView.ItemTemplate>
+                                    
                                     <TreeDataTemplate ItemsSource="{Binding SubNodes}">
                                         <Panel Classes.success="{Binding IsCorrect}"
                                                Classes.failure="{Binding !IsCorrect}"
@@ -155,8 +169,8 @@
                             </TreeView>
                         </Expander>
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
         </ScrollViewer>
     </DockPanel>
 </UserControl>

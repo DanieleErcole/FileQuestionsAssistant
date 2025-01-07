@@ -22,7 +22,7 @@ public class QuestionsPageViewModel : PageViewModel {
         get => _searchText;
         set {
             SetProperty(ref _searchText, value);
-            QuestionsSearch.Refresh();
+            Refresh();
         }
     }
     
@@ -44,7 +44,9 @@ public class QuestionsPageViewModel : PageViewModel {
         });
     }
 
-    public override void OnNavigatedTo(object? param = null) => QuestionsSearch.Refresh();
+    public void Refresh() => QuestionsSearch.Refresh();
+
+    public override void OnNavigatedTo(object? param = null) => Refresh();
     
     public async Task OpenQuestion() {
         var files = await StorageService.GetFilesAsync(new FilePickerOpenOptions {
@@ -58,8 +60,10 @@ public class QuestionsPageViewModel : PageViewModel {
             if (await Serializer.Load(filePath) is { } q) {
                 if (Evaluator.Questions.Any(e => e.Path == q.Path))
                     throw new UnableToOpenQuestion();
+                
                 Evaluator.AddQuestion(q);
                 await Serializer.UpdateTrackingFile();
+                
                 NavigatorService.NavigateTo<ResultsPageViewModel>(q);
             }
         } catch (Exception e) {
@@ -85,7 +89,7 @@ public class QuestionsPageViewModel : PageViewModel {
         } catch (FileError e) {
             ErrorHandler.ShowError(e);
         }
-        QuestionsSearch.Refresh();
+        Refresh();
     }
 
     public void OnSelectedQuestion(SelectionChangedEventArgs e) {

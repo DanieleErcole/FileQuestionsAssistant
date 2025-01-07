@@ -86,9 +86,10 @@ public class ShapeInsertQuestion : AbstractQuestion {
             if (matchedShape is not null) 
                 return new Result(Params, [], true);
 
-            PowerpointFile ogFile = OgFile;
+            using PowerpointFile ogFile = OgFile;
+            var ogShapes = ogFile.Shapes.ToList();
             var diff = file.Shapes
-                .Where(sp => ogFile.Shapes.All(ogSp => 
+                .Where(sp => ogShapes.All(ogSp => 
                     !sp.X.DoubleEquals(ogSp.X) ||
                     !sp.Y.DoubleEquals(ogSp.Y) ||
                     !sp.Width.DoubleEquals(ogSp.Width) ||

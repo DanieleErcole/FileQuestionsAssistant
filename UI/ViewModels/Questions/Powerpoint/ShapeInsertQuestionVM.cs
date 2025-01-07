@@ -4,13 +4,11 @@ using Core.Evaluation;
 using Core.Questions.Powerpoint;
 using Core.Utils;
 using Core.Utils.Converters;
-using UI.Services;
 using UI.Utils.Converters;
 
 namespace UI.ViewModels.Questions.Powerpoint;
 
-public class ShapeInsertQuestionVM(ShapeInsertQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageService storageService) 
-    : PowerpointQuestionViewModel(q, evaluator, errorHandler, storageService) {
+public class ShapeInsertQuestionVM(ShapeInsertQuestion q) : PowerpointQuestionViewModel(q) {
     
     public override string Description => Question.Desc ?? Lang.Lang.PptxShapeInsertQuestionDesc;
     

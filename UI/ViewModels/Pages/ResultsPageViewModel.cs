@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Evaluation;
 using Core.FileHandling;
 using Core.Questions;
+using Core.Utils.Errors;
 using FluentAvalonia.UI.Data;
 using UI.Services;
 using UI.ViewModels.Factories;
@@ -54,7 +55,7 @@ public partial class ResultsPageViewModel : PageViewModel {
         CorrectParams = QuestionVM.GetLocalizedQuestionParams();
         
         var files = Evaluator.QuestionFiles(QuestionVM.Question);
-        FilesResult = new IterableCollectionView(files.Select(f => 
+        FilesResult = new IterableCollectionView(files.Select(f =>
             new FileResultViewModel(QuestionVM, f, _results.GetValueOrDefault(f), FileSelected)
         ), _ => true);
     }
@@ -90,7 +91,14 @@ public partial class ResultsPageViewModel : PageViewModel {
     }
 
     public async Task AddFiles() {
-        await QuestionVM!.AddFiles();
+        try {
+            var files = await StorageService.GetFilesOfTypeAsync(QuestionVM!.FileType, true);
+            if (files.Length == 0)
+                return;
+            Evaluator.AddFiles(QuestionVM!.Question, files);
+        } catch (FileError e) {
+            ErrorHandler.ShowError(e);
+        }
         FilesResult?.Refresh();
         RefreshCheckBoxState();
     }
@@ -111,8 +119,7 @@ public partial class ResultsPageViewModel : PageViewModel {
             FilesResult?.Refresh();
             RefreshCheckBoxState();
         } catch (Exception _) {
-            _notification.ShowNotification(Lang.Lang.NoFilesToEvaluateTitle,
-                null, NotificationType.Error);
+            _notification.ShowNotification(Lang.Lang.NoFilesToEvaluateTitle, null, NotificationType.Error);
         }
         
         bool FilterOnlySelected(IFile f, int index) {
