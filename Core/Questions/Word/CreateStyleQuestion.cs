@@ -82,8 +82,8 @@ public class CreateStyleQuestion : AbstractQuestion {
             if (matchedStyle is not null) 
                 return new Result(Params, [], true);
             
-            WordFile ogFile = OgFile;
-            var ogStyles = ogFile.Styles.Select(StyleToDict);
+            using WordFile ogFile = OgFile;
+            var ogStyles = ogFile.Styles.Select(StyleToDict).ToList();
 
             var diff = file.Styles
                 .Where(s => s.Type?.InnerText == "paragraph")

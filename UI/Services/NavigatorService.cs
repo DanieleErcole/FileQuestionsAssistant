@@ -1,11 +1,9 @@
 ﻿using System;
-using Avalonia.Controls.Notifications;
-using Avalonia.Platform.Storage;
-using Core.Evaluation;
 using FluentAvalonia.UI.Controls;
 using UI.ViewModels.Pages;
 using UI.Views;
 using Control = Avalonia.Controls.Control;
+using QuestionsPageView = UI.Views.Pages.QuestionsPageView;
 using ResultsPageView = UI.Views.Pages.ResultsPageView;
 
 namespace UI.Services;

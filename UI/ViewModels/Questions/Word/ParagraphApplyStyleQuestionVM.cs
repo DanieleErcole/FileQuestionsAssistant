@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Core.Evaluation;
-using Core.Questions;
 using Core.Questions.Word;
 using Core.Utils;
-using UI.Services;
 
 namespace UI.ViewModels.Questions.Word;
 
-public class ParagraphApplyStyleQuestionVM(ParagraphApplyStyleQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageService storageService) 
-    : WordQuestionViewModel(q, evaluator, errorHandler, storageService) {
+public class ParagraphApplyStyleQuestionVM(ParagraphApplyStyleQuestion q) : WordQuestionViewModel(q) {
     
     public override string Description => Question.Desc ?? Lang.Lang.ParagraphApplyStyleQuestionDesc;
     

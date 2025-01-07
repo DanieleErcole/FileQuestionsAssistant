@@ -4,12 +4,10 @@ using System.Linq;
 using Core.Evaluation;
 using Core.Questions.Word;
 using Core.Utils;
-using UI.Services;
 
 namespace UI.ViewModels.Questions.Word;
 
-public class CreateStyleQuestionVM(CreateStyleQuestion q, Evaluator evaluator, IErrorHandlerService errorHandler, IStorageService storageService) 
-    : WordQuestionViewModel(q, evaluator, errorHandler, storageService) {
+public class CreateStyleQuestionVM(CreateStyleQuestion q) : WordQuestionViewModel(q) {
     
     public override string Description => Question.Desc ?? Lang.Lang.CreateStyleQuestionDesc;
 

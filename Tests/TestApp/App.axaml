@@ -1,7 +1,10 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
              x:Class="Tests.TestApp.App">
     <Application.Styles>
-        <FluentTheme />
+        <styling:FluentAvaloniaTheme PreferSystemTheme="True" 
+                                     PreferUserAccentColor="True" 
+                                     TextVerticalAlignmentOverrideBehavior="EnabledNonWindows"/>
     </Application.Styles>
 </Application>

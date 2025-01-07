@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
 using Avalonia.Headless.NUnit;
 using Avalonia.LogicalTree;
 using Avalonia.Threading;
@@ -20,7 +19,7 @@ namespace Tests;
 [TestFixture]
 public class ResultsPageTests {
     
-    private static List<ContentPresenter> AddFiles(bool isCorrect) {
+    private static List<Expander> AddFiles(bool isCorrect) {
         var storage = App.Services.Get<IStorageService>() as TestStorageService;
         storage!.IsCorrect = isCorrect;
 
@@ -30,9 +29,9 @@ public class ResultsPageTests {
         Dispatcher.UIThread.RunJobs();
         
         return window
-            .GetLogicalDescendants().OfType<ItemsControl>()
+            .GetLogicalDescendants().OfType<ItemsRepeater>()
             .First(list => list.Name == "FileList")
-            .GetLogicalDescendants().OfType<ContentPresenter>()
+            .GetLogicalDescendants().OfType<Expander>()
             .ToList();
     }
     
@@ -66,8 +65,10 @@ public class ResultsPageTests {
     [AvaloniaTest]
     public void ResultsPageTest_AddFileWrong() => Assert.Multiple(() => {
         var errHandler = App.Services.Get<IErrorHandlerService>() as TestErrorHandler;
-        Assert.That(AddFiles(false), Has.Count.EqualTo(0));
+        AddFiles(false);
+        
         Assert.That(errHandler!.Errors, Has.Count.EqualTo(1));
+        Assert.That(App.Services.Get<ResultsPageViewModel>().FilesResult!, Has.Count.EqualTo(0));
     });
 
     [AvaloniaTest]
@@ -75,7 +76,7 @@ public class ResultsPageTests {
         AddFiles(true);
         var window = App.Services.Get<MainWindow>();
         var checkBox = window
-            .GetLogicalDescendants().OfType<ItemsControl>()
+            .GetLogicalDescendants().OfType<ItemsRepeater>()
             .First(list => list.Name == "FileList")
             .GetLogicalDescendants().OfType<CheckBox>()
             .First();

@@ -8,26 +8,23 @@
              xmlns:input="clr-namespace:FluentAvalonia.UI.Input;assembly=FluentAvalonia"
              xmlns:pages="clr-namespace:UI.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="UI.Views.QuestionsPageView"
+             x:Class="UI.Views.Pages.QuestionsPageView"
              x:DataType="pages:QuestionsPageViewModel">
     <UserControl.Styles>
         <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
     </UserControl.Styles>
     
-    <DockPanel x:Name="PageContainer"
-               Height="{Binding $parent[StackPanel].Height}">
+    <DockPanel x:Name="PageContainer">
         <TextBlock DockPanel.Dock="Top"
                    Margin="20, 10, 0, 20"
                    Theme="{StaticResource SubtitleTextBlockStyle}"
                    Text="{x:Static lang:Lang.QuestionsTab}" />
-        <StackPanel DockPanel.Dock="Top"
-                    Margin="30, 0, 0, 0">
-            <TextBlock DockPanel.Dock="Top"
-                       FontWeight="Normal"
-                       FontSize="16"
-                       Theme="{StaticResource BodyStrongTextBlockStyle}"
-                       Text="{x:Static lang:Lang.RecentText}" />
-        </StackPanel>
+        <TextBlock DockPanel.Dock="Top"
+                   FontWeight="Normal"
+                   Margin="30, 0, 0, 0"
+                   FontSize="16"
+                   Theme="{StaticResource BodyStrongTextBlockStyle}"
+                   Text="{x:Static lang:Lang.RecentText}" />
         
         <DockPanel DockPanel.Dock="Top">
             <StackPanel DockPanel.Dock="Right"
@@ -35,29 +32,29 @@
                 <Button Classes="big-button" 
                         Margin="0, 20, 0, 20"
                         Command="{Binding OpenQuestion}">
-                    <StackPanel>
-                        <controls:SymbolIcon Symbol="OpenLocal"
+                    <Grid ColumnDefinitions="Auto,*">
+                        <controls:SymbolIcon Symbol="OpenLocal" 
                                              FontSize="30"/>
-                        <StackPanel Margin="20, 0, 0, 0">
+                        <StackPanel Grid.Column="1" Margin="20, 0, 0, 0">
                             <TextBlock Text="{x:Static lang:Lang.ImportQuestionBtnText}"/>
-                            <TextBlock Theme="{StaticResource CaptionTextBlockStyle}"
+                            <TextBlock Theme="{StaticResource CaptionTextBlockStyle}" 
                                        Text="{x:Static lang:Lang.ImportQuestionBtnDesc}"/>
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
                 </Button>
                 <Button Classes="big-button" 
                         Command="{Binding AddQuestionBtn}">
-                    <StackPanel>
+                    <Grid ColumnDefinitions="Auto,*">
                         <controls:SymbolIcon Symbol="Add"
                                              FontSize="30"/>
-                        <StackPanel Margin="20, 0, 0, 0">
+                        <StackPanel Grid.Column="1" Margin="20, 0, 0, 0">
                             <TextBlock Text="{x:Static lang:Lang.AddQuestionBtnText}"/>
                             <TextBlock Width="230"
                                        Theme="{StaticResource CaptionTextBlockStyle}"
                                        TextWrapping="Wrap"
                                        Text="{x:Static lang:Lang.AddQuestionBtnDesc}"/>
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
                 </Button>
             </StackPanel>
             
@@ -74,9 +71,16 @@
                          DockPanel.Dock="Top"
                          ItemsSource="{Binding QuestionsSearch}" 
                          SelectionMode="Single"
+                         ClipToBounds="True"
                          SelectionChanged="OnSelectionChanged"
                          Margin="10, 20, 0, 0"
                          CornerRadius="4">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    
                     <ListBox.Resources>
                         <input:XamlUICommand x:Key="DeleteQuestion"
                                              Command="{Binding DeleteQuestion}"/>
@@ -92,51 +96,46 @@
                         
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type questions:SingleQuestionViewModel}">
-                            <DockPanel Width="{Binding $parent[ListBoxItem].Bounds.Width}"
-                                       Background="Transparent"
-                                       ToolTip.ShowDelay="500"
-                                       ToolTip.BetweenShowDelay="-1"
-                                       ToolTip.Tip="{Binding Path}">
+                            <Grid ColumnDefinitions="Auto,*,Auto,Auto"
+                                  Background="Transparent"
+                                  ToolTip.ShowDelay="500"
+                                  ToolTip.BetweenShowDelay="-1"
+                                  ToolTip.Tip="{Binding Path}">
                                 <Svg Path="{Binding Icon}"
-                                     DockPanel.Dock="Left"
                                      Margin="10, 0, 0, 0"
                                      Width="30" Height="30"
                                      VerticalAlignment="Center"/>
-                                <Button DockPanel.Dock="Right"
-                                        Margin="0, 0, 10, 0"
-                                        Theme="{StaticResource TransparentButton}"
-                                        VerticalContentAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"
-                                        ToolTip.Tip="{x:Static lang:Lang.ToolTipRemoveButton}"
-                                        Command="{DynamicResource DeleteQuestion}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
-                                    <controls:SymbolIcon Symbol="Delete" FontSize="20"/>
-                                </Button>
-                                <Button DockPanel.Dock="Right"
-                                        Margin="0, 0, 10, 0"
-                                        Theme="{StaticResource TransparentButton}"
-                                        VerticalContentAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"
-                                        ToolTip.Tip="{x:Static lang:Lang.ToolTipEditButton}"
-                                        Command="{DynamicResource EditQuestion}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
-                                    <controls:SymbolIcon Symbol="Edit" FontSize="20"/>
-                                </Button>
-                                <StackPanel DockPanel.Dock="Left"
+                                
+                                <StackPanel Grid.Column="1"
                                             Margin="10"
                                             VerticalAlignment="Center">
                                     <TextBlock Margin="0, 0, 0, 5"
                                                TextTrimming="CharacterEllipsis"
                                                Foreground="{DynamicResource AccentTextFillColorTertiaryBrush}"
-                                               Text="{Binding Name}"/>
+                                               Text="{Binding Name, Mode=OneTime}"/>
                                     <TextBlock Theme="{StaticResource CaptionTextBlockStyle}"
                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                TextWrapping="Wrap"
-                                               Text="{Binding Description}"/>
+                                               Text="{Binding Description, Mode=OneTime}"/>
                                 </StackPanel>
-                            </DockPanel>
+                                
+                                <Button Grid.Column="2"
+                                        Margin="0, 0, 10, 0"
+                                        Classes="transparent-button"
+                                        ToolTip.Tip="{x:Static lang:Lang.ToolTipRemoveButton}"
+                                        Command="{StaticResource DeleteQuestion}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
+                                    <controls:SymbolIcon Symbol="Delete" FontSize="20"/>
+                                </Button>
+                                <Button Grid.Column="3"
+                                        Margin="0, 0, 10, 0"
+                                        Classes="transparent-button"
+                                        ToolTip.Tip="{x:Static lang:Lang.ToolTipEditButton}"
+                                        Command="{StaticResource EditQuestion}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
+                                    <controls:SymbolIcon Symbol="Edit" FontSize="20"/>
+                                </Button>
+                            </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

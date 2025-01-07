@@ -1,7 +1,7 @@
 ﻿using Avalonia.Controls;
 using UI.ViewModels.Pages;
 
-namespace UI.Views;
+namespace UI.Views.Pages;
 
 public partial class QuestionsPageView : UserControl {
     
@@ -11,5 +11,6 @@ public partial class QuestionsPageView : UserControl {
 
     public void OnSelectionChanged(object sender, SelectionChangedEventArgs e)  {
         (DataContext as QuestionsPageViewModel)!.OnSelectedQuestion(e);
+        (sender as ListBox)!.SelectedItem = null;
     }
 }
