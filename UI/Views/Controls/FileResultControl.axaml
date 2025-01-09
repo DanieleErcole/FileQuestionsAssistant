@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:questions="clr-namespace:UI.ViewModels.Questions"
+             xmlns:converters="clr-namespace:UI.Utils.Converters"
+             x:DataType="questions:FileResultViewModel"
+             x:Class="UI.Views.Controls.FileResultControl">
+    <Expander Expanding="OnExpanding" 
+              IsExpanded="{Binding IsExpanded}"
+              Classes.hand-cursor="{Binding IsExpandable}"
+              Classes.success="{Binding IsSuccess}"
+              Classes.failure="{Binding IsFailed}">
+        <Expander.Header>
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                <CheckBox VerticalAlignment="Center"
+                          IsChecked="{Binding IsSelected}"/>
+                <controls:SymbolIcon Margin="20, 0"
+                                     HorizontalAlignment="Left" 
+                                     Symbol="{Binding Icon, Mode=OneWay}"
+                                     FontSize="24"/>
+                <TextBlock HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Text="{Binding File.Name, Mode=OneWay}"/>
+            </StackPanel>
+        </Expander.Header>
+        <TreeView ItemsSource="{Binding FileParams}"
+                  SelectionChanged="OnSelectionChanged">
+            <TreeView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </TreeView.ItemsPanel>
+                                
+            <TreeView.Styles>
+                <StyleInclude Source="/Styles/TreeViewStyle.axaml"/>
+            </TreeView.Styles>
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding SubNodes}">
+                    <Panel Classes.success="{Binding IsCorrect, Mode=OneWay}"
+                           Classes.failure="{Binding !IsCorrect, Mode=OneWay}"
+                           Margin="0, 5, 0, 5">
+                        <controls:SymbolIcon HorizontalAlignment="Left"
+                                             Symbol="{Binding ResIcon, Mode=OneWay}" 
+                                             FontSize="16"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="20, 0, 0, 0"
+                                   Text="{Binding Title, Mode=OneWay}"/>
+                        <TextBlock HorizontalAlignment="Right" Margin="0, 0, 10, 0"
+                                   IsVisible="{Binding IsFirst, Mode=OneWay}"
+                                   Text="{Binding Value, Converter={x:Static converters:ParamsConverters.NoneConverter}}"/>
+                    </Panel>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </Expander>
+</UserControl>
