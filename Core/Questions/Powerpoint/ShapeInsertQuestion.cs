@@ -29,8 +29,7 @@ public class ShapeInsertQuestion : AbstractQuestion {
     }
     
     [JsonConstructor]
-    public ShapeInsertQuestion(string name, string desc, MemoryFile ogFile, Dictionary<string, object?> Params) 
-        : base(name, desc, ogFile, Params) { }
+    public ShapeInsertQuestion(string name, string desc, MemoryFile ogFile, Dictionary<string, object?> Params) : base(name, desc, ogFile, Params) { }
 
     protected override void DeserializeParams() {
         foreach (var (k, v) in Params) {

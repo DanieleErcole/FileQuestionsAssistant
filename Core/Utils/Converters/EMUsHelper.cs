@@ -7,7 +7,7 @@ public static class EMUsHelper {
 
     public static double? FromCentimeters(double? x) => x * EMUPerCentimeter;
 
-    public static double? ToCentimeters(double? x) {
+    public static double? ToCentimeters(long? x) {
         if (x is not { } number) return null;
         return Math.Round(number / EMUPerCentimeter, 2);
     }

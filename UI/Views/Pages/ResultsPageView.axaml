@@ -15,8 +15,7 @@
         <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
     </UserControl.Styles>
     
-    <DockPanel x:Name="PageContainer"
-               Height="{Binding $parent[StackPanel].Height}">
+    <DockPanel x:Name="PageContainer">
         <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto, *">
             <Button Margin="20, 10, 0, 20"
                     HorizontalAlignment="Left"
@@ -28,23 +27,23 @@
                        Margin="20, 10, 0, 20"
                        HorizontalAlignment="Left"
                        Theme="{StaticResource SubtitleTextBlockStyle}"
-                       Text="{Binding QuestionVM.Name, FallbackValue={x:Null}}"/>
+                       Text="{Binding QuestionVM.Name, FallbackValue={x:Null}, Mode=OneWay}"/>
         </Grid>
         <StackPanel DockPanel.Dock="Top" Margin="20, 0, 20, 20">
-            <TextBlock Margin="0, 0, 0, 20" Text="{Binding QuestionVM.Description, FallbackValue={x:Null}}"/>
+            <TextBlock Margin="0, 0, 0, 20" Text="{Binding QuestionVM.Description, FallbackValue={x:Null}, Mode=OneWay}"/>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                           ClipToBounds="True"
                           MaxHeight="200">
                 <ItemsRepeater ItemsSource="{Binding CorrectParams}">
                     <ItemsRepeater.Styles>
                         <Style Selector="ItemsRepeater > Panel">
-                            <Setter Property="Height" Value="30"></Setter>
+                            <Setter Property="Height" Value="30"/>
                         </Style>
                         <Style Selector="ItemsRepeater > Panel:nth-child(odd)">
-                            <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorTertiary}"></Setter>
+                            <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorTertiary}"/>
                         </Style>
                         <Style Selector="ItemsRepeater TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
                         </Style>
                     </ItemsRepeater.Styles>
                     
@@ -52,9 +51,9 @@
                         <DataTemplate>
                             <Panel>
                                 <TextBlock HorizontalAlignment="Left" Margin="10, 0, 0, 0"
-                                           Text="{Binding Key}"/>
+                                           Text="{Binding Key, Mode=OneWay}"/>
                                 <TextBlock HorizontalAlignment="Right" Margin="0, 0, 20, 0"
-                                           Text="{Binding Value, Converter={x:Static converters:ParamsConverters.AnyConverter}}"/>
+                                           Text="{Binding Value, Converter={x:Static converters:ParamsConverters.AnyConverter}, Mode=OneWay}"/>
                             </Panel>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
@@ -87,7 +86,7 @@
                         Classes="transparent-button"
                         Command="{Binding RemoveSelection}"
                         ToolTip.Tip="{x:Static lang:Lang.ToolTipRemoveSelection}">
-                    <controls:SymbolIcon Symbol="Delete" FontSize="20"></controls:SymbolIcon>
+                    <controls:SymbolIcon Symbol="Delete" FontSize="20"/>
                 </Button>
                 <Button Name="EvaluateBtn"
                         Classes="transparent-button"
@@ -105,23 +104,25 @@
                       Margin="20, 0"
                       ClipToBounds="True">
             <ItemsRepeater Name="FileList"
-                            ItemsSource="{Binding FilesResult}">
+                           ItemsSource="{Binding FilesResult}">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="5"/>
                 </ItemsRepeater.Layout>
                 
                 <ItemsRepeater.Styles>
                     <Style Selector="Expander.success > StackPanel > controls|SymbolIcon">
-                        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}"></Setter>
+                        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}"/>
                     </Style>
                     <Style Selector="Expander.failure > StackPanel > controls|SymbolIcon">
-                        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}"></Setter>
+                        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}"/>
                     </Style>
                 </ItemsRepeater.Styles>
                 
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate DataType="{x:Type questions:FileResultViewModel}">
                         <Expander Expanding="OnExpanding"
+                                  IsExpanded="{Binding IsExpanded}"
+                                  Classes.hand-cursor="{Binding IsExpandable}"
                                   Classes.success="{Binding IsSuccess}"
                                   Classes.failure="{Binding IsFailed}">
                             <Expander.Header>
@@ -131,11 +132,11 @@
                                               IsChecked="{Binding IsSelected}"/>
                                     <controls:SymbolIcon Margin="20, 0"
                                                          HorizontalAlignment="Left" 
-                                                         Symbol="{Binding Icon}"
+                                                         Symbol="{Binding Icon, Mode=OneWay}"
                                                          FontSize="24"/>
                                     <TextBlock HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
-                                               Text="{Binding File.Name}"/>
+                                               Text="{Binding File.Name, Mode=OneWay}"/>
                                 </StackPanel>
                             </Expander.Header>
                             <TreeView ItemsSource="{Binding FileParams}"
@@ -150,18 +151,17 @@
                                     <StyleInclude Source="/Styles/TreeViewStyle.axaml"/>
                                 </TreeView.Styles>
                                 <TreeView.ItemTemplate>
-                                    
                                     <TreeDataTemplate ItemsSource="{Binding SubNodes}">
-                                        <Panel Classes.success="{Binding IsCorrect}"
-                                               Classes.failure="{Binding !IsCorrect}"
+                                        <Panel Classes.success="{Binding IsCorrect, Mode=OneWay}"
+                                               Classes.failure="{Binding !IsCorrect, Mode=OneWay}"
                                                Margin="0, 5, 0, 5">
                                             <controls:SymbolIcon HorizontalAlignment="Left"
-                                                                 Symbol="{Binding ResIcon}" 
+                                                                 Symbol="{Binding ResIcon, Mode=OneWay}" 
                                                                  FontSize="16"/>
                                             <TextBlock HorizontalAlignment="Left" Margin="20, 0, 0, 0"
-                                                       Text="{Binding Title}"/>
+                                                       Text="{Binding Title, Mode=OneWay}"/>
                                             <TextBlock HorizontalAlignment="Right" Margin="0, 0, 10, 0"
-                                                       IsVisible="{Binding IsFirst}"
+                                                       IsVisible="{Binding IsFirst, Mode=OneWay}"
                                                        Text="{Binding Value, Converter={x:Static converters:ParamsConverters.NoneConverter}}"/>
                                         </Panel>
                                     </TreeDataTemplate>

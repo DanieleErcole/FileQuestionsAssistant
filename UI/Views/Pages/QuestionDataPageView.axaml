@@ -12,8 +12,7 @@
         <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
     </UserControl.Styles>
     
-    <DockPanel x:Name="PageContainer"
-               Height="{Binding $parent[StackPanel].Height}">
+    <DockPanel x:Name="PageContainer">
         <StackPanel DockPanel.Dock="Top" 
                     Orientation="Horizontal">
             <Button Margin="20, 10, 0, 20"

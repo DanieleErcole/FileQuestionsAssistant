@@ -13,6 +13,7 @@ using Tests.Utils;
 using UI.Services;
 using UI.ViewModels.Pages;
 using UI.Views;
+using UI.Views.Controls;
 using UI.Views.Pages;
 
 namespace Tests;
@@ -26,7 +27,10 @@ public class QuestionsPageTests {
     }
 
     private static void DeleteQuestion(string name) {
-        var btn = App.Services.Get<MainWindow>().GetLogicalDescendants().OfType<ListBoxItem>()
+        var btn = App.Services.Get<MainWindow>()
+            .GetLogicalDescendants().OfType<QuestionList>()
+            .First()
+            .GetLogicalDescendants().OfType<Grid>()
             .First(item => item.GetLogicalDescendants().OfType<TextBlock>().FirstOrDefault()?.Text == name)
             .GetLogicalDescendants()
             .OfType<Button>()
@@ -96,7 +100,11 @@ public class QuestionsPageTests {
         RefreshList();
         
         var window = App.Services.Get<MainWindow>();
-        var item = window.GetLogicalDescendants().OfType<ListBoxItem>().First();
+        var item = window
+            .GetLogicalDescendants().OfType<QuestionList>()
+            .First()
+            .GetLogicalDescendants().OfType<Grid>()
+            .First();
         item.Focus();
         window.KeyPressQwerty(PhysicalKey.Space, RawInputModifiers.None);
         Dispatcher.UIThread.RunJobs();

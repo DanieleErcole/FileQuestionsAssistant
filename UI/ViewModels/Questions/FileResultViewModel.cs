@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Evaluation;
 using Core.FileHandling;
 using UI.Utils;
 
 namespace UI.ViewModels.Questions;
 
-public class FileResultViewModel(SingleQuestionViewModel vm, IFile file, Result? result, EventHandler fileSelected) : ViewModelBase {
+public partial class FileResultViewModel(SingleQuestionViewModel vm, IFile file, Result? result, EventHandler fileSelected) : ViewModelBase {
     
     public IFile File { get; } = file;
     public Result? Result { get; } = result;
@@ -20,6 +21,9 @@ public class FileResultViewModel(SingleQuestionViewModel vm, IFile file, Result?
             fileSelected.Invoke(this, EventArgs.Empty);
         }
     }
+    
+    [ObservableProperty]
+    private bool _isExpanded;
 
     public bool IsSuccess => Result is { IsSuccessful: true };
     public bool IsFailed => Result is { IsSuccessful: false };
