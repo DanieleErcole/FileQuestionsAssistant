@@ -34,9 +34,11 @@ jobs:
     - name: Install Dependencies
       run: dotnet restore
 
+    - name: Test
+      run: dotnet test
+
     - name: Publish Application
-      run: |
-        dotnet publish ./UI -c Release -r ${{ matrix.rid }} -p:DebugType=Embedded -p:PublishSingleFile=true --self-contained true -o publish/fileQuestionsAssistant_${{ matrix.rid }}
+      run: dotnet publish ./UI -c Release -r ${{ matrix.rid }} -p:DebugType=Embedded -p:PublishSingleFile=true --self-contained=true -o publish/fileQuestionsAssistant_${{ matrix.rid }}
 
     - name: Zip the files
       run: |
