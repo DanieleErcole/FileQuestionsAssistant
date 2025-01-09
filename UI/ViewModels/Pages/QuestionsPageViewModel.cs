@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Controls;
+using Avalonia;
+using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.Utils.Errors;
@@ -54,7 +55,7 @@ public class QuestionsPageViewModel : PageViewModel {
             FileTypeFilter = [QuestionSerializer.FileType]
         });
         if (!files.Any()) return;
-            
+        
         var filePath = Uri.UnescapeDataString(files[0].Path.AbsolutePath);
         try {
             if (await Serializer.Load(filePath) is { } q) {
@@ -92,10 +93,10 @@ public class QuestionsPageViewModel : PageViewModel {
         Refresh();
     }
 
-    public void OnSelectedQuestion(SelectionChangedEventArgs e) {
-        if (e.AddedItems.Count != 1) return;
-        var selected = e.AddedItems[0] as SingleQuestionViewModel;
-        NavigatorService.NavigateTo<ResultsPageViewModel>(selected!.Question);
+    public void OnQuestionSelected(object? sender, PointerPressedEventArgs _) {
+        var item = sender as StyledElement;
+        var selected = (item!.DataContext as SingleQuestionViewModel)!;
+        NavigatorService.NavigateTo<ResultsPageViewModel>(selected.Question);
     }
     
 }

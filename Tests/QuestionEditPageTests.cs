@@ -11,9 +11,9 @@ using Tests.TestApp.Services;
 using Tests.Utils;
 using UI.Services;
 using UI.ViewModels.Pages;
-using UI.ViewModels.QuestionForms;
 using UI.ViewModels.QuestionForms.Word;
 using UI.Views;
+using UI.Views.Controls;
 
 namespace Tests;
 
@@ -37,7 +37,13 @@ public class QuestionEditPageTests {
         App.Services.Get<NavigatorService>().NavigateTo<QuestionsPageViewModel>();
         Dispatcher.UIThread.RunJobs();
         
-        var btn = window.GetLogicalDescendants().OfType<ListBoxItem>().First().GetLogicalDescendants().OfType<Button>().Last();
+        var btn = window
+            .GetLogicalDescendants().OfType<QuestionList>()
+            .First()
+            .GetLogicalDescendants().OfType<Grid>()
+            .First()
+            .GetLogicalDescendants().OfType<Button>()
+            .Last();
         btn.Command?.Execute(btn.DataContext);
         Dispatcher.UIThread.RunJobs();
     }
