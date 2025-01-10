@@ -9,12 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        arch: [x64]
         include:
           - os: macos-latest
             arch: x64
             rid: osx-x64
+          - os: macos-latest-arm64
+            arch: arm64
+            rid: osx-arm64
           - os: windows-latest
             arch: x64
             rid: win-x64
@@ -43,14 +44,14 @@ jobs:
     - name: Zip the files
       run: |
         cd publish
-        zip -r fileQuestionsAssistant_${{ matrix.rid }}.zip fileQuestionsAssistant_${{ matrix.rid }}
+        zip -r FileQuestionsAssistant_${{ matrix.rid }}.zip fileQuestionsAssistant_${{ matrix.rid }}
 
     - name: Archive Build Artifacts
       if: ${{ success() }}
       uses: actions/upload-artifact@v4
       with:
         name: fileQuestionsAssistant-${{ matrix.rid }}
-        path: publish/fileQuestionsAssistant_${{ matrix.rid }}.zip
+        path: publish/FileQuestionsAssistant_${{ matrix.rid }}.zip
 
     - name: Retrieve Version
       id: version
@@ -68,15 +69,20 @@ jobs:
       contents: write
     needs: build
     steps:
-    - name: Download Linux Artifacts
+    - name: Download Linux Artifact
       uses: actions/download-artifact@v4
       with:
         name: fileQuestionsAssistant-linux-x64
         path: ./artifacts/linux
-    - name: Download macOS Artifact
+    - name: Download macOS x64 Artifact
       uses: actions/download-artifact@v4
       with:
         name: fileQuestionsAssistant-osx-x64
+        path: ./artifacts/macos
+    - name: Download macOS arm64 Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: fileQuestionsAssistant-osx-arm64
         path: ./artifacts/macos
     - name: Download Windows Artifact
       uses: actions/download-artifact@v4
@@ -97,5 +103,5 @@ jobs:
           ## Release Notes
           This release contains the following builds:
           - Windows (x64)
-          - macOS (x64)
+          - macOS (x64 and arm64)
           - Linux (x64)
