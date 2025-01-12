@@ -14,6 +14,7 @@ using ColorConverter = Core.Utils.Converters.ColorConverter;
 namespace UI.Services;
 
 public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
+    
     private static string TrackedFilePath => Path.Combine(App.AppDataDirectoryPath, TrackedFileName);
     private const string TrackedFileName = "TrackedQuestions.txt";
     
@@ -84,7 +85,7 @@ public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
             await using var stream = File.OpenRead(path);
             using var streamReader = new StreamReader(stream);
             return AbstractQuestion.DeserializeWithPath(path, await streamReader.ReadToEndAsync(), _options);
-        } catch (JsonException _) {
+        } catch (JsonException) {
             throw new InvalidFileFormat(path);
         } catch (Exception e) {
             throw new FileError(path, e);

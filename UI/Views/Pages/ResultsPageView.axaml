@@ -8,6 +8,7 @@
              xmlns:questions="clr-namespace:UI.ViewModels.Questions"
              xmlns:converters="clr-namespace:UI.Utils.Converters"
              xmlns:mycontrols="clr-namespace:UI.Views.Controls"
+             xmlns:input="clr-namespace:FluentAvalonia.UI.Input;assembly=FluentAvalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="pages:ResultsPageViewModel"
              x:Class="UI.Views.Pages.ResultsPageView">
@@ -118,6 +119,11 @@
                         <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}"/>
                     </Style>
                 </ItemsRepeater.Styles>
+                
+                <ItemsRepeater.Resources>
+                    <input:XamlUICommand x:Key="OnSelectedCommand"
+                                         Command="{Binding RefreshCheckBoxState}"/>
+                </ItemsRepeater.Resources>
                 
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate DataType="{x:Type questions:FileResultViewModel}">

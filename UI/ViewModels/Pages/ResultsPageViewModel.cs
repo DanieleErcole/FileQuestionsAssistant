@@ -15,9 +15,9 @@ using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
-public partial class ResultsPageViewModel : PageViewModel {
-    
-    private readonly INotificationService _notification;
+public partial class ResultsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, 
+    IStorageService storageService, INotificationService notificationManager, IViewModelFactory vmFactory) 
+    : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
     
     [ObservableProperty]
     private SingleQuestionViewModel? _questionVM;
@@ -28,23 +28,15 @@ public partial class ResultsPageViewModel : PageViewModel {
     [ObservableProperty]
     private bool? _checkBoxState = false;
     
-    private event EventHandler FileSelected;
-    
     private IEnumerable<FileResultViewModel> SelectedFiles => FilesResult!.OfType<FileResultViewModel>().Where(vm => vm.IsSelected);
     private readonly Dictionary<IFile, Result> _results = [];
 
-    public ResultsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, 
-        IStorageService storageService, INotificationService notificationManager, IViewModelFactory vmFactory) : base(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
-        _notification = notificationManager;
-        FileSelected = (_, _) => {
-            CheckBoxState = SelectedFiles.Count() switch {
-                0 => false,
-                _ => SelectedFiles.Count() == FilesResult!.Count ? true : null
-            };
+    public void RefreshCheckBoxState() {
+        CheckBoxState = SelectedFiles.Count() switch {
+            0 => false,
+            _ => SelectedFiles.Count() == FilesResult!.Count ? true : null
         };
     }
-
-    private void RefreshCheckBoxState() => FileSelected.Invoke(this, EventArgs.Empty);
 
     public override void OnNavigatedTo(object? param = null) {
         if (param is not AbstractQuestion question) {
@@ -56,7 +48,7 @@ public partial class ResultsPageViewModel : PageViewModel {
         
         var files = Evaluator.QuestionFiles(QuestionVM.Question);
         FilesResult = new IterableCollectionView(files.Select(f =>
-            new FileResultViewModel(QuestionVM, f, _results.GetValueOrDefault(f), FileSelected)
+            new FileResultViewModel(QuestionVM, f, _results.GetValueOrDefault(f))
         ), _ => true);
     }
     
@@ -114,12 +106,12 @@ public partial class ResultsPageViewModel : PageViewModel {
                 if (!_results.TryAdd(file, result))
                     _results[file] = result;
             }
-            _notification.ShowNotification(Lang.Lang.EvaluationSuccessTitle, Lang.Lang.EvaluationSuccessDesc, NotificationType.Success);
+            notificationManager.ShowNotification(Lang.Lang.EvaluationSuccessTitle, Lang.Lang.EvaluationSuccessDesc, NotificationType.Success);
             
             FilesResult?.Refresh();
             RefreshCheckBoxState();
         } catch (Exception _) {
-            _notification.ShowNotification(Lang.Lang.NoFilesToEvaluateTitle, null, NotificationType.Error);
+            notificationManager.ShowNotification(Lang.Lang.NoFilesToEvaluateTitle, null, NotificationType.Error);
         }
         
         bool FilterOnlySelected(IFile f, int index) {
