@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using UI.ViewModels.Questions;
-
 namespace UI.Views.Controls;
 
 public partial class FileResultControl : UserControl {

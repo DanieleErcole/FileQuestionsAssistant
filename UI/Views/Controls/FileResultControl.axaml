@@ -14,6 +14,7 @@
             <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Center">
                 <CheckBox VerticalAlignment="Center"
+                          Command="{StaticResource OnSelectedCommand}"
                           IsChecked="{Binding IsSelected}"/>
                 <controls:SymbolIcon Margin="20, 0"
                                      HorizontalAlignment="Left" 
