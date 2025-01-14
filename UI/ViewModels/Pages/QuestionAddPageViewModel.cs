@@ -10,7 +10,7 @@ namespace UI.ViewModels.Pages;
 
 public class QuestionAddPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
     Evaluator evaluator, IStorageService sService, IViewModelFactory vmFactory) 
-    : QuestionDataPageViewModel(Lang.Lang.NewQuestionPageTitle,  Lang.Lang.CreateBtnText, navService, errorHandler, serializer, evaluator, sService, vmFactory) {
+    : QuestionFormPageViewModel(Lang.Lang.NewQuestionPageTitle,  Lang.Lang.CreateBtnText, navService, errorHandler, serializer, evaluator, sService, vmFactory) {
 
     public override void OnNavigatedTo(object? param = null) => SelectedIndex = 0;
 

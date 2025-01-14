@@ -237,4 +237,10 @@
     <data name="FileNotFoundText" xml:space="preserve">
         <value>File {0} not found. </value>
     </data>
+    <data name="PathNotFoundText" xml:space="preserve">
+        <value>The path specified could not be found.</value>
+    </data>
+    <data name="InvalidPathFormatText" xml:space="preserve">
+        <value>The path specified is in an invalid format. </value>
+    </data>
 </root>

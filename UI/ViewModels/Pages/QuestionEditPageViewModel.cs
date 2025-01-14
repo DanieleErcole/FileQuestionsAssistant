@@ -12,7 +12,7 @@ namespace UI.ViewModels.Pages;
 
 public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
     Evaluator evaluator, IStorageService sService, IViewModelFactory vmFactory) 
-    : QuestionDataPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sService, vmFactory) {
+    : QuestionFormPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sService, vmFactory) {
    
     // Note: edit when adding new question types
     private static QuestionTypeIndex QuestionToIndex(AbstractQuestion? question = null) {

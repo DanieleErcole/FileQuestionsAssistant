@@ -6,8 +6,8 @@
              xmlns:lang="clr-namespace:UI.Lang"
              xmlns:pages="clr-namespace:UI.ViewModels.Pages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="UI.Views.QuestionDataPageView"
-             x:DataType="pages:QuestionDataPageViewModel">
+             x:Class="UI.Views.QuestionFormPageView"
+             x:DataType="pages:QuestionFormPageViewModel">
     <UserControl.Styles>
         <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
     </UserControl.Styles>

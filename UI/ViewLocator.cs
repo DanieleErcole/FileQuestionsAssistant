@@ -13,7 +13,7 @@ public class ViewLocator : IDataTemplate {
             return null;
         
         var name = data switch {
-            QuestionDataPageViewModel => nameof(QuestionDataPageViewModel),
+            QuestionFormPageViewModel => nameof(QuestionFormPageViewModel),
             _ => data.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal)
         };
         var type = Type.GetType(name);

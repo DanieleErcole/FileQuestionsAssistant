@@ -230,4 +230,10 @@
     <data name="FlipVLabel" xml:space="preserve">
         <value>Flip verticale</value>
     </data>
+    <data name="PathNotFoundText" xml:space="preserve">
+        <value>Il percorso indicato non è stato trovato.</value>
+    </data>
+    <data name="InvalidPathFormatText" xml:space="preserve">
+        <value>Il formato del percorso specificato non è valido.</value>
+    </data>
 </root>

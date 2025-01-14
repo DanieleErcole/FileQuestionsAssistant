@@ -42,7 +42,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Lang.resx</DependentUpon>
     </Compile>
-    <Compile Update="Views\Pages\QuestionDataPageView.axaml.cs">
+    <Compile Update="Views\Pages\QuestionFormPageView.axaml.cs">
       <DependentUpon>QuestionDataPageView.axaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
