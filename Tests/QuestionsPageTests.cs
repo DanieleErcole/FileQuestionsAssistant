@@ -40,7 +40,7 @@ public class QuestionsPageTests {
     }
     
     private static void RefreshList() {
-        App.Services.Get<QuestionsPageViewModel>().Refresh();
+        App.Services.Get<QuestionsPageViewModel>().QuestionsSearch.Refresh();
         Dispatcher.UIThread.RunJobs();
     }
     

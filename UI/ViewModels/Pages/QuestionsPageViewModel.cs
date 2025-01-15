@@ -23,7 +23,7 @@ public class QuestionsPageViewModel : PageViewModel {
         get => _searchText;
         set {
             SetProperty(ref _searchText, value);
-            Refresh();
+            QuestionsSearch.Refresh();
         }
     }
     
@@ -32,8 +32,8 @@ public class QuestionsPageViewModel : PageViewModel {
     public QuestionsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, IDialogService dialogService,
         IStorageService storageService, IViewModelFactory vmFactory) : base(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
         _dialogService = dialogService;
-        var loadedQuestions = Serializer.LoadTrackedQuestions() ?? [];
         
+        var loadedQuestions = Serializer.LoadTrackedQuestions() ?? [];
         foreach (var q in loadedQuestions.Where(q => q is not null))
             Evaluator.AddQuestion(q!);
         
@@ -45,9 +45,7 @@ public class QuestionsPageViewModel : PageViewModel {
         });
     }
 
-    public void Refresh() => QuestionsSearch.Refresh();
-
-    public override void OnNavigatedTo(object? param = null) => Refresh();
+    public override void OnNavigatedTo(object? param = null) => QuestionsSearch.Refresh();
     
     public async Task OpenQuestion() {
         var files = await StorageService.GetFilesAsync(new FilePickerOpenOptions {
@@ -70,6 +68,7 @@ public class QuestionsPageViewModel : PageViewModel {
         } catch (Exception e) {
             ErrorHandler.ShowError(e);
         }
+        QuestionsSearch.Refresh();
     }
 
     public void AddQuestionBtn() => NavigatorService.NavigateTo<QuestionAddPageViewModel>();
@@ -90,7 +89,7 @@ public class QuestionsPageViewModel : PageViewModel {
         } catch (FileError e) {
             ErrorHandler.ShowError(e);
         }
-        Refresh();
+        QuestionsSearch.Refresh();
     }
 
     public void OnQuestionSelected(object? sender, PointerPressedEventArgs _) {
