@@ -24,6 +24,8 @@ public class UIException(string title, string desc, Exception? inner = null) : E
         FileError other => other.InnerException switch {
             UnauthorizedAccessException => new UIException(Lang.Lang.ErrorOpeningFilename, Lang.Lang.NoPermissionDesc),
             FileNotFoundException => new UIException(Lang.Lang.ErrorOpeningFilename, Lang.Lang.FileNotFoundText), 
+            DirectoryNotFoundException => new UIException(Lang.Lang.ErrorOpeningFilename, Lang.Lang.PathNotFoundText),
+            NotSupportedException => new UIException(Lang.Lang.ErrorOpeningFilename, Lang.Lang.InvalidPathFormatText),
             _ => new UIException(Lang.Lang.ErrorOpeningFilename + $": {other.Filename}", other.InnerException?.Message ?? "")
         },
         _ => new UIException(Lang.Lang.UnknownError, ex.InnerException?.Message ?? "")

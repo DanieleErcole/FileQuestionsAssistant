@@ -384,6 +384,15 @@ namespace UI.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The path specified is in an invalid format. .
+        /// </summary>
+        public static string InvalidPathFormatText {
+            get {
+                return ResourceManager.GetString("InvalidPathFormatText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The required fields are missing..
         /// </summary>
         public static string MissingRequiredFields {
@@ -506,6 +515,15 @@ namespace UI.Lang {
         public static string PathLabel {
             get {
                 return ResourceManager.GetString("PathLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The path specified could not be found..
+        /// </summary>
+        public static string PathNotFoundText {
+            get {
+                return ResourceManager.GetString("PathNotFoundText", resourceCulture);
             }
         }
         

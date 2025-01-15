@@ -18,7 +18,7 @@ public class NavigatorService {
         public Control GetPageFromObject(object target) {
             return target switch {
                 QuestionsPageViewModel => new QuestionsPageView { DataContext = target, },
-                QuestionDataPageViewModel=> new QuestionDataPageView { DataContext = target, },
+                QuestionFormPageViewModel=> new QuestionFormPageView { DataContext = target, },
                 ResultsPageViewModel => new ResultsPageView { DataContext = target, },
                 _ => throw new ArgumentException()
             };

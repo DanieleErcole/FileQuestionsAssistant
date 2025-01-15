@@ -9,7 +9,7 @@ using UI.ViewModels.QuestionForms;
 
 namespace UI.ViewModels.Pages;
 
-public abstract partial class QuestionDataPageViewModel(string title, string btnText, NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
+public abstract partial class QuestionFormPageViewModel(string title, string btnText, NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
     Evaluator evaluator, IStorageService storageService, IViewModelFactory vmFactory) : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
 
     // Note: edit when adding new question types

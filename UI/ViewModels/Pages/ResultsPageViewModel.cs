@@ -15,9 +15,7 @@ using UI.ViewModels.Questions;
 
 namespace UI.ViewModels.Pages;
 
-public partial class ResultsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, 
-    IStorageService storageService, INotificationService notificationManager, IViewModelFactory vmFactory) 
-    : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
+public partial class ResultsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, IStorageService storageService, INotificationService notificationManager, IViewModelFactory vmFactory) : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
     
     [ObservableProperty]
     private SingleQuestionViewModel? _questionVM;
@@ -25,18 +23,16 @@ public partial class ResultsPageViewModel(NavigatorService navService, IErrorHan
     private Dictionary<string, object?> _correctParams = [];
     [ObservableProperty]
     private IterableCollectionView? _filesResult;
-    [ObservableProperty]
-    private bool? _checkBoxState = false;
     
-    private IEnumerable<FileResultViewModel> SelectedFiles => FilesResult!.OfType<FileResultViewModel>().Where(vm => vm.IsSelected);
+    public bool? CheckBoxState => SelectedFiles.Count() switch {
+        0 => false,
+        _ => SelectedFiles.Count() == FilesResult!.Count ? true : null
+    };
+    
+    private IEnumerable<FileResultViewModel> SelectedFiles => FilesResult?.OfType<FileResultViewModel>().Where(vm => vm.IsSelected) ?? [];
     private readonly Dictionary<IFile, Result> _results = [];
 
-    public void RefreshCheckBoxState() {
-        CheckBoxState = SelectedFiles.Count() switch {
-            0 => false,
-            _ => SelectedFiles.Count() == FilesResult!.Count ? true : null
-        };
-    }
+    public void RefreshCheckBoxState() => OnPropertyChanged(nameof(CheckBoxState));
 
     public override void OnNavigatedTo(object? param = null) {
         if (param is not AbstractQuestion question) {
@@ -50,6 +46,7 @@ public partial class ResultsPageViewModel(NavigatorService navService, IErrorHan
         FilesResult = new IterableCollectionView(files.Select(f =>
             new FileResultViewModel(QuestionVM, f, _results.GetValueOrDefault(f))
         ), _ => true);
+        RefreshCheckBoxState();
     }
     
     public void ToQuestionPage() {
@@ -58,19 +55,17 @@ public partial class ResultsPageViewModel(NavigatorService navService, IErrorHan
         CorrectParams.Clear();
         NavigatorService.NavigateTo<QuestionsPageViewModel>();
     }
-
+    
     public void ToggleSelection() {
-        if (CheckBoxState is null or false) {
-            CheckBoxState = true;
+        if (CheckBoxState is null or false)
             foreach (var vm in FilesResult!.OfType<FileResultViewModel>())
                 vm.IsSelected = true;
-        } else {
-            CheckBoxState = false;
+        else
             foreach (var vm in FilesResult!.OfType<FileResultViewModel>())
                 vm.IsSelected = false;
-        }
+        RefreshCheckBoxState();
     }
-
+    
     public void RemoveSelection() {
         foreach (var item in SelectedFiles) {
             Evaluator.RemoveFile(QuestionVM!.Question, item.File);
@@ -81,7 +76,7 @@ public partial class ResultsPageViewModel(NavigatorService navService, IErrorHan
         FilesResult?.Refresh();
         RefreshCheckBoxState();
     }
-
+    
     public async Task AddFiles() {
         try {
             var files = await StorageService.GetFilesOfTypeAsync(QuestionVM!.FileType, true);
@@ -94,7 +89,7 @@ public partial class ResultsPageViewModel(NavigatorService navService, IErrorHan
         FilesResult?.Refresh();
         RefreshCheckBoxState();
     }
-
+    
     public void EvaluateButton() {
         try {
             var anySelected = SelectedFiles.Any();
