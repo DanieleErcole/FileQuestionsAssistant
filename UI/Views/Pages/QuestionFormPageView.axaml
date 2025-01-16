@@ -40,8 +40,15 @@
             <Button HorizontalAlignment="Right" 
                     Classes="accent" 
                     Content="{Binding SaveButtonText}"
-                    Command="{Binding ProcessQuestion}"/>
+                    Command="{Binding Submit}"/>
         </Panel>
+        <controls:InfoBar DockPanel.Dock="Top" 
+                          Margin="30, 20 ,30 ,0"
+                          CloseButtonCommand="{Binding CloseErr}"
+                          IsVisible="{Binding IsError}"
+                          IsOpen="{Binding IsError}" 
+                          Severity="Error" 
+                          Message="{Binding ErrorMsg}"/>
         <ScrollViewer DockPanel.Dock="Top" 
                       Margin="20">
             <ContentControl Content="{Binding Content}"/>

@@ -1,9 +1,9 @@
+using System;
 using System.Threading.Tasks;
-using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Core.Evaluation;
-using Core.Questions;
 using UI.Services;
+using UI.Utils;
 using UI.ViewModels.Factories;
 using UI.ViewModels.QuestionForms;
 
@@ -27,6 +27,16 @@ public abstract partial class QuestionFormPageViewModel(string title, string btn
             Content = ViewModelFactory.NewQuestionFormVm((QuestionTypeIndex) SelectedIndex);
         }
     }
+    
+    private string? _errorMsg;
+    public string? ErrorMsg {
+        get => _errorMsg;
+        set {
+            SetProperty(ref _errorMsg, value);
+            OnPropertyChanged(nameof(IsError));
+        }
+    }
+    public bool IsError => ErrorMsg is not null;
 
     [ObservableProperty]
     private QuestionFormBaseVM? _content;
@@ -34,8 +44,25 @@ public abstract partial class QuestionFormPageViewModel(string title, string btn
     public string PageTitle { get; } = title;
     public string? SaveButtonText { get; } = btnText;
 
-    public void ToQuestionPage() => NavigatorService.NavigateTo<QuestionsPageViewModel>();
+    public void ToQuestionPage() {
+        NavigatorService.NavigateTo<QuestionsPageViewModel>();
+        ErrorMsg = null;
+    }
+    
+    public void CloseErr() {
+        ErrorMsg = null;
+    }
 
+    public async void Submit() {
+        try {
+            await ProcessQuestion();
+        } catch (FormError f) {
+            ErrorMsg = f.Desc;
+        } catch (Exception e) {
+            ErrorHandler.ShowError(e);
+        }
+    }
+    
     public abstract Task ProcessQuestion();
     
 }

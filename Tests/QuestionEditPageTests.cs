@@ -69,13 +69,14 @@ public class QuestionEditPageTests {
     
     [AvaloniaTest]
     public void QuestionEditPage_SaveEditsWrong() {
-        var form = App.Services.Get<QuestionEditPageViewModel>().Content as ParagraphApplyStyleQuestionFormViewModel;
+        var page = App.Services.Get<QuestionEditPageViewModel>();
+        var form = page.Content as ParagraphApplyStyleQuestionFormViewModel;
         form!.Name = "";
         
         var btn = App.Services.Get<MainWindow>().GetLogicalDescendants().OfType<Button>().First(b => b.Classes.Contains("accent"));
         btn.Command?.Execute(btn.DataContext);
         
-        Assert.That(form.IsError, Is.True);
+        Assert.That(page.IsError, Is.True);
     }
     
 }

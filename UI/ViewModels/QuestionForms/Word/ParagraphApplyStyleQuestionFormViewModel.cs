@@ -51,11 +51,9 @@ public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormBase
         }
     }
     
-    public override AbstractQuestion? CreateQuestion() {
-        if (string.IsNullOrWhiteSpace(Name) || OgFile is null || string.IsNullOrWhiteSpace(Path) || string.IsNullOrWhiteSpace(StyleNameSelected)) {
-            ErrorMsg = Lang.Lang.MissingRequiredFields;
-            return null;
-        }
+    public override AbstractQuestion CreateQuestion() {
+        if (string.IsNullOrWhiteSpace(Name) || OgFile is null || string.IsNullOrWhiteSpace(Path) || string.IsNullOrWhiteSpace(StyleNameSelected))
+            throw new FormError(Lang.Lang.MissingRequiredFields);
 
         Desc = string.IsNullOrWhiteSpace(Desc) ? null : Desc;
         return new ParagraphApplyStyleQuestion(Path, Name, Desc, OgFile, StyleNameSelected);

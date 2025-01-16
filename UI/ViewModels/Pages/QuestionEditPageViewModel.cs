@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Core.Evaluation;
 using Core.Questions;
@@ -38,23 +37,19 @@ public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandle
 
     public override async Task ProcessQuestion() {
         if (_question is null) return;
-        try {
-            var q = Content?.CreateQuestion();
-            if (q is null) return;
+        var q = Content?.CreateQuestion();
+        if (q is null) return;
             
-            await Serializer.Save(q);
-            Evaluator.SetFiles(_question);
+        await Serializer.Save(q);
+        Evaluator.SetFiles(_question);
             
-            // I changed the question path, I need to check if I overwrote another question
-            if (_question.Path != q.Path && Evaluator.Questions.FirstOrDefault(e => e.Path == q.Path) is {} overwritten)
-                Evaluator.RemoveQuestion(overwritten);
-            Evaluator.ReplaceQuestion(_question, q);
+        // I changed the question path, I need to check if I overwrote another question
+        if (_question.Path != q.Path && Evaluator.Questions.FirstOrDefault(e => e.Path == q.Path) is {} overwritten)
+            Evaluator.RemoveQuestion(overwritten);
+        Evaluator.ReplaceQuestion(_question, q);
             
-            await Serializer.UpdateTrackingFile();
-            NavigatorService.NavigateTo<QuestionsPageViewModel>();
-        } catch (Exception e) {
-            ErrorHandler.ShowError(e);
-        }
+        await Serializer.UpdateTrackingFile();
+        NavigatorService.NavigateTo<QuestionsPageViewModel>();
     }
     
 }

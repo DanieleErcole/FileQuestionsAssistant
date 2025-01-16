@@ -48,15 +48,11 @@ public partial class ShapeInsertQuestionFormViewModel : QuestionFormBaseVM {
         FlipV = q.Params.Get<bool>("flipV");
     }
 
-    public override AbstractQuestion? CreateQuestion() {
-        if (string.IsNullOrWhiteSpace(Name) || OgFile is null || string.IsNullOrWhiteSpace(Path)) {
-            ErrorMsg = Lang.Lang.MissingRequiredFields;
-            return null;
-        }
-        if (X is null && Y is null && Width is null && Height is null && Rotation is null) {
-            ErrorMsg = Lang.Lang.NoParametersSetText;
-            return null;
-        }
+    public override AbstractQuestion CreateQuestion() {
+        if (string.IsNullOrWhiteSpace(Name) || OgFile is null || string.IsNullOrWhiteSpace(Path))
+            throw new FormError(Lang.Lang.MissingRequiredFields);
+        if (X is null && Y is null && Width is null && Height is null && Rotation is null)
+            throw new FormError(Lang.Lang.NoParametersSetText);
         
         Rotation = Rotation == 0 ? null : Rotation;
         Desc = string.IsNullOrWhiteSpace(Desc) ? null : Desc;
