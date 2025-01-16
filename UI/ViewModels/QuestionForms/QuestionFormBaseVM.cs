@@ -6,10 +6,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Core.FileHandling;
 using Core.Questions;
 using Core.Utils;
-using DocumentFormat.OpenXml.Office2013.PowerPoint.Roaming;
 using UI.Services;
 using UI.Utils;
-using Value = DocumentFormat.OpenXml.Office2019.Excel.RichData.Value;
 
 namespace UI.ViewModels.QuestionForms;
 
@@ -21,16 +19,6 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     private readonly IStorageService _storageService;
 
     protected abstract FilePickerFileType FileType { get; }
-    
-    private string? _errorMsg;
-    public string? ErrorMsg {
-        get => _errorMsg;
-        set {
-            SetProperty(ref _errorMsg, value);
-            OnPropertyChanged(nameof(IsError));
-        }
-    }
-    public bool IsError => ErrorMsg is not null;
 
     [ObservableProperty] 
     private MemoryFile? _ogFile;
@@ -53,10 +41,6 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
         Name = q.Name;
         Desc = q.Desc;
         Path = q.Path;
-    }
-    
-    public void CloseErr() {
-        ErrorMsg = null;
     }
 
     public virtual async Task UploadOgFile() {
@@ -87,6 +71,6 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
         Path = Uri.UnescapeDataString(file.Path.AbsolutePath);
     }
     
-    public abstract AbstractQuestion? CreateQuestion();
+    public abstract AbstractQuestion CreateQuestion();
 
 }

@@ -91,11 +91,9 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
         }
     }
 
-    public override AbstractQuestion? CreateQuestion() {
-        if (string.IsNullOrWhiteSpace(Name) || OgFile is null || string.IsNullOrWhiteSpace(Path) || string.IsNullOrWhiteSpace(StyleName)) {
-            ErrorMsg = Lang.Lang.MissingRequiredFields;
-            return null;
-        }
+    public override AbstractQuestion CreateQuestion() {
+        if (string.IsNullOrWhiteSpace(Name) || OgFile is null || string.IsNullOrWhiteSpace(Path) || string.IsNullOrWhiteSpace(StyleName))
+            throw new FormError(Lang.Lang.MissingRequiredFields);
 
         Desc = string.IsNullOrWhiteSpace(Desc) ? null : Desc;
         Color? c = Color is { } color ? System.Drawing.Color.FromArgb((int) color.ToUInt32()) : null;

@@ -87,6 +87,7 @@
                 <Button Name="DeleteBtn" 
                         Classes="transparent-button"
                         Command="{Binding RemoveSelection}"
+                        IsEnabled="{Binding CheckBoxState, FallbackValue=True, Mode=OneWay}"
                         ToolTip.Tip="{x:Static lang:Lang.ToolTipRemoveSelection}">
                     <controls:SymbolIcon Symbol="Delete" FontSize="20"/>
                 </Button>

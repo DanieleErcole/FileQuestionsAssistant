@@ -40,7 +40,7 @@ public class QuestionAddPageTests {
         btn.Command?.Execute(btn.DataContext);
         Dispatcher.UIThread.RunJobs();
         
-        Assert.That(App.Services.Get<QuestionAddPageViewModel>().Content!.IsError, Is.True);
+        Assert.That(App.Services.Get<QuestionAddPageViewModel>().IsError, Is.True);
     }
     
     [AvaloniaTest]
