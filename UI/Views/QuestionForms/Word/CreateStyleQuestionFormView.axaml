@@ -7,7 +7,6 @@
              xmlns:lang="clr-namespace:UI.Lang"
              xmlns:word="clr-namespace:UI.ViewModels.QuestionForms.Word"
              xmlns:mycontrols="clr-namespace:UI.Views.Controls"
-             xmlns:utils="clr-namespace:UI.Utils"
              xmlns:converters="clr-namespace:UI.Utils.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="word:CreateStyleQuestionFormViewModel"

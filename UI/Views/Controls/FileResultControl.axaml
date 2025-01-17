@@ -5,7 +5,8 @@
              xmlns:converters="clr-namespace:UI.Utils.Converters"
              x:DataType="questions:FileResultViewModel"
              x:Class="UI.Views.Controls.FileResultControl">
-    <Expander Expanding="OnExpanding" 
+    <Expander Expanding="OnExpanding"
+              Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
               IsExpanded="{Binding IsExpanded}"
               Classes.hand-cursor="{Binding IsExpandable}"
               Classes.success="{Binding IsSuccess}"
@@ -38,18 +39,21 @@
             </TreeView.Styles>
             <TreeView.ItemTemplate>
                 <TreeDataTemplate ItemsSource="{Binding SubNodes}">
-                    <Panel Classes.success="{Binding IsCorrect, Mode=OneWay}"
-                           Classes.failure="{Binding !IsCorrect, Mode=OneWay}"
-                           Margin="0, 5, 0, 5">
+                    <Grid Classes.success="{Binding IsCorrect, Mode=OneWay}"
+                          Classes.failure="{Binding !IsCorrect, Mode=OneWay}"
+                          ColumnDefinitions="Auto, *, Auto"
+                          Margin="0, 5, 0, 5">
                         <controls:SymbolIcon HorizontalAlignment="Left"
+                                             Margin="0, 0, 10, 0"
+                                             IsVisible="{Binding IsCorrect, Converter={x:Static converters:ParamsConverters.NullVisibleConverter}, Mode=OneWay}"
                                              Symbol="{Binding ResIcon, Mode=OneWay}" 
                                              FontSize="16"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="20, 0, 0, 0"
+                        <TextBlock Grid.Column="1"
                                    Text="{Binding Title, Mode=OneWay}"/>
-                        <TextBlock HorizontalAlignment="Right" Margin="0, 0, 10, 0"
+                        <TextBlock Grid.Column="2" Margin="0, 0, 10, 0"
                                    IsVisible="{Binding IsFirst, Mode=OneWay}"
-                                   Text="{Binding Value, Converter={x:Static converters:ParamsConverters.NoneConverter}}"/>
-                    </Panel>
+                                   Text="{Binding Value, Converter={x:Static converters:ParamsConverters.NoneConverter}, Mode=OneWay}"/>
+                    </Grid>
                 </TreeDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

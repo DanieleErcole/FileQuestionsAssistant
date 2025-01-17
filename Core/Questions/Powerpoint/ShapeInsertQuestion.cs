@@ -53,8 +53,6 @@ public class ShapeInsertQuestion : AbstractQuestion {
         ["rotation"] = sp.Rotation,
         ["flipH"] = sp.HFlip,
         ["flipV"] = sp.VFlip,
-        ["vOrigin"] = Origin.TopLeftCorner,
-        ["hOrigin"] = Origin.TopLeftCorner
     };
     
     public override IEnumerable<Result> Evaluate(IEnumerable<IFile> files) =>

@@ -27,9 +27,9 @@ public class ShapeInsertQuestionVM(ShapeInsertQuestion q) : PowerpointQuestionVi
         };
     }
 
-    protected override List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res) =>
-        res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool)> {
-            ["name"] = (d["name"].Item1, d["name"].Item2),
+    protected override List<Dictionary<string, (object?, bool?)>> GetLocalizedResultParams(Result res) =>
+        res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool?)> {
+            ["name"] = (d["name"].Item1, null),
             [Lang.Lang.XPosLabel] = (d["x"].Item1, d["x"].Item2),
             [Lang.Lang.YPosLabel] = (d["y"].Item1, d["y"].Item2),
             [Lang.Lang.WidthLabel] = (d["width"].Item1, d["width"].Item2),
@@ -37,8 +37,6 @@ public class ShapeInsertQuestionVM(ShapeInsertQuestion q) : PowerpointQuestionVi
             [Lang.Lang.FlipHLabel] = (((bool) d["flipH"].Item1!).ToFriendlyString(), d["flipH"].Item2),
             [Lang.Lang.FlipVLabel] = (((bool) d["flipV"].Item1!).ToFriendlyString(), d["flipV"].Item2),
             [Lang.Lang.RotationLabel] = (DegreesHelper.ToDegreeString(d["rotation"].Item1 as int?), d["rotation"].Item2),
-            [Lang.Lang.VerticalOriginLabel] = (d["vOrigin"].Item1 as Origin?, d["vOrigin"].Item2),
-            [Lang.Lang.HorizontalOriginLabel] = (d["hOrigin"].Item1 as Origin?, d["hOrigin"].Item2),
         }).ToList();
     
 }
