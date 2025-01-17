@@ -33,11 +33,11 @@
        </Style>            
     </Style>
    
-   <Style Selector="Panel.success > controls|SymbolIcon">
+   <Style Selector="Grid.success > controls|SymbolIcon">
       <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}"/>
    </Style>
    
-   <Style Selector="Panel.failure > controls|SymbolIcon">
+   <Style Selector="Grid.failure > controls|SymbolIcon">
       <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}"/>
    </Style>
    

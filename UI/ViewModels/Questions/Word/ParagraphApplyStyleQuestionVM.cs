@@ -17,8 +17,8 @@ public class ParagraphApplyStyleQuestionVM(ParagraphApplyStyleQuestion q) : Word
         };
     }
 
-    protected override List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res) {
-        return res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool)> {
+    protected override List<Dictionary<string, (object?, bool?)>> GetLocalizedResultParams(Result res) {
+        return res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool?)> {
             [Lang.Lang.StyleNameLabel] = d["styleName"],
         }).ToList();
     }

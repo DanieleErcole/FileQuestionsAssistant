@@ -23,8 +23,8 @@ public class CreateStyleQuestionVM(CreateStyleQuestion q) : WordQuestionViewMode
         };
     }
 
-    protected override List<Dictionary<string, (object?, bool)>> GetLocalizedResultParams(Result res) => 
-        res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool)> {
+    protected override List<Dictionary<string, (object?, bool?)>> GetLocalizedResultParams(Result res) => 
+        res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool?)> {
             [Lang.Lang.StyleNameLabel] = d["styleName"],
             [Lang.Lang.BasedOnLabel] = (d["baseStyleName"].Item1, d["baseStyleName"].Item2),
             [Lang.Lang.FontNameLabel] = (d["fontName"].Item1, d["fontName"].Item2),

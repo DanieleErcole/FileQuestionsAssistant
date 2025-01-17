@@ -20,5 +20,7 @@ public static class ParamsConverters {
         Color c => c.ToHexString(),
         _ => x?.ToString() ?? Lang.Lang.NoneText
     });
+    
+    public static readonly FuncValueConverter<object?, bool> NullVisibleConverter = new(x => x is not null);
 
 }

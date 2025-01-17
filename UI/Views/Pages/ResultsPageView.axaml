@@ -33,34 +33,38 @@
         </Grid>
         <StackPanel DockPanel.Dock="Top" Margin="20, 0, 20, 20">
             <TextBlock Margin="0, 0, 0, 20" Text="{Binding QuestionVM.Description, FallbackValue={x:Null}, Mode=OneWay}"/>
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                          ClipToBounds="True"
-                          MaxHeight="200">
-                <ItemsRepeater ItemsSource="{Binding CorrectParams}">
-                    <ItemsRepeater.Styles>
-                        <Style Selector="ItemsRepeater > Panel">
-                            <Setter Property="Height" Value="30"/>
-                        </Style>
-                        <Style Selector="ItemsRepeater > Panel:nth-child(odd)">
-                            <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorTertiary}"/>
-                        </Style>
-                        <Style Selector="ItemsRepeater TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                        </Style>
-                    </ItemsRepeater.Styles>
+            <Border BorderThickness="1"
+                    BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                    CornerRadius="4">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                              ClipToBounds="True"
+                              MaxHeight="200">
+                    <ItemsRepeater ItemsSource="{Binding CorrectParams}">
+                        <ItemsRepeater.Styles>
+                            <Style Selector="ItemsRepeater > Panel">
+                                <Setter Property="Height" Value="30"/>
+                            </Style>
+                            <Style Selector="ItemsRepeater > Panel:nth-child(odd)">
+                                <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorTertiary}"/>
+                            </Style>
+                            <Style Selector="ItemsRepeater TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </ItemsRepeater.Styles>
                     
-                    <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
-                            <Panel>
-                                <TextBlock HorizontalAlignment="Left" Margin="10, 0, 0, 0"
-                                           Text="{Binding Key, Mode=OneWay}"/>
-                                <TextBlock HorizontalAlignment="Right" Margin="0, 0, 20, 0"
-                                           Text="{Binding Value, Converter={x:Static converters:ParamsConverters.AnyConverter}, Mode=OneWay}"/>
-                            </Panel>
-                        </DataTemplate>
-                    </ItemsRepeater.ItemTemplate>
-                </ItemsRepeater>
-            </ScrollViewer>
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate>
+                                <Panel>
+                                    <TextBlock HorizontalAlignment="Left" Margin="10, 0, 0, 0"
+                                               Text="{Binding Key, Mode=OneWay}"/>
+                                    <TextBlock HorizontalAlignment="Right" Margin="0, 0, 20, 0"
+                                               Text="{Binding Value, Converter={x:Static converters:ParamsConverters.AnyConverter}, Mode=OneWay}"/>
+                                </Panel>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </ScrollViewer>
+            </Border>
         </StackPanel>
         <Panel DockPanel.Dock="Bottom" 
                Margin="0, 20, 20, 20">

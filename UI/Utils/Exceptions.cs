@@ -31,9 +31,8 @@ public class UIException(string title, string desc, Exception? inner = null) : E
         _ => new UIException(Lang.Lang.UnknownError, ex.InnerException?.Message ?? "")
     };
 
-    public override string ToString() {
-        return InnerException is null ? Message : $"{Message}: {InnerException}";
-    }
+    public override string ToString() =>
+        InnerException is null ? Message : $"{Message}: {InnerException}";
     
 }
 
