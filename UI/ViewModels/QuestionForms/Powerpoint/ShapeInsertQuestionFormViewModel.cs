@@ -8,7 +8,7 @@ using UI.Utils;
 
 namespace UI.ViewModels.QuestionForms.Powerpoint;
 
-public partial class ShapeInsertQuestionFormViewModel : QuestionFormBaseVM {
+public partial class ShapeInsertQuestionFormViewModel : QuestionFormVMBase {
 
     protected override FilePickerFileType FileType => FileTypesHelper.Powerpoint;
     

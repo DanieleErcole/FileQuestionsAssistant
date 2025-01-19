@@ -22,14 +22,14 @@ public enum QuestionTypeIndex {
 
 public class QuestionViewModelFactory(IErrorHandlerService errorHandler, IStorageService storageService) : IViewModelFactory {
 
-    public SingleQuestionViewModel NewQuestionVm(IQuestion question) => question switch {
+    public QuestionViewModelBase NewQuestionVm(IQuestion question) => question switch {
         CreateStyleQuestion csq => new CreateStyleQuestionVM(csq),
         ParagraphApplyStyleQuestion par => new ParagraphApplyStyleQuestionVM(par),
         ShapeInsertQuestion pptImage => new ShapeInsertQuestionVM(pptImage),
         _ => throw new ArgumentException("Invalid question type")
     };
 
-    public QuestionFormBaseVM NewQuestionFormVm(QuestionTypeIndex index, AbstractQuestion? question = null) => index switch {
+    public QuestionFormVMBase NewQuestionFormVm(QuestionTypeIndex index, AbstractQuestion? question = null) => index switch {
         QuestionTypeIndex.CreateStyle => new CreateStyleQuestionFormViewModel(errorHandler, storageService, question),
         QuestionTypeIndex.ParagraphApplyStyle => new ParagraphApplyStyleQuestionFormViewModel(errorHandler, storageService, question),
         QuestionTypeIndex.PptxImageInsert => new ShapeInsertQuestionFormViewModel(errorHandler, storageService, question),

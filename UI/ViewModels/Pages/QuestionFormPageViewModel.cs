@@ -39,7 +39,7 @@ public abstract partial class QuestionFormPageViewModel(string title, string btn
     public bool IsError => ErrorMsg is not null;
 
     [ObservableProperty]
-    private QuestionFormBaseVM? _content;
+    private QuestionFormVMBase? _content;
 
     public string PageTitle { get; } = title;
     public string? SaveButtonText { get; } = btnText;

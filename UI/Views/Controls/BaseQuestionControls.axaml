@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              xmlns:lang="clr-namespace:UI.Lang"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:DataType="questionForms:QuestionFormBaseVM"
+             x:DataType="questionForms:QuestionFormVMBase"
              x:Class="UI.Views.Controls.BaseQuestionControls">
         <StackPanel>
             <Panel Margin="20, 0, 20, 0">

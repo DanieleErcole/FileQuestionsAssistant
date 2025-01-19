@@ -14,7 +14,7 @@ using UI.Utils;
 
 namespace UI.ViewModels.QuestionForms.Word;
 
-public partial class CreateStyleQuestionFormViewModel : QuestionFormBaseVM {
+public partial class CreateStyleQuestionFormViewModel : QuestionFormVMBase {
     
     public static readonly string[] Alignments = [Lang.Lang.AlignmentLeft, Lang.Lang.AlignmentCenter, Lang.Lang.AlignmentRight];
 

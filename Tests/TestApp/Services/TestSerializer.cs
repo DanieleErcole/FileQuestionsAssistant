@@ -22,7 +22,7 @@ public class TestSerializer(Evaluator evaluator) : ISerializerService {
         return Task.CompletedTask;
     }
 
-    public List<AbstractQuestion?>? LoadTrackedQuestions() {
+    public List<IQuestion?>? LoadTrackedQuestions() {
         try {
             return _jsonQuestions.Select(p => {
                 if (string.IsNullOrWhiteSpace(p)) return null;
@@ -45,13 +45,13 @@ public class TestSerializer(Evaluator evaluator) : ISerializerService {
         try {
             await using var stream = File.Open(question.Path, FileMode.Create);
             await using var streamWriter = new StreamWriter(stream);
-            await streamWriter.WriteLineAsync(JsonSerializer.Serialize(question, _options));
+            await streamWriter.WriteLineAsync(JsonSerializer.Serialize(question,  _options));
         } catch (Exception e) {
             throw new FileError(question.Path, e);
         }
     }
 
-    public async Task<AbstractQuestion?> Load(string path) {
+    public async Task<IQuestion?> Load(string path) {
         try {
             await using var stream = File.OpenRead(path);
             using var streamReader = new StreamReader(stream);

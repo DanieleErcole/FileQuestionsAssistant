@@ -7,7 +7,7 @@ using UI.Utils;
 
 namespace UI.ViewModels.Questions;
 
-public partial class FileResultViewModel(SingleQuestionViewModel vm, IFile file, Result? result) : ViewModelBase {
+public partial class FileResultViewModel(QuestionViewModelBase vm, IFile file, Result? result) : ViewModelBase {
     
     public IFile File { get; } = file;
     public Result? Result { get; } = result;

@@ -41,7 +41,7 @@ public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
         }
     }
 
-    public List<AbstractQuestion?>? LoadTrackedQuestions() {
+    public List<IQuestion?>? LoadTrackedQuestions() {
         if (!Directory.Exists(App.AppDataDirectoryPath))
             Directory.CreateDirectory(App.AppDataDirectoryPath);
         if (!File.Exists(TrackedFilePath)) {
@@ -80,7 +80,7 @@ public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
         }
     }
     
-    public async Task<AbstractQuestion?> Load(string path) {
+    public async Task<IQuestion?> Load(string path) {
         try {
             await using var stream = File.OpenRead(path);
             using var streamReader = new StreamReader(stream);

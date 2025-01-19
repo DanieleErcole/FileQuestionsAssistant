@@ -24,7 +24,7 @@ public abstract class AbstractQuestion : IQuestion {
     [JsonIgnore]
     public string Path { get; set; } // The path will be initialized when creating the question from code and after deserializing it, it will be always initialized
 
-    public static AbstractQuestion? DeserializeWithPath(string path, string json, JsonSerializerOptions options) {
+    public static IQuestion? DeserializeWithPath(string path, string json, JsonSerializerOptions options) {
         var q = JsonSerializer.Deserialize<AbstractQuestion>(json, options);
         if (q is not null) q.Path = path;
         return q;

@@ -7,7 +7,7 @@ using UI.Utils;
 
 namespace UI.ViewModels.Questions;
 
-public abstract class SingleQuestionViewModel(AbstractQuestion q) : ViewModelBase {
+public abstract class QuestionViewModelBase(AbstractQuestion q) : ViewModelBase {
     
     public AbstractQuestion Question { get; } = q;
     public string Name => Question.Name;

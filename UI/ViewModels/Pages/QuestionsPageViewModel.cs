@@ -38,7 +38,7 @@ public class QuestionsPageViewModel : PageViewModel {
             Evaluator.AddQuestion(q!);
         
         QuestionsSearch = new IterableCollectionView(Evaluator.Questions.Select(vmFactory.NewQuestionVm), o => {
-            var q = (o as SingleQuestionViewModel)!;
+            var q = (o as QuestionViewModelBase)!;
             return string.IsNullOrWhiteSpace(SearchText) ||
                    q.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
                    q.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
@@ -74,12 +74,12 @@ public class QuestionsPageViewModel : PageViewModel {
     public void AddQuestionBtn() => NavigatorService.NavigateTo<QuestionAddPageViewModel>();
 
     public void EditQuestionBtn(object param) {
-        var vm = (param as SingleQuestionViewModel)!;
+        var vm = (param as QuestionViewModelBase)!;
         NavigatorService.NavigateTo<QuestionEditPageViewModel>(vm.Question);
     }
 
     public async Task DeleteQuestion(object param) {
-        var question = (param as SingleQuestionViewModel)!;
+        var question = (param as QuestionViewModelBase)!;
         if (!await _dialogService.ShowYesNoDialog(Lang.Lang.DeleteDialogTitle, Lang.Lang.DeleteDialogMessage + $"\n{question.Path}")) 
             return;
             
@@ -94,7 +94,7 @@ public class QuestionsPageViewModel : PageViewModel {
 
     public void OnQuestionSelected(object? sender, PointerPressedEventArgs _) {
         var item = sender as StyledElement;
-        var selected = (item!.DataContext as SingleQuestionViewModel)!;
+        var selected = (item!.DataContext as QuestionViewModelBase)!;
         NavigatorService.NavigateTo<ResultsPageViewModel>(selected.Question);
     }
     
