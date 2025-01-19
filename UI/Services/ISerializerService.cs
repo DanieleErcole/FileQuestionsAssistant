@@ -6,7 +6,7 @@ namespace UI.Services;
 
 public interface ISerializerService {
     Task UpdateTrackingFile();
-    List<AbstractQuestion?>? LoadTrackedQuestions();
+    List<IQuestion?>? LoadTrackedQuestions();
     Task Save(AbstractQuestion question);
-    Task<AbstractQuestion?> Load(string path);
+    Task<IQuestion?> Load(string path);
 }

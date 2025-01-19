@@ -13,7 +13,7 @@ using UI.Utils;
 
 namespace UI.ViewModels.QuestionForms.Word;
 
-public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormBaseVM {
+public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormVMBase {
     
     protected override FilePickerFileType FileType => FileTypesHelper.Word;
     

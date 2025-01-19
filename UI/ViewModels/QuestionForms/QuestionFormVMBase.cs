@@ -11,7 +11,7 @@ using UI.Utils;
 
 namespace UI.ViewModels.QuestionForms;
 
-public abstract partial class QuestionFormBaseVM : ViewModelBase {
+public abstract partial class QuestionFormVMBase : ViewModelBase {
     
     public static readonly Func<double, string> IntFormat = input => Math.Max(0, (int) input).ToString();
 
@@ -32,7 +32,7 @@ public abstract partial class QuestionFormBaseVM : ViewModelBase {
     [ObservableProperty]
     private string? _path;
 
-    protected QuestionFormBaseVM(IErrorHandlerService errorHandler, IStorageService storageService, AbstractQuestion? q = null) {
+    protected QuestionFormVMBase(IErrorHandlerService errorHandler, IStorageService storageService, AbstractQuestion? q = null) {
         ErrorHandler = errorHandler;
         _storageService = storageService;
         if (q is null) return;

@@ -18,7 +18,7 @@ namespace UI.ViewModels.Pages;
 public partial class ResultsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, IStorageService storageService, INotificationService notificationManager, IViewModelFactory vmFactory) : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
     
     [ObservableProperty]
-    private SingleQuestionViewModel? _questionVM;
+    private QuestionViewModelBase? _questionVM;
     [ObservableProperty]
     private Dictionary<string, object?> _correctParams = [];
     [ObservableProperty]
