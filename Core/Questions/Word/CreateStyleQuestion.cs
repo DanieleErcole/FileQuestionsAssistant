@@ -52,7 +52,7 @@ public class CreateStyleQuestion : AbstractQuestion {
             ["styleName"] = s.StyleName?.Val?.Value,
             ["baseStyleName"] = s.BasedOn?.Val?.Value,
             ["fontName"] = s.StyleRunProperties?.RunFonts?.Ascii?.Value,
-            ["fontSize"] = fs == -1 ? null : fs / 2,
+            ["fontSize"] = fs == -1 ? null : fs / 2, // The font size is stored in half-points (1/144 of an inch)
             ["color"] = rgb is null ? null : Color.FromArgb(rgb.Value.Item1, rgb.Value.Item2, rgb.Value.Item3),
             ["alignment"] = AlignmentHelper.FromFileString(s.StyleParagraphProperties?.Justification?.Val?.InnerText)
         };
@@ -66,27 +66,25 @@ public class CreateStyleQuestion : AbstractQuestion {
             var color = Params.Get<Color?>("color");
             var alignment = Params.Get<Alignment?>("alignment");
             
-            var matchedStyle = file.Styles.FirstOrDefault(s => {
-                if (s.StyleRunProperties is not {} styleProps) return false;
-                
-                var (r, g, b) = styleProps.Color?.Val?.Value?.HexStringToRgb() ?? (-1, -1, -1);
-                return s.StyleName?.Val?.Value == Params.Get<string>("styleName") && 
-                       (baseStyleName is null || s.BasedOn?.Val?.Value == baseStyleName) &&
-                       (fontName is null || styleProps.RunFonts?.Ascii?.Value == fontName) &&
-                       (fontSize is null || int.Parse(styleProps.FontSize?.Val?.Value ?? "-1") == fontSize * 2) && // The font size is stored in half-points (1/144 of an inch)
-                       (color is null || Color.FromArgb(r, g, b) == color) &&
-                       (alignment is null || AlignmentHelper.FromFileString(s.StyleParagraphProperties?.Justification?.Val?.InnerText) == alignment);
-            });
-            
-            if (matchedStyle is not null) 
+            var fileStyles = file.Styles
+                .Where(s => s.Type?.InnerText == "paragraph")
+                .Select(StyleToDict)
+                .ToList();
+            var matchedStyle = fileStyles.FirstOrDefault(s => 
+                s.Get<string>("styleName") == Params.Get<string>("styleName") && 
+                (baseStyleName is null || s.Get<string?>("baseStyleName") == baseStyleName) &&
+                (fontName is null || s.Get<string?>("fontName") == fontName) &&
+                (fontSize is null || s.Get<int?>("fontSize") == fontSize) &&
+                (color is null || s.Get<Color?>("color") == color) &&
+                (alignment is null || s.Get<Alignment?>("alignment") == alignment));
+
+            if (matchedStyle is not null)
                 return new Result(Params, [], true);
             
             using WordFile ogFile = OgFile;
             var ogStyles = ogFile.Styles.Select(StyleToDict).ToList();
 
-            var diff = file.Styles
-                .Where(s => s.Type?.InnerText == "paragraph")
-                .Select(StyleToDict)
+            var diff = fileStyles
                 .Where(s => ogStyles.All(x =>
                     s.Get<string>("styleName") != x.Get<string>("styleName") ||
                     s.Get<string?>("baseStyleName") != x.Get<string?>("baseStyleName") ||
