@@ -30,13 +30,7 @@ public class ParagraphApplyStyleQuestion : AbstractQuestion {
     public override IEnumerable<Result> Evaluate(IEnumerable<IFile> files) =>
         files.OfType<WordFile>().Select(file => {
             var styleName = Params.Get<string>("styleName");
-            var matchedParagraph = file.Paragraphs.FirstOrDefault(p => {
-                var pProperties = p.ParagraphProperties;
-                if (pProperties is null) return false;
-                
-                return pProperties.ParagraphStyleId?.Val?.Value == styleName;
-            });
-            
+            var matchedParagraph = file.Paragraphs.FirstOrDefault(p => p.ParagraphProperties?.ParagraphStyleId?.Val?.Value == styleName);
             return new Result(Params, [], matchedParagraph is not null);
         });
 
