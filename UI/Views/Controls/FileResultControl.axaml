@@ -28,12 +28,6 @@
         </Expander.Header>
         <TreeView ItemsSource="{Binding FileParams}"
                   SelectionChanged="OnSelectionChanged">
-            <TreeView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel/>
-                </ItemsPanelTemplate>
-            </TreeView.ItemsPanel>
-                                
             <TreeView.Styles>
                 <StyleInclude Source="/Styles/TreeViewStyle.axaml"/>
             </TreeView.Styles>
