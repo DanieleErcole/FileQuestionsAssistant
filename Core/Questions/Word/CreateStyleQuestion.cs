@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Core.Evaluation;
 using Core.FileHandling;
 using Core.Utils;
@@ -9,40 +8,35 @@ using Color = System.Drawing.Color;
 
 namespace Core.Questions.Word;
 
-public class CreateStyleQuestion : AbstractQuestion {
+[method: JsonConstructor]
+public class CreateStyleQuestion(
+        string path,
+        string name,
+        string? desc,
+        MemoryFile ogFile,
+        string styleName,
+        string? baseStyleName = null,
+        string? fontName = null,
+        int? fontSize = null,
+        Color? color = null,
+        Alignment? alignment = null
+    ) : AbstractQuestion(path, name, desc, ogFile) {
+    
+    public string StyleName { get; } = styleName;
+    public string? BaseStyleName { get; } = baseStyleName;
+    public string? FontName { get; } = fontName;
+    public int? FontSize { get; } = fontSize; 
+    public Color? color { get; } = color;
+    public Alignment? Alignment { get; } = alignment;
 
-    private static readonly JsonSerializerOptions Options = new() {
-        IncludeFields = true,
-        WriteIndented = true,
-        Converters = { new ColorConverter() }
+    protected override Dictionary<string, object?> ParamsToDict() => new() {
+        ["styleName"] = StyleName,
+        ["baseStyleName"] = BaseStyleName,
+        ["fontName"] = FontName,
+        ["fontSize"] = FontSize,
+        ["color"] = color,
+        ["alignment"] = Alignment
     };
-
-    public CreateStyleQuestion(string path, string name, string? desc, MemoryFile ogFile, string styleName, string? baseStyleName = null, 
-        string? fontName = null, int? fontSize = null, Color? color = null, Alignment? alignment = null) : base(path, name, desc, ogFile) {
-        Params.Add("styleName", styleName);
-        Params.Add("baseStyleName", baseStyleName);
-        Params.Add("fontName", fontName);
-        Params.Add("fontSize", fontSize);
-        Params.Add("color", color);
-        Params.Add("alignment", alignment);
-    }
-    
-    [JsonConstructor]
-    public CreateStyleQuestion(string name, string desc, MemoryFile ogFile, Dictionary<string, object?> Params) : base(name, desc, ogFile, Params) {}
-    
-    protected override void DeserializeParams() {
-        foreach (var (k, v) in Params) {
-            var jsonEl = (JsonElement?) v;
-            Params[k] = k switch {
-                "styleName" => jsonEl?.Deserialize<string>(),
-                "baseStyleName" or "fontName" => jsonEl?.Deserialize<string?>(),
-                "fontSize" => jsonEl?.Deserialize<int?>(),
-                "color" => jsonEl?.Deserialize<Color?>(Options),
-                "alignment" => jsonEl?.Deserialize<Alignment?>(),
-                _ => throw new JsonException()
-            };
-        }
-    }
 
     private static Dictionary<string, object?> StyleToDict(Style s) {
         var rgb = s.StyleRunProperties?.Color?.Val?.Value?.HexStringToRgb();
@@ -60,26 +54,21 @@ public class CreateStyleQuestion : AbstractQuestion {
     
     public override IEnumerable<Result> Evaluate(IEnumerable<IFile> files) => 
         files.OfType<WordFile>().Select(file => {
-            var baseStyleName = Params.Get<string?>("baseStyleName");
-            var fontName = Params.Get<string?>("fontName");
-            var fontSize = Params.Get<int?>("fontSize");
-            var color = Params.Get<Color?>("color");
-            var alignment = Params.Get<Alignment?>("alignment");
-            
             var fileStyles = file.Styles
                 .Where(s => s.Type?.InnerText == "paragraph")
                 .Select(StyleToDict)
                 .ToList();
             var matchedStyle = fileStyles.FirstOrDefault(s => 
-                s.Get<string>("styleName") == Params.Get<string>("styleName") && 
-                (baseStyleName is null || s.Get<string?>("baseStyleName") == baseStyleName) &&
-                (fontName is null || s.Get<string?>("fontName") == fontName) &&
-                (fontSize is null || s.Get<int?>("fontSize") == fontSize) &&
+                s.Get<string>("styleName") == StyleName && 
+                (BaseStyleName is null || s.Get<string?>("baseStyleName") == BaseStyleName) &&
+                (FontName is null || s.Get<string?>("fontName") == FontName) &&
+                (FontSize is null || s.Get<int?>("fontSize") == FontSize) &&
                 (color is null || s.Get<Color?>("color") == color) &&
-                (alignment is null || s.Get<Alignment?>("alignment") == alignment));
+                (Alignment is null || s.Get<Alignment?>("alignment") == Alignment));
 
+            var pars = ParamsToDict();
             if (matchedStyle is not null)
-                return new Result(Params, [], true);
+                return new Result(pars, [], true);
             
             using WordFile ogFile = OgFile;
             var ogStyles = ogFile.Styles.Select(StyleToDict).ToList();
@@ -93,7 +82,7 @@ public class CreateStyleQuestion : AbstractQuestion {
                     s.Get<Color?>("color") != x.Get<Color?>("color") ||
                     s.Get<Alignment?>("alignment") != x.Get<Alignment?>("alignment")
                 ));
-            return new Result(Params, diff.ToList(), false);
+            return new Result(pars, diff.ToList(), false);
         });
     
 }

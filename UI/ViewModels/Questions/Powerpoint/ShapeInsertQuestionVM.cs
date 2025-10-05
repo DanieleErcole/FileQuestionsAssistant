@@ -2,7 +2,6 @@
 using System.Linq;
 using Core.Evaluation;
 using Core.Questions.Powerpoint;
-using Core.Utils;
 using Core.Utils.Converters;
 using UI.Utils.Converters;
 
@@ -12,20 +11,17 @@ public class ShapeInsertQuestionVM(ShapeInsertQuestion q) : PowerpointQuestionVi
     
     public override string Description => Question.Desc ?? Lang.Lang.PptxShapeInsertQuestionDesc;
     
-    public override Dictionary<string, object?> GetLocalizedQuestionParams() {
-        var qParams = (Question as ShapeInsertQuestion)!.Params;
-        return new Dictionary<string, object?> {
-            [Lang.Lang.XPosLabel] = qParams.Get<double?>("x"),
-            [Lang.Lang.YPosLabel] = qParams.Get<double?>("y"),
-            [Lang.Lang.WidthLabel] = qParams.Get<double?>("width"),
-            [Lang.Lang.HeightLabel] = qParams.Get<double?>("height"),
-            [Lang.Lang.RotationLabel] = DegreesHelper.ToDegreeString(qParams.Get<int?>("rotation")),
-            [Lang.Lang.VerticalOriginLabel] = qParams.Get<Origin>("vOrigin"),
-            [Lang.Lang.HorizontalOriginLabel] = qParams.Get<Origin>("hOrigin"),
-            [Lang.Lang.FlipHLabel] = qParams.Get<bool>("flipH").ToFriendlyString(),
-            [Lang.Lang.FlipVLabel] = qParams.Get<bool>("flipV").ToFriendlyString(),
-        };
-    }
+    public override Dictionary<string, object?> GetLocalizedQuestionParams() => new() {
+        [Lang.Lang.XPosLabel] = q.X,
+        [Lang.Lang.YPosLabel] = q.Y,
+        [Lang.Lang.WidthLabel] = q.Width,
+        [Lang.Lang.HeightLabel] = q.Height,
+        [Lang.Lang.RotationLabel] = DegreesHelper.ToDegreeString(q.Rotation),
+        [Lang.Lang.VerticalOriginLabel] = q.VOrigin,
+        [Lang.Lang.HorizontalOriginLabel] = q.HOrigin,
+        [Lang.Lang.FlipHLabel] = q.FlipH.ToFriendlyString(),
+        [Lang.Lang.FlipVLabel] = q.FlipV.ToFriendlyString(),
+    };
 
     protected override List<Dictionary<string, (object?, bool?)>> GetLocalizedResultParams(Result res) =>
         res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool?)> {

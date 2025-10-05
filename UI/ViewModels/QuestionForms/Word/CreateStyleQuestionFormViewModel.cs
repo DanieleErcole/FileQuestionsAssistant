@@ -54,13 +54,13 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormVMBase {
 
     #endregion
 
-    public CreateStyleQuestionFormViewModel(IErrorHandlerService errorHandler, IStorageService storageService, AbstractQuestion? q = null) 
+    public CreateStyleQuestionFormViewModel(IErrorHandlerService errorHandler, IStorageService storageService, CreateStyleQuestion? q = null) 
         : base(errorHandler, storageService, q) {
         if (q is null) return;
         
-        StyleName = q.Params.Get<string>("styleName");
-        Color = q.Params.Get<Color?>("color") is { } color ? Avalonia.Media.Color.FromArgb(color.A, color.R, color.G, color.B) : null;
-        FontSize = q.Params.Get<int?>("fontSize") is {} n ? n.ToString() : 0.ToString();
+        StyleName = q.StyleName;
+        Color = q.color is { } color ? Avalonia.Media.Color.FromArgb(color.A, color.R, color.G, color.B) : null;
+        FontSize = q.FontSize is {} n ? n.ToString() : 0.ToString();
         
         using WordFile file = OgFile!;
         BasedOnStyles = new ObservableCollection<string>(
@@ -69,9 +69,9 @@ public partial class CreateStyleQuestionFormViewModel : QuestionFormVMBase {
                 .Select(s => s.StyleName!.Val!.Value!)
         );
         FontNames = new ObservableCollection<string>(file.Fonts.Select(s => s.Name!.Value!));
-        BasedOnSelected = q.Params.Get<string?>("baseStyleName");
-        FontNamesSelected = q.Params.Get<string?>("fontName");
-        AlignmentSelected = q.Params.Get<Alignment?>("alignment");
+        BasedOnSelected = q.BaseStyleName;
+        FontNamesSelected = q.FontName;
+        AlignmentSelected = q.Alignment;
     }
 
     public override async Task UploadOgFile() {

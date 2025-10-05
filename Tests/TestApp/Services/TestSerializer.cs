@@ -14,7 +14,7 @@ public class TestSerializer(Evaluator evaluator) : ISerializerService {
     private readonly JsonSerializerOptions _options = new() {
         IncludeFields = true,
         WriteIndented = true,
-        Converters = { new ColorConverter() }
+        Converters = { new ColorConverter(), new QuestionConverter() }
     };
 
     public Task UpdateTrackingFile() {

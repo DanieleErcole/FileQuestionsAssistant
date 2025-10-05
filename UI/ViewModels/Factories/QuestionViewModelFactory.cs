@@ -30,9 +30,12 @@ public class QuestionViewModelFactory(IErrorHandlerService errorHandler, IStorag
     };
 
     public QuestionFormVMBase NewQuestionFormVm(QuestionTypeIndex index, AbstractQuestion? question = null) => index switch {
-        QuestionTypeIndex.CreateStyle => new CreateStyleQuestionFormViewModel(errorHandler, storageService, question),
-        QuestionTypeIndex.ParagraphApplyStyle => new ParagraphApplyStyleQuestionFormViewModel(errorHandler, storageService, question),
-        QuestionTypeIndex.PptxImageInsert => new ShapeInsertQuestionFormViewModel(errorHandler, storageService, question),
+        QuestionTypeIndex.CreateStyle 
+            => new CreateStyleQuestionFormViewModel(errorHandler, storageService, question as CreateStyleQuestion),
+        QuestionTypeIndex.ParagraphApplyStyle 
+            => new ParagraphApplyStyleQuestionFormViewModel(errorHandler, storageService, question as ParagraphApplyStyleQuestion),
+        QuestionTypeIndex.PptxImageInsert 
+            => new ShapeInsertQuestionFormViewModel(errorHandler, storageService, question as ShapeInsertQuestion),
         _ => throw new ArgumentException("Invalid question index")
     };
     

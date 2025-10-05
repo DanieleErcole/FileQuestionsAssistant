@@ -11,17 +11,14 @@ public class CreateStyleQuestionVM(CreateStyleQuestion q) : WordQuestionViewMode
     
     public override string Description => Question.Desc ?? Lang.Lang.CreateStyleQuestionDesc;
 
-    public override Dictionary<string, object?> GetLocalizedQuestionParams() {
-        var qParams = (Question as CreateStyleQuestion)!.Params;
-        return new Dictionary<string, object?> {
-            [Lang.Lang.StyleNameLabel] = qParams.Get<string>("styleName"),
-            [Lang.Lang.BasedOnLabel] = qParams.Get<string?>("baseStyleName"),
-            [Lang.Lang.FontNameLabel] = qParams.Get<string?>("fontName"),
-            [Lang.Lang.FontSizeLabel] = qParams.Get<int?>("fontSize"),
-            [Lang.Lang.ColorLabel] = qParams.Get<Color?>("color"),
-            [Lang.Lang.AlignmentLabel] = qParams.Get<Alignment?>("alignment"),
-        };
-    }
+    public override Dictionary<string, object?> GetLocalizedQuestionParams() => new() {
+        [Lang.Lang.StyleNameLabel] = q.StyleName,
+        [Lang.Lang.BasedOnLabel] = q.BaseStyleName,
+        [Lang.Lang.FontNameLabel] = q.FontName,
+        [Lang.Lang.FontSizeLabel] = q.FontSize,
+        [Lang.Lang.ColorLabel] = q.color,
+        [Lang.Lang.AlignmentLabel] = q.Alignment,
+    };
 
     protected override List<Dictionary<string, (object?, bool?)>> GetLocalizedResultParams(Result res) => 
         res.EachParamsWithRes().Select(d => new Dictionary<string, (object?, bool?)> {

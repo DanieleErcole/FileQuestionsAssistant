@@ -5,6 +5,7 @@ using Core.FileHandling;
 using Core.Questions;
 using Core.Questions.Word;
 using Core.Utils;
+using Core.Utils.Converters;
 using Core.Utils.Errors;
 using Tests.Utils;
 using ColorConverter = Core.Utils.Converters.ColorConverter;
@@ -14,7 +15,7 @@ namespace Tests;
 [TestFixture]
 public class WordTests {
 
-    private static readonly JsonSerializerOptions Options = new() { Converters = { new ColorConverter() } };
+    private static readonly JsonSerializerOptions Options = new() { Converters = { new ColorConverter(), new QuestionConverter() } };
     private static FileStream _wordFile;
     private static MemoryFile _ogFile;
 
