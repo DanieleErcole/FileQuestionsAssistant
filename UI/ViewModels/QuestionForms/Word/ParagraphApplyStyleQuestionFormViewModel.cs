@@ -7,7 +7,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Core.FileHandling;
 using Core.Questions;
 using Core.Questions.Word;
-using Core.Utils;
 using UI.Services;
 using UI.Utils;
 
@@ -22,7 +21,7 @@ public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormVMBa
     
     public string? StyleNameSelected { get; set; }
     
-    public ParagraphApplyStyleQuestionFormViewModel(IErrorHandlerService errHandler, IStorageService storageService, AbstractQuestion? q = null) 
+    public ParagraphApplyStyleQuestionFormViewModel(IErrorHandlerService errHandler, IStorageService storageService, ParagraphApplyStyleQuestion? q = null) 
         : base(errHandler, storageService, q) {
         if (q is null) return;
         
@@ -32,7 +31,7 @@ public partial class ParagraphApplyStyleQuestionFormViewModel : QuestionFormVMBa
                 .Where(s => s.Type?.InnerText == "paragraph" && s.StyleName is not null)
                 .Select(s => s.StyleName!.Val!.Value!)
         );
-        StyleNameSelected = q.Params.Get<string>("styleName");
+        StyleNameSelected = q.StyleName;
     }
     
     public override async Task UploadOgFile() {

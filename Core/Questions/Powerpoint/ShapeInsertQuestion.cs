@@ -1,4 +1,3 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Core.Evaluation;
 using Core.FileHandling;
@@ -11,38 +10,43 @@ namespace Core.Questions.Powerpoint;
 
 public class ShapeInsertQuestion : AbstractQuestion {
 
+    public double? X { get; }
+    public double? Y { get; }
+    public double? Width { get; }
+    public double? Height { get; }
+    public int? Rotation { get; }
+    public Origin HOrigin { get; }
+    public Origin VOrigin { get; }
+    public bool FlipV { get; }
+    public bool FlipH { get; }
+
+    [JsonConstructor]
     public ShapeInsertQuestion(string path, string name, string? desc, MemoryFile ogFile, double? x, double? y, double? width, double? height, int? rotation,
         Origin vO, Origin hO, bool flipV = false, bool flipH = false) : base(path, name, desc, ogFile) {
         
         if (x is null && y is null && width is null && height is null && rotation is null)
             throw new ArgumentException("Parameters must be set");
-        
-        Params.Add("x", x);
-        Params.Add("y", y);
-        Params.Add("width", width);
-        Params.Add("height", height);
-        Params.Add("flipH", flipH);
-        Params.Add("flipV", flipV);
-        Params.Add("rotation", rotation);
-        Params.Add("hOrigin", hO);
-        Params.Add("vOrigin", vO);
-    }
-    
-    [JsonConstructor]
-    public ShapeInsertQuestion(string name, string desc, MemoryFile ogFile, Dictionary<string, object?> Params) : base(name, desc, ogFile, Params) { }
 
-    protected override void DeserializeParams() {
-        foreach (var (k, v) in Params) {
-            var jsonEl = (JsonElement?) v;
-            Params[k] = k switch {
-                "x" or "y" or "width" or "height" => jsonEl?.Deserialize<double?>(),
-                "rotation" => jsonEl?.Deserialize<int?>(),
-                "flipH" or "flipV" => jsonEl?.Deserialize<bool>(),
-                "vOrigin" or "hOrigin" => jsonEl?.Deserialize<Origin>(),
-                _ => throw new JsonException()
-            };
-        }
+        X = x;
+        Y = y;
+        Width = width;
+        Height = height;
+        Rotation = rotation;
+        HOrigin = hO;
+        VOrigin = vO;
+        FlipV = flipV;
+        FlipH = flipH;
     }
+
+    protected override Dictionary<string, object?> ParamsToDict() => new() {
+        ["x"] = X,
+        ["y"] = Y,
+        ["width"] = Width,
+        ["height"] = Height,
+        ["rotation"] = Rotation,
+        ["flipH"] = FlipH,
+        ["flipV"] = FlipV,
+    };
     
     private static Dictionary<string, object?> ShapeToDict(Shape sp) => new() {
         ["name"] = sp.Name,
@@ -57,31 +61,28 @@ public class ShapeInsertQuestion : AbstractQuestion {
     
     public override IEnumerable<Result> Evaluate(IEnumerable<IFile> files) =>
         files.OfType<PowerpointFile>().Select(file => {
-            var width = Params.Get<double?>("width");
-            var height = Params.Get<double?>("height");
-            var rotation = Params.Get<int?>("rotation");
-            
             var matchedShape = file.Shapes.FirstOrDefault(shape => {
                 if (file.Presentation.SlideSize is not { Cx.Value: var slideWidth, Cy.Value: var slideHeight }) 
                     return false;
 
-                double? newX = Params.Get<double?>("x"), newY = Params.Get<double?>("y");
-                if (Params.Get<Origin>("hOrigin") is Origin.SlideCenter) 
+                double? newX = X, newY = Y;
+                if (HOrigin is Origin.SlideCenter) 
                     newX += EMUsHelper.ToCentimeters(slideWidth) / 2;
-                if (Params.Get<Origin>("vOrigin") is Origin.SlideCenter)
+                if (VOrigin is Origin.SlideCenter)
                     newY += EMUsHelper.ToCentimeters(slideHeight) / 2;
                 
                 return (newX is null || shape.X.DoubleEquals(newX)) &&
                        (newY is null || shape.Y.DoubleEquals(newY)) &&
-                       (width is null || shape.Width.DoubleEquals(width)) &&
-                       (height is null || shape.Height.DoubleEquals(height)) &&
-                       (rotation is null || shape.Rotation == rotation) &&
-                       Params.Get<bool>("flipH") == shape.HFlip &&
-                       Params.Get<bool>("flipV") == shape.VFlip;
+                       (Width is null || shape.Width.DoubleEquals(Width)) &&
+                       (Height is null || shape.Height.DoubleEquals(Height)) &&
+                       (Rotation is null || shape.Rotation == Rotation) &&
+                       FlipH == shape.HFlip &&
+                       FlipV == shape.VFlip;
             });
-            
+
+            var pars = ParamsToDict();
             if (matchedShape is not null) 
-                return new Result(Params, [], true);
+                return new Result(pars, [], true);
 
             using PowerpointFile ogFile = OgFile;
             var ogShapes = ogFile.Shapes.ToList();
@@ -95,7 +96,7 @@ public class ShapeInsertQuestion : AbstractQuestion {
                     sp.HFlip != ogSp.HFlip ||
                     sp.VFlip != ogSp.VFlip
                 ));
-            return new Result(Params, diff.Select(ShapeToDict).ToList(), false);
+            return new Result(pars, diff.Select(ShapeToDict).ToList(), false);
         });
-
+    
 }

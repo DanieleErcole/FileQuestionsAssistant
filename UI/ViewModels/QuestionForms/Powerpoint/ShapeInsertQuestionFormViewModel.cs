@@ -33,19 +33,19 @@ public partial class ShapeInsertQuestionFormViewModel : QuestionFormVMBase {
     [ObservableProperty]
     private bool _flipV;
     
-    public ShapeInsertQuestionFormViewModel(IErrorHandlerService errorHandler, IStorageService storageService, AbstractQuestion? q = null) 
+    public ShapeInsertQuestionFormViewModel(IErrorHandlerService errorHandler, IStorageService storageService, ShapeInsertQuestion? q = null) 
         : base(errorHandler, storageService, q) {
         if (q is null) return;
 
-        X = q.Params.Get<double?>("x");
-        Y = q.Params.Get<double?>("y");
-        Width = q.Params.Get<double?>("width");
-        Height = q.Params.Get<double?>("height");
-        Rotation = q.Params.Get<int?>("rotation");
-        HOrigin = q.Params.Get<Origin>("hOrigin");
-        VOrigin = q.Params.Get<Origin>("vOrigin");
-        FlipH = q.Params.Get<bool>("flipH");
-        FlipV = q.Params.Get<bool>("flipV");
+        X = q.X;
+        Y = q.Y;
+        Width = q.Width;
+        Height = q.Height;
+        Rotation = q.Rotation;
+        HOrigin = q.HOrigin;
+        VOrigin = q.VOrigin;
+        FlipH = q.FlipH;
+        FlipV = q.FlipV;
     }
 
     public override AbstractQuestion CreateQuestion() {

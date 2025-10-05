@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
 using Core.Questions;
+using Core.Utils.Converters;
 using Core.Utils.Errors;
 using Serilog;
 using ColorConverter = Core.Utils.Converters.ColorConverter;
@@ -27,7 +28,7 @@ public class QuestionSerializer(Evaluator evaluator) : ISerializerService {
     private readonly JsonSerializerOptions _options = new() {
         IncludeFields = true,
         WriteIndented = true,
-        Converters = { new ColorConverter() }
+        Converters = { new ColorConverter(), new QuestionConverter() }
     };
 
     public async Task UpdateTrackingFile() {
