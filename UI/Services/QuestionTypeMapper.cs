@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Core.Questions;
-using Serilog;
 using UI.ViewModels.QuestionForms;
 using UI.ViewModels.Questions;
 
@@ -29,22 +28,23 @@ public class QuestionTypeMapper {
         _typeIndexMap = qTypes.ToDictionary(t => qTypes.FindIndex(q => t == q), t => t);
         return;
 
-        Type GetViewModelType(List<Type> types, Type qType) {
-            return types
-                .Where(t => t is { IsAbstract: false, BaseType: not null })
-                .First(t => t.BaseType!.BaseType == typeof(QuestionViewModelBase)
-                            && t.GetConstructors()
-                                .Count(c => c
-                                    .GetParameters().Count(p => p.ParameterType.IsAssignableTo(qType)) == 1) == 1);
-        }
-        Type GetFormTypes(List<Type> types, Type qType) {
-            return types
-                .Where(t => t is { IsAbstract: false, BaseType: not null })
-                .First(t => t.BaseType == typeof(QuestionFormVMBase)
-                            && t.GetConstructors()
-                                .Count(c => c
-                                    .GetParameters().Count(p => p.ParameterType.IsAssignableTo(qType)) == 1) == 1);
-        }
+        Type GetViewModelType(List<Type> types, Type qType) => 
+            types.Single(t => 
+                !t.IsAbstract 
+                && t.BaseType?.BaseType == typeof(QuestionViewModelBase)
+                && t.GetConstructors().SingleOrDefault(c => {
+                    var parameters = c.GetParameters();
+                    return parameters.Length == 1 && parameters[0].ParameterType.IsAssignableTo(qType);
+                }) is not null
+            );
+        
+        Type GetFormTypes(List<Type> types, Type qType) => 
+            types.Single(t => 
+                !t.IsAbstract 
+                && t.BaseType == typeof(QuestionFormVMBase) 
+                && t.GetConstructors()
+                    .SingleOrDefault(c => c.GetParameters().Count(p => p.ParameterType.IsAssignableTo(qType)) == 1) is not null
+            );
     }
 
     public ConstructorInfo GetViewModelConstructor(Type qType) =>
