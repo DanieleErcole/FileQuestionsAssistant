@@ -1,0 +1,107 @@
+name: build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            arch: x64
+            rid: osx-x64
+          - os: macos-latest-arm64
+            arch: arm64
+            rid: osx-arm64
+          - os: windows-latest
+            arch: x64
+            rid: win-x64
+          - os: ubuntu-latest
+            arch: x64
+            rid: linux-x64
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install Dependencies
+      run: dotnet restore
+
+    - name: Test
+      run: dotnet test
+
+    - name: Publish Application
+      run: dotnet publish ./UI -c Release -r ${{ matrix.rid }} -p:DebugType=Embedded -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true --self-contained=true -o publish/FileQuestionsAssistant_${{ matrix.rid }}
+
+    - name: Zip the files
+      run: |
+        cd publish
+        zip -r FileQuestionsAssistant_${{ matrix.rid }}.zip FileQuestionsAssistant_${{ matrix.rid }}
+
+    - name: Archive Build Artifacts
+      if: ${{ success() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: fileQuestionsAssistant-${{ matrix.rid }}
+        path: publish/FileQuestionsAssistant_${{ matrix.rid }}.zip
+
+    - name: Retrieve Version
+      id: version
+      run: |
+        VERSION=$(cat version.txt)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+    
+    outputs:
+      version: ${{ env.VERSION }}
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: build
+    steps:
+    - name: Download Linux Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: fileQuestionsAssistant-linux-x64
+        path: ./artifacts/linux
+    - name: Download macOS x64 Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: fileQuestionsAssistant-osx-x64
+        path: ./artifacts/macos
+    - name: Download macOS arm64 Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: fileQuestionsAssistant-osx-arm64
+        path: ./artifacts/macos
+    - name: Download Windows Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: fileQuestionsAssistant-win-x64
+        path: ./artifacts/windows
+    - name: Create Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: |
+          ./artifacts/linux/*
+          ./artifacts/macos/*
+          ./artifacts/windows/*
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ needs.build.outputs.version }}
+        name: v${{ needs.build.outputs.version }}
+        body: |
+          ## Release Notes
+          This release contains the following builds:
+          - Windows (x64)
+          - macOS (x64 and arm64)
+          - Linux (x64)

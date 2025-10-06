@@ -57,7 +57,7 @@ public class ResultsPageTests {
     
     [AvaloniaTest]
     public void ResultsPageTest_NavigationSuccessful() => 
-        Assert.That(App.Services.Get<ResultsPageViewModel>().QuestionVM, Is.Not.EqualTo(null));
+        Assert.That(App.Services.Get<ResultsPageViewModel>().QuestionVm, Is.Not.EqualTo(null));
     
     [AvaloniaTest]
     public void ResultsPageTest_AddFileCorrect() => Assert.That(AddFiles(true), Has.Count.GreaterThan(0));

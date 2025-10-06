@@ -13,8 +13,8 @@ public abstract class AbstractQuestion(string path, string name, string? desc, M
     public string? Desc { get; } = desc;
     public MemoryFile OgFile { get; } = ogFile;
 
-    public string Path { get; set; } = path; // The path will be initialized when creating the question from code and after deserializing it, it will be always initialized
-
+    public string Path { get; set; } = path;
+    
     public static IQuestion? DeserializeWithPath(string path, string json, JsonSerializerOptions options) {
         var q = JsonSerializer.Deserialize<AbstractQuestion>(json, options);
         if (q is not null) q.Path = path; // The file could have been moved

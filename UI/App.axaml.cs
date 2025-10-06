@@ -25,6 +25,7 @@ public class App : Application {
     public static readonly string AppDataDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FileQuestionAssistant");
     
     private readonly IServiceProvider _services = new ServiceCollection()
+        .AddSingleton<QuestionTypeMapper>()
         .AddTransient<IViewModelFactory, QuestionViewModelFactory>()
         .AddTransient<IErrorHandlerService, ErrorHandler>()
         .AddSingleton<IDialogService, DialogService>()

@@ -18,7 +18,7 @@ namespace UI.ViewModels.Pages;
 public partial class ResultsPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, Evaluator evaluator, IStorageService storageService, INotificationService notificationManager, IViewModelFactory vmFactory) : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
     
     [ObservableProperty]
-    private QuestionViewModelBase? _questionVM;
+    private QuestionViewModelBase? _questionVm;
     [ObservableProperty]
     private Dictionary<string, object?> _correctParams = [];
     [ObservableProperty]
@@ -39,19 +39,19 @@ public partial class ResultsPageViewModel(NavigatorService navService, IErrorHan
             NavigatorService.NavigateTo<QuestionsPageViewModel>();
             return;
         }
-        QuestionVM = ViewModelFactory.NewQuestionVm(question);
-        CorrectParams = QuestionVM.GetLocalizedQuestionParams();
+        QuestionVm = ViewModelFactory.NewQuestionVm(question.GetType(), question);
+        CorrectParams = QuestionVm.GetLocalizedQuestionParams();
         
-        var files = Evaluator.QuestionFiles(QuestionVM.Question);
+        var files = Evaluator.QuestionFiles(QuestionVm.Question);
         FilesResult = new IterableCollectionView(files.Select(f =>
-            new FileResultViewModel(QuestionVM, f, _results.GetValueOrDefault(f))
+            new FileResultViewModel(QuestionVm, f, _results.GetValueOrDefault(f))
         ), _ => true);
         RefreshCheckBoxState();
     }
     
     public void ToQuestionPage() {
         _results.Clear();
-        QuestionVM = null;
+        QuestionVm = null;
         CorrectParams.Clear();
         NavigatorService.NavigateTo<QuestionsPageViewModel>();
     }
@@ -68,7 +68,7 @@ public partial class ResultsPageViewModel(NavigatorService navService, IErrorHan
     
     public void RemoveSelection() {
         foreach (var item in SelectedFiles) {
-            Evaluator.RemoveFile(QuestionVM!.Question, item.File);
+            Evaluator.RemoveFile(QuestionVm!.Question, item.File);
 
             if (item.Result is not null)
                 _results.Remove(item.File);
@@ -79,10 +79,10 @@ public partial class ResultsPageViewModel(NavigatorService navService, IErrorHan
     
     public async Task AddFiles() {
         try {
-            var files = await StorageService.GetFilesOfTypeAsync(QuestionVM!.FileType, true);
+            var files = await StorageService.GetFilesOfTypeAsync(QuestionVm!.FileType, true);
             if (files.Length == 0)
                 return;
-            Evaluator.AddFiles(QuestionVM!.Question, files);
+            Evaluator.AddFiles(QuestionVm!.Question, files);
         } catch (FileError e) {
             ErrorHandler.ShowError(e);
         }
@@ -93,7 +93,7 @@ public partial class ResultsPageViewModel(NavigatorService navService, IErrorHan
     public void EvaluateButton() {
         try {
             var anySelected = SelectedFiles.Any();
-            var results = Evaluator.Evaluate(QuestionVM!.Question, anySelected ? FilterOnlySelected : null).ToList();
+            var results = Evaluator.Evaluate(QuestionVm!.Question, anySelected ? FilterOnlySelected : null).ToList();
             
             foreach (var result in results) {
                 var collection = anySelected ? SelectedFiles : FilesResult!.OfType<FileResultViewModel>();

@@ -29,10 +29,10 @@
                        Margin="20, 10, 0, 20"
                        HorizontalAlignment="Left"
                        Theme="{StaticResource SubtitleTextBlockStyle}"
-                       Text="{Binding QuestionVM.Name, FallbackValue={x:Null}, Mode=OneWay}"/>
+                       Text="{Binding QuestionVm.Name, FallbackValue={x:Null}, Mode=OneWay}"/>
         </Grid>
         <StackPanel DockPanel.Dock="Top" Margin="20, 0, 20, 20">
-            <TextBlock Margin="0, 0, 0, 20" Text="{Binding QuestionVM.Description, FallbackValue={x:Null}, Mode=OneWay}"/>
+            <TextBlock Margin="0, 0, 0, 20" Text="{Binding QuestionVm.Description, FallbackValue={x:Null}, Mode=OneWay}"/>
             <Border BorderThickness="1"
                     BorderBrush="{DynamicResource ControlElevationBorderBrush}"
                     CornerRadius="4">
