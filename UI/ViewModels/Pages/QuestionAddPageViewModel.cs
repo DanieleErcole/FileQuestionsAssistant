@@ -7,8 +7,8 @@ using UI.ViewModels.Factories;
 namespace UI.ViewModels.Pages;
 
 public class QuestionAddPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
-    Evaluator evaluator, IStorageService sService, IViewModelFactory vmFactory) 
-    : QuestionFormPageViewModel(Lang.Lang.NewQuestionPageTitle,  Lang.Lang.CreateBtnText, navService, errorHandler, serializer, evaluator, sService, vmFactory) {
+    Evaluator evaluator, IStorageService sService, QuestionTypeMapper mapper, IViewModelFactory vmFactory) 
+    : QuestionFormPageViewModel(Lang.Lang.NewQuestionPageTitle,  Lang.Lang.CreateBtnText, navService, errorHandler, serializer, evaluator, sService, mapper, vmFactory) {
 
     public override void OnNavigatedTo(object? param = null) => SelectedIndex = 0;
 

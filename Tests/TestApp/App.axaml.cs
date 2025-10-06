@@ -29,6 +29,7 @@ public class TestAppBuilder {
 public class App : Application {
     
     public static readonly IServiceProvider Services = new ServiceCollection()
+        .AddSingleton<QuestionTypeMapper>()
         .AddTransient<IViewModelFactory, QuestionViewModelFactory>()
         .AddSingleton<IErrorHandlerService, TestErrorHandler>()
         .AddTransient<IDialogService, TestDialogService>()

@@ -10,8 +10,11 @@ using UI.ViewModels.QuestionForms;
 namespace UI.ViewModels.Pages;
 
 public abstract partial class QuestionFormPageViewModel(string title, string btnText, NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
-    Evaluator evaluator, IStorageService storageService, IViewModelFactory vmFactory) : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory) {
+    Evaluator evaluator, IStorageService storageService, QuestionTypeMapper mapper, IViewModelFactory vmFactory) : PageViewModel(navService, errorHandler, serializer, evaluator, storageService, vmFactory)
+{
 
+    protected QuestionTypeMapper _mapper = mapper;
+    
     // Note: edit when adding new question types
     public string[] QuestionTypes { get; } = [
         Lang.Lang.CreateStyleQuestionName,
@@ -24,7 +27,7 @@ public abstract partial class QuestionFormPageViewModel(string title, string btn
         get => _selectedIndex;
         set {
             SetProperty(ref _selectedIndex, value);
-            Content = ViewModelFactory.NewQuestionFormVm((QuestionTypeIndex) SelectedIndex);
+            Content = ViewModelFactory.NewQuestionFormVm(_mapper.TypeFromIndex(_selectedIndex));
         }
     }
     

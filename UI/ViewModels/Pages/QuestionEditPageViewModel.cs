@@ -10,18 +10,8 @@ using UI.ViewModels.Factories;
 namespace UI.ViewModels.Pages;
 
 public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
-    Evaluator evaluator, IStorageService sService, IViewModelFactory vmFactory) 
-    : QuestionFormPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sService, vmFactory) {
-   
-    // Note: edit when adding new question types
-    private static QuestionTypeIndex QuestionToIndex(AbstractQuestion? question = null) {
-        return question switch {
-            CreateStyleQuestion => QuestionTypeIndex.CreateStyle,
-            ParagraphApplyStyleQuestion => QuestionTypeIndex.ParagraphApplyStyle,
-            ShapeInsertQuestion => QuestionTypeIndex.PptxImageInsert,
-            _ => QuestionTypeIndex.CreateStyle
-        };
-    }
+    Evaluator evaluator, IStorageService sService, QuestionTypeMapper mapper, IViewModelFactory vmFactory) 
+    : QuestionFormPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sService, mapper, vmFactory) {
 
     private AbstractQuestion? _question;
 
@@ -31,8 +21,8 @@ public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandle
            NavigatorService.NavigateTo<QuestionsPageViewModel>();
         
         _question = question;
-        SelectedIndex = (int) QuestionToIndex(question);
-        Content = ViewModelFactory.NewQuestionFormVm((QuestionTypeIndex) SelectedIndex, question);
+        SelectedIndex = _mapper.IndexFromType(question!.GetType());
+        Content = ViewModelFactory.NewQuestionFormVm(question.GetType(), question);
     }
 
     public override async Task ProcessQuestion() {

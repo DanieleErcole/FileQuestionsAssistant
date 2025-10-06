@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Core.Evaluation;
+using Core.Questions;
 using Core.Utils.Errors;
 using FluentAvalonia.UI.Data;
 using UI.Services;
@@ -37,12 +38,15 @@ public class QuestionsPageViewModel : PageViewModel {
         foreach (var q in loadedQuestions.Where(q => q is not null))
             Evaluator.AddQuestion(q!);
         
-        QuestionsSearch = new IterableCollectionView(Evaluator.Questions.Select(vmFactory.NewQuestionVm), o => {
-            var q = (o as QuestionViewModelBase)!;
-            return string.IsNullOrWhiteSpace(SearchText) ||
-                   q.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                   q.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
-        });
+        QuestionsSearch = new IterableCollectionView(
+            Evaluator.Questions.Select(q => vmFactory.NewQuestionVm(q.GetType(), q as AbstractQuestion)),
+            o => {
+                var q = (o as QuestionViewModelBase)!;
+                return string.IsNullOrWhiteSpace(SearchText) ||
+                    q.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                    q.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+            }
+        );
     }
 
     public override void OnNavigatedTo(object? param = null) => QuestionsSearch.Refresh();
