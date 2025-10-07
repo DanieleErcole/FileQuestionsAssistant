@@ -9,9 +9,9 @@ namespace UI.ViewModels.Factories;
 public class QuestionViewModelFactory(IErrorHandlerService errorHandler, IStorageService storageService, QuestionTypeMapper mapper) : IViewModelFactory {
 
     public QuestionViewModelBase NewQuestionVm(Type type, AbstractQuestion? question = null) =>
-        (mapper.GetViewModelConstructor(type).Invoke([question]) as QuestionViewModelBase)!;
+        mapper.ViewModel(type, [question])!;
 
     public QuestionFormVMBase NewQuestionFormVm(Type type, AbstractQuestion? question = null) =>
-        (mapper.GetFormConstructor(type).Invoke([errorHandler, storageService, question]) as QuestionFormVMBase)!;
-    
+        mapper.FormViewModel(type, [errorHandler, storageService, question])!;
+
 }

@@ -15,8 +15,8 @@ public abstract class QuestionViewModelBase(AbstractQuestion q) : ViewModelBase 
     public string Path => Question.Path;
     public abstract string Icon { get; }
     public abstract FilePickerFileType FileType { get; }
+    public abstract Dictionary<string, object?> LocalizedParams { get; }
     
-    public abstract Dictionary<string, object?> GetLocalizedQuestionParams();
     protected abstract List<Dictionary<string, (object?, bool?)>> GetLocalizedResultParams(Result res);
 
     public List<TreeViewNode> ResultParamsAsNodes(Result res) => 

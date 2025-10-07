@@ -2,16 +2,20 @@
 using System.Threading.Tasks;
 using Core.Evaluation;
 using Core.Questions;
-using Core.Questions.Powerpoint;
-using Core.Questions.Word;
 using UI.Services;
 using UI.ViewModels.Factories;
 
 namespace UI.ViewModels.Pages;
 
-public class QuestionEditPageViewModel(NavigatorService navService, IErrorHandlerService errorHandler, ISerializerService serializer, 
-    Evaluator evaluator, IStorageService sService, QuestionTypeMapper mapper, IViewModelFactory vmFactory) 
-    : QuestionFormPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sService, mapper, vmFactory) {
+public class QuestionEditPageViewModel(
+        NavigatorService navService, 
+        IErrorHandlerService errorHandler, 
+        ISerializerService serializer, 
+        Evaluator evaluator, 
+        IStorageService sService, 
+        QuestionTypeMapper mapper, 
+        IViewModelFactory vmFactory
+    ) : QuestionFormPageViewModel(Lang.Lang.EditQuestionPageTitle,  Lang.Lang.SaveBtnText, navService, errorHandler, serializer, evaluator, sService, mapper, vmFactory) {
 
     private AbstractQuestion? _question;
 

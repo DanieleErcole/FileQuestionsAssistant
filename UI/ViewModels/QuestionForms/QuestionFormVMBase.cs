@@ -12,8 +12,6 @@ using UI.Utils;
 namespace UI.ViewModels.QuestionForms;
 
 public abstract partial class QuestionFormVMBase : ViewModelBase {
-    
-    public static readonly Func<double, string> IntFormat = input => Math.Max(0, (int) input).ToString();
 
     protected readonly IErrorHandlerService ErrorHandler;
     private readonly IStorageService _storageService;

@@ -11,7 +11,7 @@ public class CreateStyleQuestionVM(CreateStyleQuestion q) : WordQuestionViewMode
     
     public override string Description => Question.Desc ?? Lang.Lang.CreateStyleQuestionDesc;
 
-    public override Dictionary<string, object?> GetLocalizedQuestionParams() => new() {
+    public override Dictionary<string, object?> LocalizedParams => new() {
         [Lang.Lang.StyleNameLabel] = q.StyleName,
         [Lang.Lang.BasedOnLabel] = q.BaseStyleName,
         [Lang.Lang.FontNameLabel] = q.FontName,

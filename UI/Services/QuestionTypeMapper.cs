@@ -32,10 +32,8 @@ public class QuestionTypeMapper {
             types.Single(t => 
                 !t.IsAbstract 
                 && t.BaseType?.BaseType == typeof(QuestionViewModelBase)
-                && t.GetConstructors().SingleOrDefault(c => {
-                    var parameters = c.GetParameters();
-                    return parameters.Length == 1 && parameters[0].ParameterType.IsAssignableTo(qType);
-                }) is not null
+                && t.GetConstructors()
+                    .SingleOrDefault(c => c.GetParameters().Any(p => p.ParameterType.IsAssignableTo(qType))) is not null
             );
         
         Type GetFormTypes(List<Type> types, Type qType) => 
@@ -43,19 +41,19 @@ public class QuestionTypeMapper {
                 !t.IsAbstract 
                 && t.BaseType == typeof(QuestionFormVMBase) 
                 && t.GetConstructors()
-                    .SingleOrDefault(c => c.GetParameters().Count(p => p.ParameterType.IsAssignableTo(qType)) == 1) is not null
+                    .SingleOrDefault(c => c.GetParameters().Any(p => p.ParameterType.IsAssignableTo(qType))) is not null
             );
     }
 
-    public ConstructorInfo GetViewModelConstructor(Type qType) =>
-        _viewModelTypeMap[qType].GetConstructor([qType])!;
+    public QuestionViewModelBase? ViewModel(Type qType, object?[] @params) =>
+        _viewModelTypeMap[qType].GetConstructor([qType])?.Invoke(@params) as QuestionViewModelBase;
     
-    public ConstructorInfo GetFormConstructor(Type qType) =>
+    public QuestionFormVMBase? FormViewModel(Type qType, object?[] @params) =>
         _formTypeMap[qType].GetConstructor([
             typeof(IErrorHandlerService),
             typeof(IStorageService),
             qType
-        ])!;
+        ])?.Invoke(@params) as QuestionFormVMBase;
 
     public Type TypeFromIndex(int index) =>
         _typeIndexMap[index];

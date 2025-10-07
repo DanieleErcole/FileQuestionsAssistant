@@ -9,7 +9,7 @@ public class ParagraphApplyStyleQuestionVM(ParagraphApplyStyleQuestion q) : Word
     
     public override string Description => Question.Desc ?? Lang.Lang.ParagraphApplyStyleQuestionDesc;
     
-    public override Dictionary<string, object?> GetLocalizedQuestionParams() => new() {
+    public override Dictionary<string, object?> LocalizedParams => new() {
         [Lang.Lang.StyleNameLabel] = q.StyleName
     };
 

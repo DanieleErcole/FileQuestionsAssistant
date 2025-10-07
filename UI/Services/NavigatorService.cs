@@ -20,7 +20,7 @@ public class NavigatorService {
                 QuestionsPageViewModel => new QuestionsPageView { DataContext = target, },
                 QuestionFormPageViewModel=> new QuestionFormPageView { DataContext = target, },
                 ResultsPageViewModel => new ResultsPageView { DataContext = target, },
-                _ => throw new ArgumentException()
+                _ => throw new ArgumentException("Invalid view model type")
             };
         }
     }

@@ -11,7 +11,7 @@ public class ShapeInsertQuestionVM(ShapeInsertQuestion q) : PowerpointQuestionVi
     
     public override string Description => Question.Desc ?? Lang.Lang.PptxShapeInsertQuestionDesc;
     
-    public override Dictionary<string, object?> GetLocalizedQuestionParams() => new() {
+    public override Dictionary<string, object?> LocalizedParams => new() {
         [Lang.Lang.XPosLabel] = q.X,
         [Lang.Lang.YPosLabel] = q.Y,
         [Lang.Lang.WidthLabel] = q.Width,

@@ -40,7 +40,7 @@ public partial class ResultsPageViewModel(NavigatorService navService, IErrorHan
             return;
         }
         QuestionVm = ViewModelFactory.NewQuestionVm(question.GetType(), question);
-        CorrectParams = QuestionVm.GetLocalizedQuestionParams();
+        CorrectParams = QuestionVm.LocalizedParams;
         
         var files = Evaluator.QuestionFiles(QuestionVm.Question);
         FilesResult = new IterableCollectionView(files.Select(f =>
