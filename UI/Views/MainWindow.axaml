@@ -19,5 +19,5 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     
-    <controls:Frame Name="MainFrame"/>
+    <controls:Frame Name="MainFrame" IsNavigationStackEnabled="False"/>
 </windowing:AppWindow>
