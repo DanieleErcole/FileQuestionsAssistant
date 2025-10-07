@@ -25,7 +25,7 @@ public class QuestionEditPageViewModel(
            NavigatorService.NavigateTo<QuestionsPageViewModel>();
         
         _question = question;
-        SelectedIndex = _mapper.IndexFromType(question!.GetType());
+        SelectedIndex = Mapper.IndexFromType(question!.GetType());
         Content = ViewModelFactory.NewQuestionFormVm(question.GetType(), question);
     }
 
