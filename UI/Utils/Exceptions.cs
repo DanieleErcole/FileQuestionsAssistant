@@ -14,7 +14,7 @@ public class UIException(string title, string desc, Exception? inner = null) : E
     public static UIException FromException(Exception e) {
         return e switch {
             ApplicationException appEx => appEx,
-            _ => new UIException(Lang.Lang.UnknownError, e.InnerException?.Message ?? "")
+            _ => new UIException(Lang.Lang.UnknownError, e.InnerException?.Message ?? "", e)
         };
     }
 

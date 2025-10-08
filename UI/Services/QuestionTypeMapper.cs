@@ -33,7 +33,7 @@ public class QuestionTypeMapper {
                 !t.IsAbstract 
                 && t.BaseType?.BaseType == typeof(QuestionViewModelBase)
                 && t.GetConstructors()
-                    .SingleOrDefault(c => c.GetParameters().Any(p => p.ParameterType.IsAssignableTo(qType))) is not null
+                    .FirstOrDefault(c => c.GetParameters().Any(p => p.ParameterType.IsAssignableTo(qType))) is not null
             );
         
         Type GetFormTypes(List<Type> types, Type qType) => 
@@ -41,7 +41,7 @@ public class QuestionTypeMapper {
                 !t.IsAbstract 
                 && t.BaseType == typeof(QuestionFormVMBase) 
                 && t.GetConstructors()
-                    .SingleOrDefault(c => c.GetParameters().Any(p => p.ParameterType.IsAssignableTo(qType))) is not null
+                    .FirstOrDefault(c => c.GetParameters().Any(p => p.ParameterType.IsAssignableTo(qType))) is not null
             );
     }
 
